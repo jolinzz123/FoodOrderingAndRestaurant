@@ -1,0 +1,231 @@
+/* ==========================================================
+   FoodOrder — White & Green Theme
+   ========================================================== */
+
+:root {
+  --color-primary:        #2E7D32;   /* deep green   */
+  --color-primary-dark:   #1B5E20;
+  --color-primary-light:  #66BB6A;
+  --color-accent:         #A5D6A7;   /* soft mint    */
+  --color-bg:             #FFFFFF;
+  --color-bg-soft:        #F4FAF4;   /* faint green-white */
+  --color-text:           #1C2B1D;
+  --color-text-muted:     #5A6B5C;
+  --color-border:         #DCEFDC;
+  --shadow-soft:          0 4px 16px rgba(46, 125, 50, 0.08);
+  --radius:               14px;
+  --font-heading: 'Poppins', 'Segoe UI', sans-serif;
+  --font-body: 'Inter', 'Segoe UI', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg-soft);
+  color: var(--color-text);
+  margin: 0;
+  padding-top: 70px; /* navbar offset */
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-heading);
+  color: var(--color-primary-dark);
+  font-weight: 600;
+}
+
+a { color: var(--color-primary); text-decoration: none; }
+a:hover { color: var(--color-primary-dark); }
+
+/* ---------- Navbar ---------- */
+.navbar-foodorder {
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-soft);
+}
+.navbar-foodorder .navbar-brand {
+  color: var(--color-primary-dark) !important;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+.navbar-foodorder .nav-link {
+  color: var(--color-text) !important;
+  font-weight: 500;
+  margin: 0 6px;
+}
+.navbar-foodorder .nav-link:hover,
+.navbar-foodorder .nav-link.active {
+  color: var(--color-primary) !important;
+}
+.navbar-foodorder .btn-cart {
+  background-color: var(--color-primary);
+  color: #fff;
+  border-radius: 20px;
+  padding: 6px 16px;
+}
+.navbar-foodorder .btn-cart:hover { background-color: var(--color-primary-dark); }
+
+/* ---------- Buttons ---------- */
+.btn-primary, .btn-brand {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: #fff !important;
+}
+.btn-primary:hover, .btn-brand:hover {
+  background-color: var(--color-primary-dark) !important;
+  border-color: var(--color-primary-dark) !important;
+}
+.btn-outline-brand {
+  border: 1.5px solid var(--color-primary);
+  color: var(--color-primary);
+  background: transparent;
+}
+.btn-outline-brand:hover {
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+/* ---------- Hero (Homepage) ---------- */
+.hero {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  color: #fff;
+  padding: 80px 20px;
+  border-radius: 0 0 40px 40px;
+  text-align: center;
+}
+.hero h1 { color: #fff; font-size: 2.6rem; }
+.hero p { font-size: 1.15rem; opacity: 0.95; }
+.hero .btn { margin-top: 18px; }
+
+/* ---------- Cards ---------- */
+.card-food {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+  height: 100%;
+}
+.card-food:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(46, 125, 50, 0.15);
+}
+.card-food img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  background-color: var(--color-accent);
+}
+.card-food .card-body { padding: 16px 18px; }
+.card-food .price-tag {
+  color: var(--color-primary-dark);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+.badge-rating {
+  background-color: var(--color-accent);
+  color: var(--color-primary-dark);
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 4px 10px;
+}
+.badge-category {
+  background-color: var(--color-bg-soft);
+  border: 1px solid var(--color-border);
+  color: var(--color-primary-dark);
+  border-radius: 12px;
+  padding: 4px 12px;
+  font-size: 0.8rem;
+}
+
+/* ---------- Forms ---------- */
+.form-card {
+  background-color: var(--color-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  padding: 36px;
+  max-width: 480px;
+  margin: 40px auto;
+}
+.form-control:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.15);
+}
+label { font-weight: 500; color: var(--color-text); }
+
+/* ---------- Footer ---------- */
+footer.site-footer {
+  background-color: var(--color-primary-dark);
+  color: #E8F5E9;
+  padding: 40px 0 20px;
+  margin-top: 60px;
+}
+footer.site-footer a { color: #C8E6C9; }
+footer.site-footer a:hover { color: #fff; }
+
+/* ---------- Cart / Checkout ---------- */
+.cart-table th { color: var(--color-primary-dark); border-bottom: 2px solid var(--color-border); }
+.cart-summary {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  padding: 24px;
+}
+.total-line { font-size: 1.3rem; font-weight: 700; color: var(--color-primary-dark); }
+
+/* ---------- Admin Dashboard ---------- */
+.admin-sidebar {
+  background-color: var(--color-primary-dark);
+  min-height: calc(100vh - 70px);
+  color: #E8F5E9;
+  padding-top: 24px;
+}
+.admin-sidebar a {
+  color: #E8F5E9;
+  display: block;
+  padding: 12px 24px;
+  font-weight: 500;
+}
+.admin-sidebar a:hover, .admin-sidebar a.active {
+  background-color: var(--color-primary);
+  color: #fff;
+}
+.admin-stat-card {
+  background-color: var(--color-bg);
+  border-left: 5px solid var(--color-primary);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  padding: 20px;
+}
+.admin-stat-card .stat-number { font-size: 2rem; font-weight: 700; color: var(--color-primary-dark); }
+
+table.table-brand thead { background-color: var(--color-bg-soft); }
+table.table-brand th { color: var(--color-primary-dark); }
+
+.status-pill {
+  border-radius: 14px;
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.status-PENDING { background-color: #FFF3CD; color: #8A6D00; }
+.status-CONFIRMED { background-color: #D7F0D9; color: var(--color-primary-dark); }
+.status-PREPARING { background-color: #D0E8F2; color: #0B5C7A; }
+.status-COMPLETED { background-color: var(--color-accent); color: var(--color-primary-dark); }
+.status-CANCELLED { background-color: #F8D7DA; color: #842029; }
+
+/* ---------- Misc ---------- */
+.section-title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.section-title h2 { font-size: 2rem; }
+.section-title p { color: var(--color-text-muted); }
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 2rem; }
+  .form-card { padding: 24px; margin: 20px; }
+}
