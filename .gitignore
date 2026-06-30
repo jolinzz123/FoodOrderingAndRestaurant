@@ -5,3 +5,8 @@
 .project
 target/
 build/
+# DB credentials — never commit the real file
+src/main/java/com/foodorder/util/db.properties
+
+# JDBC driver jar
+src/main/webapp/WEB-INF/lib/
