@@ -30,7 +30,6 @@
       <button type="submit" class="btn btn-brand w-100 mt-2">Log In</button>
     </form>
     <p class="text-center mt-3 mb-0">New here? <a href="<%= ctx %>/register.jsp">Create an account</a></p>
-    <p class="text-center text-muted small mt-2">Admin demo login: <code>admin</code> / <code>admin123</code></p>
   </div>
 </div>
 

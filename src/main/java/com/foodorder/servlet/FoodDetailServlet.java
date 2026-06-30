@@ -1,5 +1,6 @@
 package com.foodorder.servlet;
 
+import com.foodorder.dao.AddonDAO;
 import com.foodorder.dao.FoodDAO;
 import com.foodorder.model.FoodItem;
 
@@ -14,6 +15,7 @@ import java.io.IOException;
 public class FoodDetailServlet extends HttpServlet {
 
     private final FoodDAO foodDAO = new FoodDAO();
+    private final AddonDAO addonDAO = new AddonDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,6 +31,7 @@ public class FoodDetailServlet extends HttpServlet {
         }
 
         req.setAttribute("item", item);
+        req.setAttribute("addons", addonDAO.findByFoodItemId(item.getId()));
         req.getRequestDispatcher("food-detail.jsp").forward(req, resp);
     }
 }

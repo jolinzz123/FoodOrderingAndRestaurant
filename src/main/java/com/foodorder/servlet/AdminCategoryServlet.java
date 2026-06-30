@@ -24,7 +24,7 @@ public class AdminCategoryServlet extends HttpServlet {
         }
 
         req.setAttribute("categories", categoryDAO.findAll());
-        req.getRequestDispatcher("admin/manage-category.jsp").forward(req, resp);
+        req.getRequestDispatcher("/admin/manage-category.jsp").forward(req, resp);
     }
 
     @Override

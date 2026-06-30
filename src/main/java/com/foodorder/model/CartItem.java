@@ -2,24 +2,28 @@ package com.foodorder.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CartItem implements Serializable {
     private int foodId;
     private String foodName;
     private BigDecimal unitPrice;
     private int quantity;
-    private String addons;       // comma-separated addon names
+    private String addons;            // comma-separated names for display
     private BigDecimal addonsPrice;
+    private List<Integer> selectedAddonIds = new ArrayList<>();  // FK references to addons table
 
     public CartItem() {}
 
-    public CartItem(int foodId, String foodName, BigDecimal unitPrice, int quantity, String addons, BigDecimal addonsPrice) {
+    public CartItem(int foodId, String foodName, BigDecimal unitPrice, int quantity, String addons, BigDecimal addonsPrice, List<Integer> selectedAddonIds) {
         this.foodId = foodId;
         this.foodName = foodName;
         this.unitPrice = unitPrice;
         this.quantity = quantity;
         this.addons = addons;
         this.addonsPrice = addonsPrice;
+        this.selectedAddonIds = selectedAddonIds != null ? selectedAddonIds : new ArrayList<>();
     }
 
     public int getFoodId() { return foodId; }
@@ -39,6 +43,9 @@ public class CartItem implements Serializable {
 
     public BigDecimal getAddonsPrice() { return addonsPrice; }
     public void setAddonsPrice(BigDecimal addonsPrice) { this.addonsPrice = addonsPrice; }
+
+    public List<Integer> getSelectedAddonIds() { return selectedAddonIds; }
+    public void setSelectedAddonIds(List<Integer> selectedAddonIds) { this.selectedAddonIds = selectedAddonIds; }
 
     public BigDecimal getSubtotal() {
         BigDecimal base = unitPrice.add(addonsPrice == null ? BigDecimal.ZERO : addonsPrice);

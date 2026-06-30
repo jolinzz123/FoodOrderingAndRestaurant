@@ -17,7 +17,7 @@ public class AdminOrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("orders", orderDAO.findAll());
-        req.getRequestDispatcher("admin/orders.jsp").forward(req, resp);
+        req.getRequestDispatcher("/admin/orders.jsp").forward(req, resp);
     }
 
     @Override

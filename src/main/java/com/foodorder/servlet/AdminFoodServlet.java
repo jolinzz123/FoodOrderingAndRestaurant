@@ -35,7 +35,7 @@ public class AdminFoodServlet extends HttpServlet {
 
         req.setAttribute("foodItems", foodDAO.findAll());
         req.setAttribute("categories", categoryDAO.findAll());
-        req.getRequestDispatcher("admin/manage-food.jsp").forward(req, resp);
+        req.getRequestDispatcher("/admin/manage-food.jsp").forward(req, resp);
     }
 
     @Override

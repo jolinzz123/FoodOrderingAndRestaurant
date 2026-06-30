@@ -1,11 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page import="com.foodorder.model.FoodItem, com.foodorder.model.User" %>
+<%@ page import="com.foodorder.model.FoodItem, com.foodorder.model.User, com.foodorder.model.Addon, java.util.List" %>
 <%
     FoodItem item = (FoodItem) request.getAttribute("item");
     request.setAttribute("pageTitle", item.getName() + " — FoodOrder");
     String ctx = request.getContextPath();
     String error = (String) request.getAttribute("error");
     User currentUser = (User) session.getAttribute("user");
+    @SuppressWarnings("unchecked")
+    List<Addon> addons = (List<Addon>) request.getAttribute("addons");
 %>
 <jsp:include page="header.jsp" />
 
@@ -42,21 +44,25 @@
           <input type="number" class="form-control" id="quantity" name="quantity" value="1" min="1" max="20" style="max-width:120px;" required>
         </div>
 
+        <% if (addons != null && !addons.isEmpty()) { %>
         <div class="mb-3">
           <label class="form-label">Add-ons</label>
+          <% for (Addon a : addons) { %>
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" name="addons" value="Extra Cheese:3.00" id="addon1">
-            <label class="form-check-label" for="addon1">Extra Cheese (+RM 3.00)</label>
+            <input class="form-check-input" type="checkbox" name="addons"
+                   value="<%= a.getId() %>" id="addon<%= a.getId() %>">
+            <label class="form-check-label" for="addon<%= a.getId() %>">
+              <%= a.getName() %>
+              <% if (a.getExtraPrice() != null && a.getExtraPrice().compareTo(java.math.BigDecimal.ZERO) > 0) { %>
+                <span class="text-muted">(+RM <%= String.format("%.2f", a.getExtraPrice()) %>)</span>
+              <% } else { %>
+                <span class="text-muted">(Free)</span>
+              <% } %>
+            </label>
           </div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" name="addons" value="Side Fries:5.00" id="addon2">
-            <label class="form-check-label" for="addon2">Side Fries (+RM 5.00)</label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" name="addons" value="Canned Drink:4.00" id="addon3">
-            <label class="form-check-label" for="addon3">Canned Drink (+RM 4.00)</label>
-          </div>
+          <% } %>
         </div>
+        <% } %>
 
         <% if (currentUser != null) { %>
           <button type="submit" class="btn btn-brand btn-lg w-100">Add to Cart</button>

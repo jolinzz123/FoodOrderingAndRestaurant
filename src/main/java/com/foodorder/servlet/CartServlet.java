@@ -1,6 +1,8 @@
 package com.foodorder.servlet;
 
+import com.foodorder.dao.AddonDAO;
 import com.foodorder.dao.FoodDAO;
+import com.foodorder.model.Addon;
 import com.foodorder.model.CartItem;
 import com.foodorder.model.FoodItem;
 
@@ -12,13 +14,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @WebServlet("/cart")
 public class CartServlet extends HttpServlet {
 
     private final FoodDAO foodDAO = new FoodDAO();
+    private final AddonDAO addonDAO = new AddonDAO();
 
     @Override
     @SuppressWarnings("unchecked")
@@ -46,18 +51,24 @@ public class CartServlet extends HttpServlet {
         if ("add".equals(action)) {
             int foodId = Integer.parseInt(req.getParameter("foodId"));
             int quantity = parseQuantity(req.getParameter("quantity"));
-            String[] addonNames = req.getParameterValues("addons");
+            String[] addonIdParams = req.getParameterValues("addons");
+
+            // Resolve addon IDs → names + prices from the addons table
             BigDecimal addonsPrice = BigDecimal.ZERO;
             StringBuilder addonsLabel = new StringBuilder();
-            if (addonNames != null) {
-                for (String a : addonNames) {
-                    // format expected: "Name:Price" e.g. "Extra Cheese:3.00"
-                    String[] parts = a.split(":");
-                    if (addonsLabel.length() > 0) addonsLabel.append(", ");
-                    addonsLabel.append(parts[0]);
-                    if (parts.length > 1) {
-                        try { addonsPrice = addonsPrice.add(new BigDecimal(parts[1])); } catch (NumberFormatException ignored) {}
-                    }
+            List<Integer> selectedAddonIds = new ArrayList<>();
+            if (addonIdParams != null) {
+                for (String idStr : addonIdParams) {
+                    try {
+                        int addonId = Integer.parseInt(idStr);
+                        Addon addon = addonDAO.findById(addonId);
+                        if (addon != null) {
+                            selectedAddonIds.add(addonId);
+                            if (addonsLabel.length() > 0) addonsLabel.append(", ");
+                            addonsLabel.append(addon.getName());
+                            addonsPrice = addonsPrice.add(addon.getExtraPrice());
+                        }
+                    } catch (NumberFormatException ignored) {}
                 }
             }
 
@@ -68,7 +79,7 @@ public class CartServlet extends HttpServlet {
                     existing.setQuantity(existing.getQuantity() + quantity);
                 } else {
                     cart.put(foodId, new CartItem(foodId, food.getName(), food.getPrice(), quantity,
-                            addonsLabel.toString(), addonsPrice));
+                            addonsLabel.toString(), addonsPrice, selectedAddonIds));
                 }
             }
         } else if ("update".equals(action)) {
