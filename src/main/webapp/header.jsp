@@ -28,7 +28,6 @@
     <div class="collapse navbar-collapse" id="navMain">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item"><a class="nav-link <%= uri.endsWith("index.jsp") || uri.endsWith("/FoodOrderingAndRestaurant/") ? "active" : "" %>" href="<%= ctx %>/index.jsp">Home</a></li>
-        <li class="nav-item"><a class="nav-link <%= uri.contains("/menu") ? "active" : "" %>" href="<%= ctx %>/menu">Menu</a></li>
         <li class="nav-item"><a class="nav-link <%= uri.endsWith("about.jsp") ? "active" : "" %>" href="<%= ctx %>/about.jsp">About Us</a></li>
         <li class="nav-item"><a class="nav-link <%= uri.endsWith("contact.jsp") ? "active" : "" %>" href="<%= ctx %>/contact.jsp">Contact</a></li>
         <li class="nav-item"><a class="nav-link <%= uri.endsWith("faq.jsp") ? "active" : "" %>" href="<%= ctx %>/faq.jsp">FAQ</a></li>

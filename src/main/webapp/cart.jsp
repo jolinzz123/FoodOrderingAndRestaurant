@@ -11,55 +11,74 @@
 %>
 <jsp:include page="header.jsp" />
 
-<div class="container py-5">
-  <h2 class="mb-4">Your Cart</h2>
+<div class="cart-page-hero">
+  <h1>Your Cart</h1>
+  <p><%= cartItems.size() %> item<%= cartItems.size() == 1 ? "" : "s" %> ready for checkout</p>
+</div>
+
+<div class="container pb-5">
 
   <% if (error != null) { %>
     <div class="alert alert-danger"><%= error %></div>
   <% } %>
 
   <% if (cartItems.isEmpty()) { %>
-    <div class="text-center py-5">
-      <p class="text-muted">Your cart is empty.</p>
+    <div class="empty-cart">
+      <div class="icon">&#128722;</div>
+      <p class="text-muted mb-3">Your cart is empty.</p>
       <a href="<%= ctx %>/menu" class="btn btn-brand">Browse Menu</a>
     </div>
   <% } else { %>
     <div class="row">
       <div class="col-lg-8">
-        <table class="table cart-table align-middle">
-          <thead>
-            <tr><th>Item</th><th>Add-ons</th><th>Quantity</th><th>Subtotal</th><th></th></tr>
-          </thead>
-          <tbody>
-            <% for (CartItem item : cartItems) { %>
-              <tr>
-                <td><%= item.getFoodName() %></td>
-                <td class="text-muted small"><%= (item.getAddons() == null || item.getAddons().isEmpty()) ? "&mdash;" : item.getAddons() %></td>
-                <td style="max-width:110px;">
-                  <form action="<%= ctx %>/cart" method="post" class="d-flex gap-1">
-                    <input type="hidden" name="action" value="update">
-                    <input type="hidden" name="foodId" value="<%= item.getFoodId() %>">
-                    <input type="number" name="quantity" value="<%= item.getQuantity() %>" min="0" max="20" class="form-control form-control-sm">
-                    <button type="submit" class="btn btn-sm btn-outline-brand">Update</button>
-                  </form>
-                </td>
-                <td>RM <%= String.format("%,.2f", item.getSubtotal()) %></td>
-                <td>
-                  <form action="<%= ctx %>/cart" method="post">
-                    <input type="hidden" name="action" value="remove">
-                    <input type="hidden" name="foodId" value="<%= item.getFoodId() %>">
-                    <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
-                  </form>
-                </td>
-              </tr>
-            <% } %>
-          </tbody>
-        </table>
-        <form action="<%= ctx %>/cart" method="post">
+
+        <% for (CartItem item : cartItems) { %>
+          <div class="cart-item-row">
+            <%
+              String thumb = item.getImageUrl();
+              if (thumb == null || thumb.isEmpty()) {
+                  thumb = "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&q=80";
+              } else if (!thumb.startsWith("http")) {
+                  thumb = ctx + "/" + thumb;
+              }
+            %>
+            <img src="<%= thumb %>" alt="<%= item.getFoodName() %>"
+                 onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&q=80'">
+
+            <div class="cart-item-info">
+              <h6><%= item.getFoodName() %></h6>
+              <div class="cart-item-addons">
+                <%= (item.getAddons() == null || item.getAddons().isEmpty()) ? "No add-ons" : item.getAddons() %>
+              </div>
+            </div>
+
+            <form action="<%= ctx %>/cart" method="post" class="d-flex align-items-center gap-2" style="margin:0;">
+              <input type="hidden" name="action" value="update">
+              <input type="hidden" name="foodId" value="<%= item.getFoodId() %>">
+              <div class="qty-ctrl">
+                <button type="button" class="qty-btn" onclick="stepQty(this,-1)">&minus;</button>
+                <input class="qty-num" type="number" name="quantity" value="<%= item.getQuantity() %>" min="0" max="20">
+                <button type="button" class="qty-btn" onclick="stepQty(this,1)">+</button>
+              </div>
+              <button type="submit" class="btn btn-sm btn-outline-brand">Update</button>
+            </form>
+
+            <span class="cart-item-price">RM <%= String.format("%,.2f", item.getSubtotal()) %></span>
+
+            <form action="<%= ctx %>/cart" method="post" style="margin:0;">
+              <input type="hidden" name="action" value="remove">
+              <input type="hidden" name="foodId" value="<%= item.getFoodId() %>">
+              <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+            </form>
+          </div>
+        <% } %>
+
+        <form action="<%= ctx %>/cart" method="post" class="mt-2">
           <input type="hidden" name="action" value="clear">
           <button type="submit" class="btn btn-sm btn-outline-danger">Clear Cart</button>
         </form>
       </div>
+
       <div class="col-lg-4">
         <div class="cart-summary">
           <h5 class="mb-3">Order Summary</h5>
@@ -73,5 +92,16 @@
     </div>
   <% } %>
 </div>
+
+<script>
+  function stepQty(btn, delta) {
+    var ctrl = btn.closest('.qty-ctrl');
+    var input = ctrl.querySelector('.qty-num');
+    var val = parseInt(input.value || '1') + delta;
+    if (val < 0) val = 0;
+    if (val > 20) val = 20;
+    input.value = val;
+  }
+</script>
 
 <jsp:include page="footer.jsp" />

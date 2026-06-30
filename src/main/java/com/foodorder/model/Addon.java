@@ -10,6 +10,13 @@ public class Addon implements Serializable {
     private BigDecimal extraPrice;
 
     public Addon() {}
+    
+    public Addon(int id, int foodItemId, String name, BigDecimal extraPrice) {
+    	this.id = id;
+    	this.foodItemId = foodItemId;
+    	this.name = name;
+    	this.extraPrice = extraPrice;
+    }
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

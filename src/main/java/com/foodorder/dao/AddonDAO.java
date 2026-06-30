@@ -39,7 +39,33 @@ public class AddonDAO {
         }
         return null;
     }
-
+    
+    public boolean add(Addon a) {
+        String sql = "INSERT INTO addons (food_item_id, name, extra_price) VALUES (?, ?, ?)";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, a.getFoodItemId());
+            ps.setString(2, a.getName());
+            ps.setBigDecimal(3, a.getExtraPrice());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+ 
+    public boolean delete(int id) {
+        String sql = "DELETE FROM addons WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
     private Addon mapRow(ResultSet rs) throws SQLException {
         Addon a = new Addon();
         a.setId(rs.getInt("id"));

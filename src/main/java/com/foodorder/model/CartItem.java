@@ -13,6 +13,7 @@ public class CartItem implements Serializable {
     private String addons;            // comma-separated names for display
     private BigDecimal addonsPrice;
     private List<Integer> selectedAddonIds = new ArrayList<>();  // FK references to addons table
+    private String imageUrl;
 
     public CartItem() {}
 
@@ -24,6 +25,11 @@ public class CartItem implements Serializable {
         this.addons = addons;
         this.addonsPrice = addonsPrice;
         this.selectedAddonIds = selectedAddonIds != null ? selectedAddonIds : new ArrayList<>();
+    }
+
+    public CartItem(int foodId, String foodName, BigDecimal unitPrice, int quantity, String addons, BigDecimal addonsPrice, List<Integer> selectedAddonIds, String imageUrl) {
+        this(foodId, foodName, unitPrice, quantity, addons, addonsPrice, selectedAddonIds);
+        this.imageUrl = imageUrl;
     }
 
     public int getFoodId() { return foodId; }
@@ -46,6 +52,9 @@ public class CartItem implements Serializable {
 
     public List<Integer> getSelectedAddonIds() { return selectedAddonIds; }
     public void setSelectedAddonIds(List<Integer> selectedAddonIds) { this.selectedAddonIds = selectedAddonIds; }
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
     public BigDecimal getSubtotal() {
         BigDecimal base = unitPrice.add(addonsPrice == null ? BigDecimal.ZERO : addonsPrice);

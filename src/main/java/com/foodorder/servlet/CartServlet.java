@@ -79,7 +79,7 @@ public class CartServlet extends HttpServlet {
                     existing.setQuantity(existing.getQuantity() + quantity);
                 } else {
                     cart.put(foodId, new CartItem(foodId, food.getName(), food.getPrice(), quantity,
-                            addonsLabel.toString(), addonsPrice, selectedAddonIds));
+                            addonsLabel.toString(), addonsPrice, selectedAddonIds, food.getImageUrl()));
                 }
             }
         } else if ("update".equals(action)) {
