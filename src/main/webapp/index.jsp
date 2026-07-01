@@ -87,13 +87,14 @@
       </div>
       <div class="hp-stat-divider"></div>
       <div class="hp-stat-box">
-        <span class="hp-stat-n">RM 0</span>
-        <span class="hp-stat-l">Delivery Fee</span>
+      	<span class="hp-stat-n">FREE</span>
+        <span class="hp-stat-l">Delivery</span>
       </div>
       <div class="hp-stat-divider"></div>
       <div class="hp-stat-box">
-        <span class="hp-stat-n">30 min</span>
+        <span class="hp-stat-n">20 min</span>
         <span class="hp-stat-l">Avg. Ready Time</span>
+        </div>
       </div>
     </div>
   </div>

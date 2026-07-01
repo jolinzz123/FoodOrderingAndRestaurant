@@ -378,21 +378,41 @@ a:hover { color: var(--color-primary-dark); }
 
 /* Stats bar */
 .hp-stats-bar {
-  background: #fff;
-  padding: 28px 0;
-  border-bottom: 1px solid var(--color-border);
+  background: transparent;
+  padding: 36px 0;
 }
 .hp-stats-row {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0;
-  flex-wrap: wrap;
 }
-.hp-stat-box { text-align: center; padding: 0 40px; }
-.hp-stat-n { display: block; font-size: 1.7rem; font-weight: 800; color: var(--color-primary); }
-.hp-stat-l { display: block; font-size: .75rem; color: var(--color-text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-top: 2px; }
-.hp-stat-divider { width: 1px; height: 44px; background: var(--color-border); flex-shrink: 0; }
+.hp-stat-box {
+  text-align: center;
+  padding: 0 48px;
+}
+.hp-stat-n {
+  display: block;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--color-primary);
+  line-height: 1.1;
+  margin-bottom: 5px;
+}
+.hp-stat-l {
+  display: block;
+  font-size: .72rem;
+  color: var(--color-text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+.hp-stat-divider {
+  width: 1px;
+  height: 48px;
+  background: var(--color-border);
+  flex-shrink: 0;
+}
+
 
 /* Section headings */
 .hp-section-pre {
@@ -493,15 +513,22 @@ a:hover { color: var(--color-primary-dark); }
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-card);
   height: 100%;
-  transition: transform .2s, box-shadow .2s;
+  transition: transform .25s, box-shadow .25s, background .25s, border-color .25s;
 }
-.hp-why-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); }
-.hp-why-card--featured {
+.hp-why-card:hover {
+  transform: translateY(-4px);
   background: var(--color-accent);
-  border: 2px solid var(--color-primary-light);
+  border-color: var(--color-primary-light);
+  box-shadow: 0 8px 32px rgba(124,111,232,0.18);
+}
+.hp-why-card:hover h5 { color: var(--color-primary-dark); }
+.hp-why-card:hover p { color: var(--color-text-muted); }
+.hp-why-card--featured {
+  background: #fff;
+  border: 1px solid var(--color-border);
   color: var(--color-text);
 }
-.hp-why-card--featured h5 { color: var(--color-primary-dark); }
+.hp-why-card--featured h5 { color: var(--color-text); }
 .hp-why-card--featured p { color: var(--color-text-muted); opacity: 1; }
 .hp-why-icon { font-size: 2.2rem; margin-bottom: 16px; }
 .hp-why-card h5 { font-weight: 700; font-size: 1.1rem; margin-bottom: 10px; }
@@ -688,7 +715,7 @@ table.table-brand th { color: var(--color-text); }
 }
 .menu-food-panel {
   flex: 1;
-  padding: 24px;
+  padding: 8px 24px 24px;
   min-width: 0;
 }
 .menu-cart-panel {
@@ -696,7 +723,7 @@ table.table-brand th { color: var(--color-text); }
   flex-shrink: 0;
   background: var(--color-bg);
   border-left: 1px solid var(--color-border);
-  padding: 24px;
+  padding: 14px 20px 20px;
   position: sticky;
   top: 140px;
   height: calc(100vh - 140px);
@@ -712,11 +739,12 @@ table.table-brand th { color: var(--color-text); }
   letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--color-text-muted);
-  margin: 28px 0 16px;
+  margin: 16px 0 12px;
   display: flex;
   align-items: center;
   gap: 12px;
 }
+.section-label:first-child { margin-top: 6px; }
 .section-label::after { content: ''; flex: 1; height: 1px; background: var(--color-border); }
 
 /* Food card — new style */
