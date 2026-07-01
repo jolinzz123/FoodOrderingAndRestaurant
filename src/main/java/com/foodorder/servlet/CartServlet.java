@@ -97,7 +97,12 @@ public class CartServlet extends HttpServlet {
             cart.clear();
         }
 
-        resp.sendRedirect(req.getContextPath() + "/cart");
+        String returnTo = req.getParameter("returnTo");
+        if (returnTo != null && returnTo.startsWith("/")) {
+            resp.sendRedirect(req.getContextPath() + returnTo);
+        } else {
+            resp.sendRedirect(req.getContextPath() + "/cart");
+        }
     }
 
     private int parseQuantity(String s) {

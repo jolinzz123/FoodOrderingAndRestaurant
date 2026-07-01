@@ -4,92 +4,163 @@
     request.setAttribute("pageTitle", "FoodOrder — Home");
     List<FoodItem> all = new FoodDAO().findAll();
     all.sort(Comparator.comparingDouble(FoodItem::getRating).reversed());
-    List<FoodItem> popularItems = all.size() > 4 ? all.subList(0, 4) : all;
+    List<FoodItem> popularItems = all.size() > 6 ? all.subList(0, 6) : all;
     String ctx = request.getContextPath();
+    FoodItem heroFood = all.isEmpty() ? null : all.get(0);
 %>
 <jsp:include page="header.jsp" />
 
-<section class="hero">
+
+<!-- HERO — 2-column split -->
+<section class="hp-hero">
   <div class="container">
-    <h1>Great Food, Delivered Fresh.</h1>
-    <p>Browse our curated menu of appetizers, mains, and desserts — crafted by our partner restaurants.</p>
+    <div class="hp-hero-inner">
+
+      <!-- Left text -->
+      <div class="hp-hero-left">
+        <span class="hp-hero-tag">🍽️ &nbsp;Fresh from our kitchen</span>
+        <h1 class="hp-hero-heading">
+          It's not just<br>
+          <span style="font-style:italic;">Food,</span> It's an<br>
+          <span class="hp-hero-highlight">Experience.</span>
+        </h1>
+        <p class="hp-hero-sub">Handcrafted dishes made to order — straight from our kitchen to your table every single day.</p>
+        <div class="hp-hero-actions">
+          <a href="<%= ctx %>/menu" class="hp-btn-primary">View Menu</a>
+          <a href="<%= ctx %>/about.jsp" class="hp-btn-outline">About Us</a>
+        </div>
+        <!-- Reviews row -->
+        <div class="hp-reviews">
+          <div class="hp-avatars">
+            <img src="https://i.pravatar.cc/32?img=11" alt="reviewer">
+            <img src="https://i.pravatar.cc/32?img=22" alt="reviewer">
+            <img src="https://i.pravatar.cc/32?img=33" alt="reviewer">
+            <span class="hp-avatar-count">45+</span>
+          </div>
+          <div>
+            <div class="hp-stars">★★★★★</div>
+            <div class="hp-reviews-lbl">Happy customers</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right image -->
+      <div class="hp-hero-right">
+        <div class="hp-hero-img-ring">
+          <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&q=85"
+               alt="Featured dish"
+               class="hp-hero-img"
+               onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=85'">
+        </div>
+        <!-- floating ingredient bubbles -->
+        <div class="hp-float hp-float-1">🍅</div>
+        <div class="hp-float hp-float-2">🥬</div>
+        <div class="hp-float hp-float-3">🧅</div>
+        <!-- stats pill -->
+        <div class="hp-stat-pill">
+          <span class="hp-stat-pill-num"><%= all.size() %>+</span>
+          <span class="hp-stat-pill-lbl">Menu Items</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- wave bottom -->
+  <div class="hp-wave">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#FFFFFF"/></svg>
   </div>
 </section>
 
+<!-- Stats bar -->
+<div class="hp-stats-bar">
+  <div class="container">
+    <div class="hp-stats-row">
+      <div class="hp-stat-box">
+        <span class="hp-stat-n"><%= all.size() %>+</span>
+        <span class="hp-stat-l">Dishes</span>
+      </div>
+      <div class="hp-stat-divider"></div>
+      <div class="hp-stat-box">
+        <span class="hp-stat-n">7</span>
+        <span class="hp-stat-l">Categories</span>
+      </div>
+      <div class="hp-stat-divider"></div>
+      <div class="hp-stat-box">
+        <span class="hp-stat-n">RM 0</span>
+        <span class="hp-stat-l">Delivery Fee</span>
+      </div>
+      <div class="hp-stat-divider"></div>
+      <div class="hp-stat-box">
+        <span class="hp-stat-n">30 min</span>
+        <span class="hp-stat-l">Avg. Ready Time</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Popular Dishes -->
 <div class="container py-5">
-
-  <div class="section-title">
-    <h2>Featured Restaurants</h2>
-    <p>Our top-rated kitchen partners</p>
-  </div>
-  <div class="row g-4 mb-5">
-    <div class="col-md-4">
-      <a href="<%= ctx %>/menu" style="text-decoration:none;">
-        <div class="card-food">
-          <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80" alt="The Green Table">
-          <div class="card-body">
-            <h5>The Green Table</h5>
-            <p class="text-muted mb-1">Farm-to-table contemporary cuisine</p>
-            <span class="badge-rating">★ 4.8</span>
-          </div>
-        </div>
-      </a>
+  <div class="d-flex align-items-end justify-content-between mb-4">
+    <div>
+      <p class="hp-section-pre">This Week's Picks</p>
+      <h2 class="hp-section-title">Popular Dishes</h2>
     </div>
-    <div class="col-md-4">
-      <a href="<%= ctx %>/menu" style="text-decoration:none;">
-        <div class="card-food">
-          <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80" alt="Maple & Smoke">
-          <div class="card-body">
-            <h5>Maple & Smoke Grill</h5>
-            <p class="text-muted mb-1">Char-grilled steaks and seafood</p>
-            <span class="badge-rating">★ 4.7</span>
-          </div>
-        </div>
-      </a>
-    </div>
-    <div class="col-md-4">
-      <a href="<%= ctx %>/menu" style="text-decoration:none;">
-        <div class="card-food">
-          <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Bella Pasta House">
-          <div class="card-body">
-            <h5>Bella Pasta House</h5>
-            <p class="text-muted mb-1">Authentic Italian comfort food</p>
-            <span class="badge-rating">★ 4.6</span>
-          </div>
-        </div>
-      </a>
-    </div>
+    <a href="<%= ctx %>/menu" class="hp-see-all">See All →</a>
   </div>
 
-  <div class="section-title">
-    <h2>Popular Dishes</h2>
-    <p>Customer favorites this week</p>
-  </div>
-  <div class="row g-4">
+  <div class="hp-dishes-grid">
     <% if (popularItems.isEmpty()) { %>
-      <div class="col-12 text-center text-muted">
-        <p>Menu items will appear here once the database is connected. <a href="<%= ctx %>/menu">Browse full menu &rarr;</a></p>
-      </div>
+      <p class="text-muted">No items found. <a href="<%= ctx %>/menu">Browse menu</a></p>
     <% } else {
-        for (FoodItem item : popularItems) {
-    %>
-      <div class="col-md-3 col-sm-6">
-        <a href="<%= ctx %>/food?id=<%= item.getId() %>" style="text-decoration:none;">
-          <div class="card-food">
-            <img src="<%= ctx %>/<%= item.getImageUrl() %>" alt="<%= item.getName() %>">
-            <div class="card-body">
-              <h6 class="mb-1"><%= item.getName() %></h6>
-              <span class="price-tag">RM <%= String.format("%,.2f", item.getPrice()) %></span>
-            </div>
-          </div>
-        </a>
+        for (FoodItem item : popularItems) { %>
+    <a href="<%= ctx %>/food?id=<%= item.getId() %>" class="hp-dish-card">
+      <div class="hp-dish-img-wrap">
+        <img src="<%= ctx %>/<%= item.getImageUrl() %>"
+             alt="<%= item.getName() %>"
+             onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300&q=70'">
       </div>
-    <%  }
-       } %>
+      <div class="hp-dish-body">
+        <span class="hp-dish-cat"><%= item.getCategoryName() %></span>
+        <h6 class="hp-dish-name"><%= item.getName() %></h6>
+        <div class="hp-dish-footer">
+          <span class="hp-dish-price">RM <%= String.format("%,.2f", item.getPrice()) %></span>
+          <span class="hp-dish-cart">🛒</span>
+        </div>
+      </div>
+    </a>
+    <% } } %>
   </div>
+</div>
 
-  <div class="text-center mt-5">
-    <a href="<%= ctx %>/menu" class="btn btn-brand btn-lg">Explore Full Menu</a>
+<!-- Why us -->
+<div class="hp-why-section">
+  <div class="container">
+    <p class="hp-section-pre text-center">Why Choose Us</p>
+    <h2 class="hp-section-title text-center mb-5">Food Made with Passion</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="hp-why-card">
+          <div class="hp-why-icon">⚡</div>
+          <h5>Fast Delivery</h5>
+          <p>Hot and fresh, right at your door. We guarantee speed without compromising quality.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="hp-why-card hp-why-card--featured">
+          <div class="hp-why-icon">👨‍🍳</div>
+          <h5>Quality Ingredients</h5>
+          <p>Every dish is crafted fresh daily using hand-picked, locally sourced ingredients.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="hp-why-card">
+          <div class="hp-why-icon">💳</div>
+          <h5>Easy Payment</h5>
+          <p>Cash, card, or e-wallet — choose any payment method that suits you at checkout.</p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 

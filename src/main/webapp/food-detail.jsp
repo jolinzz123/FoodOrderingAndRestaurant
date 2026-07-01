@@ -15,7 +15,8 @@
   <div class="row g-5">
     <div class="col-md-6">
       <img src="<%= ctx %>/<%= item.getImageUrl() %>" alt="<%= item.getName() %>"
-           class="img-fluid rounded-4 shadow-sm" style="width:100%; max-height:420px; object-fit:cover;">
+           class="img-fluid rounded-4 shadow-sm" style="width:100%; max-height:280px; object-fit:cover;"
+           onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=80'">
     </div>
     <div class="col-md-6">
       <span class="badge-category mb-2 d-inline-block"><%= item.getCategoryName() %></span>

@@ -5,18 +5,18 @@
   <div class="container">
     <div class="row">
       <div class="col-md-4 mb-3">
-        <h5 style="color:#fff;">🥗 FoodOrder</h5>
+        <h5 style="color:#EAE4D8;">🥗 FoodOrder</h5>
         <p>Fresh ingredients, fast delivery, and dishes made with care — straight from our kitchen to your table.</p>
       </div>
       <div class="col-md-4 mb-3">
-        <h6 style="color:#fff;">Quick Links</h6>
+        <h6 style="color:#EAE4D8;">Quick Links</h6>
         <a href="<%= ctx %>/menu" class="d-block mb-1">Menu</a>
         <a href="<%= ctx %>/about.jsp" class="d-block mb-1">About Us</a>
         <a href="<%= ctx %>/contact.jsp" class="d-block mb-1">Contact</a>
         <a href="<%= ctx %>/faq.jsp" class="d-block mb-1">FAQ</a>
       </div>
       <div class="col-md-4 mb-3">
-        <h6 style="color:#fff;">Contact</h6>
+        <h6 style="color:#EAE4D8;">Contact</h6>
         <p class="mb-1">123 Garden Street, Sepang, Selangor</p>
         <p class="mb-1">hello@foodorder.com</p>
         <p class="mb-1">+60 12-345 6789</p>
