@@ -725,8 +725,8 @@ table.table-brand th { color: var(--color-text); }
   border-left: 1px solid var(--color-border);
   padding: 14px 20px 20px;
   position: sticky;
-  top: 140px;
-  height: calc(100vh - 140px);
+  top: 118px;
+  height: calc(100vh - 118px);
   overflow-y: auto;
   display: flex;
   flex-direction: column;

@@ -107,7 +107,7 @@ INSERT INTO food_items (category_id, name, description, ingredients, nutritional
 -- Bread & Flatbread (3)
 (3,'Roti Canai','Flaky crispy flatbread served with dhal curry and sambal — Malaysian breakfast staple','Flour, butter, egg, salt, dhal curry, sambal','Calories: 320 | Protein: 8g | Carbs: 48g | Fat: 12g',3.50,4.9,TRUE,'images/roticanai.png'),
 (3,'Egg Roti','Crispy flatbread stuffed with egg and onion, served with curry sauce','Flour, egg, onion, butter, curry sauce','Calories: 380 | Protein: 12g | Carbs: 46g | Fat: 16g',4.50,4.7,TRUE,'images/eggroti.png'),
-(3,'Kaya Toast','Toasted bread generously spread with homemade pandan kaya and butter','White bread, kaya jam, butter, pandan','Calories: 280 | Protein: 6g | Carbs: 40g | Fat: 12g',4.90,4.8,TRUE,'images/kayatoast.jpng'),
+(3,'Kaya Toast','Toasted bread generously spread with homemade pandan kaya and butter','White bread, kaya jam, butter, pandan','Calories: 280 | Protein: 6g | Carbs: 40g | Fat: 12g',4.90,4.8,TRUE,'images/kayatoast.png'),
 (3,'Thosai','Crispy South Indian fermented rice crepe served with coconut chutney and sambar','Fermented rice batter, coconut chutney, sambar lentil curry','Calories: 180 | Protein: 6g | Carbs: 34g | Fat: 4g',4.50,4.6,TRUE,'images/thosai.png'),
 
 -- Main Dishes (4)
