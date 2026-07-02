@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="java.util.*, com.foodorder.model.*, com.foodorder.util.DBConnection" %>
 <%
+
     request.setAttribute("pageTitle", "Our Menu — HotServe");
     String ctx = request.getContextPath();
     List<FoodItem> foodItems = (List<FoodItem>) request.getAttribute("foodItems");

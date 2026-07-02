@@ -51,6 +51,7 @@
       </div>
 
       <% if (categories == null || categories.isEmpty()) { %>
+
         <p class="text-muted">
           <%= (searchQuery != null && !searchQuery.isEmpty())
               ? "No categories match \"" + WebUtil.escapeHtml(searchQuery) + "\"."
@@ -78,6 +79,7 @@
                    class="btn btn-sm btn-icon-delete" title="Delete"
                    onclick="return confirm('Delete category \'<%= c.getName() %>\'?')">
                   <i class="bi bi-trash-fill"></i>
+
                 </a>
               </td>
             </tr>

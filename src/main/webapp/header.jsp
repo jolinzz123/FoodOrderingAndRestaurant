@@ -32,14 +32,14 @@
         <li class="nav-item"><a class="nav-link <%= uri.endsWith("about.jsp") ? "active" : "" %>" href="<%= ctx %>/about.jsp">About Us</a></li>
         <li class="nav-item"><a class="nav-link <%= uri.endsWith("contact.jsp") ? "active" : "" %>" href="<%= ctx %>/contact.jsp">Contact</a></li>
         <li class="nav-item"><a class="nav-link <%= uri.endsWith("faq.jsp") ? "active" : "" %>" href="<%= ctx %>/faq.jsp">FAQ</a></li>
-        <% if (currentUser != null && currentUser.isAdmin()) { %>
-          <li class="nav-item"><a class="nav-link <%= uri.contains("/admin/") ? "active" : "" %>" href="<%= ctx %>/admin/dashboard.jsp">Admin</a></li>
-        <% } %>
+
       </ul>
       <ul class="navbar-nav align-items-lg-center">
         <% if (currentUser != null) { %>
             <li class="nav-item me-2"><span class="nav-link">Hi, <%= currentUser.getUsername() %></span></li>
+            <% if (!currentUser.isAdmin()) { %>
             <li class="nav-item me-2"><a class="nav-link btn-cart" href="<%= ctx %>/cart">🛒 Cart</a></li>
+            <% } %>
             <li class="nav-item"><a class="nav-link" href="<%= ctx %>/logout">Logout</a></li>
         <% } else { %>
             <li class="nav-item"><a class="nav-link" href="<%= ctx %>/login.jsp">Login</a></li>

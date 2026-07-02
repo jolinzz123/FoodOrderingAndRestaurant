@@ -9,12 +9,10 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Restricts cart/checkout to authenticated CUSTOMER users only.
- * - Not logged in → redirect to login
- * - Logged in as ADMIN → redirect to admin dashboard (admins don't place orders)
+ * Redirects admin users away from customer-facing pages to the admin dashboard.
  */
-@WebFilter(urlPatterns = {"/cart", "/checkout"})
-public class AuthFilter implements Filter {
+@WebFilter(urlPatterns = {"/", "/index.jsp", "/menu", "/about.jsp", "/contact.jsp", "/faq.jsp", "/food/*"})
+public class AdminRedirectFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {}
@@ -26,16 +24,12 @@ public class AuthFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession(false);
 
-        if (session == null || session.getAttribute("user") == null) {
-            req.getSession(true).setAttribute("redirectAfterLogin", req.getRequestURI());
-            resp.sendRedirect(req.getContextPath() + "/login.jsp");
-            return;
-        }
-
-        User user = (User) session.getAttribute("user");
-        if (user.isAdmin()) {
-            resp.sendRedirect(req.getContextPath() + "/admin/dashboard.jsp");
-            return;
+        if (session != null) {
+            User user = (User) session.getAttribute("user");
+            if (user != null && user.isAdmin()) {
+                resp.sendRedirect(req.getContextPath() + "/admin/dashboard.jsp");
+                return;
+            }
         }
 
         chain.doFilter(request, response);

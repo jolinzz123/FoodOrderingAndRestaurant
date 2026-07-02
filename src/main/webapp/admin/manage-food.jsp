@@ -21,7 +21,9 @@
 <!-- Add / Edit Form -->
 <div class="adm-card mb-4">
   <div class="d-flex align-items-center justify-content-between mb-3">
+
     <div class="adm-card-title mb-0"><%= isEdit ? "Edit: " + editItem.getName() : "Add New Product" %></div>
+
     <% if (isEdit) { %>
       <a href="<%= ctx %>/admin/food" class="btn btn-outline-secondary btn-sm">+ Add New Item</a>
     <% } %>
@@ -84,6 +86,7 @@
 
     <div class="mt-3 d-flex gap-2">
       <button type="submit" class="btn btn-primary">
+
         <%= isEdit ? "Save Changes" : "Add Product" %>
       </button>
       <% if (isEdit) { %>
@@ -135,6 +138,7 @@
           <% } %>
           <div class="food-card-meta d-flex align-items-center gap-2">
             <span class="badge-rating">&#x2605; <%= String.format("%.1f", f.getRating()) %></span>
+
             <% if (f.isAvailable()) { %>
               <span class="status-pill status-CONFIRMED">Available</span>
             <% } else { %>
