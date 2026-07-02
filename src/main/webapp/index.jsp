@@ -53,9 +53,8 @@
                onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=85'">
         </div>
         <!-- floating ingredient bubbles -->
-        <div class="hp-float hp-float-1">🍅</div>
-        <div class="hp-float hp-float-2">🥬</div>
-        <div class="hp-float hp-float-3">🧅</div>
+        <div class="hp-float hp-float-1">🌶️</div>
+        <div class="hp-float hp-float-3">🧄</div>
         <!-- stats pill -->
         <div class="hp-stat-pill">
           <span class="hp-stat-pill-num"><%= all.size() %>+</span>

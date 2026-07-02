@@ -8,9 +8,11 @@ import java.util.List;
 public class Order implements Serializable {
     private int id;
     private int userId;
-    private String username;     // joined for admin display
+    private String username;
     private BigDecimal totalPrice;
     private String status;
+    private String deliveryAddress;
+    private String paymentMethod;
     private Timestamp createdAt;
     private List<OrderItem> items;
 
@@ -30,6 +32,12 @@ public class Order implements Serializable {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public String getDeliveryAddress() { return deliveryAddress; }
+    public void setDeliveryAddress(String deliveryAddress) { this.deliveryAddress = deliveryAddress; }
+
+    public String getPaymentMethod() { return paymentMethod; }
+    public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
 
     public Timestamp getCreatedAt() { return createdAt; }
     public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }

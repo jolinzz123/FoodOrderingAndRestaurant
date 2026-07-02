@@ -2,6 +2,7 @@ package com.foodorder.servlet;
 
 import com.foodorder.dao.OrderDAO;
 import com.foodorder.model.CartItem;
+import com.foodorder.model.OrderItem;
 import com.foodorder.model.User;
 
 import jakarta.servlet.ServletException;
@@ -32,7 +33,7 @@ public class CheckoutServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
-        Map<Integer, CartItem> cart = (Map<Integer, CartItem>) session.getAttribute("cart");
+        Map<String, CartItem> cart = (Map<String, CartItem>) session.getAttribute("cart");
 
         if (cart == null || cart.isEmpty()) {
             req.setAttribute("error", "Your cart is empty.");
@@ -40,17 +41,39 @@ public class CheckoutServlet extends HttpServlet {
             return;
         }
 
+        String address = req.getParameter("address");
+        String paymentMethod = req.getParameter("paymentMethod");
+
+        if (address == null || address.trim().isEmpty()) {
+            req.setAttribute("error", "Please enter a delivery address.");
+            req.getRequestDispatcher("checkout.jsp").forward(req, resp);
+            return;
+        }
+
         List<CartItem> items = new ArrayList<>(cart.values());
         BigDecimal total = BigDecimal.ZERO;
         for (CartItem item : items) total = total.add(item.getSubtotal());
 
-        int orderId = orderDAO.placeOrder(user.getId(), items, total);
+        int orderId = orderDAO.placeOrder(user.getId(), items, total, address.trim(), paymentMethod);
 
         if (orderId > 0) {
             cart.clear();
+            List<OrderItem> orderItems = new ArrayList<>();
+            for (CartItem ci : items) {
+                OrderItem oi = new OrderItem();
+                oi.setOrderId(orderId);
+                oi.setFoodId(ci.getFoodId());
+                oi.setFoodName(ci.getFoodName());
+                oi.setQuantity(ci.getQuantity());
+                oi.setAddons(ci.getAddons());
+                oi.setSubtotal(ci.getSubtotal());
+                orderItems.add(oi);
+            }
             req.setAttribute("orderId", orderId);
             req.setAttribute("orderTotal", total);
-            req.setAttribute("orderItems", items);
+            req.setAttribute("orderItems", orderItems);
+            req.setAttribute("deliveryAddress", address.trim());
+            req.setAttribute("paymentMethod", paymentMethod);
             req.getRequestDispatcher("order-confirmation.jsp").forward(req, resp);
         } else {
             req.setAttribute("error", "Something went wrong while placing your order. Please try again.");

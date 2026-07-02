@@ -674,22 +674,26 @@ table.table-brand th { color: var(--color-text); }
   position: sticky;
   top: 70px;
   z-index: 100;
-  padding: 10px 0;
+  padding: 8px 0;
 }
 .cat-bar-inner {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 16px;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  width: 100%;
+  padding: 2px 16px;
+  align-items: center;
 }
+.cat-bar-inner::-webkit-scrollbar { display: none !important; }
 .cat-pill {
   border: 1.5px solid rgba(255,255,255,0.35);
   border-radius: var(--radius-pill);
-  padding: 7px 20px;
-  font-size: .85rem;
+  padding: 5px 11px;
+  font-size: .75rem;
   font-weight: 600;
   color: rgba(255,255,255,0.85);
   background: rgba(255,255,255,0.12);
@@ -698,8 +702,9 @@ table.table-brand th { color: var(--color-text); }
   white-space: nowrap;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   backdrop-filter: blur(4px);
+  flex-shrink: 0;
 }
 .cat-pill:hover {
   border-color: rgba(255,255,255,0.8);
@@ -779,7 +784,7 @@ table.table-brand th { color: var(--color-text); }
 .food-card-img-link { display: block; }
 .food-card-img-wrap img {
   width: 100%;
-  height: 210px;
+  height: 185px;
   object-fit: cover;
   display: block;
   transition: transform .4s ease;
@@ -802,15 +807,15 @@ table.table-brand th { color: var(--color-text); }
 
 /* Card body */
 .food-card-body {
-  padding: 14px 16px 14px;
+  padding: 12px 14px 14px;
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
 }
 .food-card-name {
-  font-weight: 800;
-  font-size: .98rem;
+  font-weight: 700;
+  font-size: .93rem;
   color: var(--color-text);
   line-height: 1.3;
 }
@@ -837,16 +842,16 @@ table.table-brand th { color: var(--color-text); }
 .food-card-price {
   color: var(--color-primary);
   font-weight: 800;
-  font-size: 1.05rem;
+  font-size: .95rem;
 }
 .food-card-cart-form { margin: 0; }
 .btn-add-cart {
   background: var(--color-accent);
   color: var(--color-primary);
   border: none;
-  border-radius: 12px;
-  width: 38px;
-  height: 38px;
+  border-radius: 10px;
+  width: 32px;
+  height: 32px;
   cursor: pointer;
   display: flex;
   align-items: center;

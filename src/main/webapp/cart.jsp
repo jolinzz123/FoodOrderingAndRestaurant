@@ -54,7 +54,7 @@
 
             <form action="<%= ctx %>/cart" method="post" class="d-flex align-items-center gap-2" style="margin:0;">
               <input type="hidden" name="action" value="update">
-              <input type="hidden" name="foodId" value="<%= item.getFoodId() %>">
+              <input type="hidden" name="cartKey" value="<%= item.getCartKey() %>">
               <div class="qty-ctrl">
                 <button type="button" class="qty-btn" onclick="stepQty(this,-1)">&minus;</button>
                 <input class="qty-num" type="number" name="quantity" value="<%= item.getQuantity() %>" min="0" max="20">
@@ -67,7 +67,7 @@
 
             <form action="<%= ctx %>/cart" method="post" style="margin:0;">
               <input type="hidden" name="action" value="remove">
-              <input type="hidden" name="foodId" value="<%= item.getFoodId() %>">
+              <input type="hidden" name="cartKey" value="<%= item.getCartKey() %>">
               <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
             </form>
           </div>

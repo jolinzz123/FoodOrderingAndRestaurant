@@ -1,85 +1,51 @@
 -- ============================================================
---  FoodOrder & Restaurant Management System — Database Setup
---  Run this entire file in MySQL Workbench to get started.
---  Steps: open MySQL Workbench → paste → Ctrl+Shift+Enter
+--  FoodOrder Migration Script
+--  Run this file if you already have the old database set up.
+--  Steps: open MySQL Workbench → open this file → Ctrl+Shift+Enter
 -- ============================================================
 
-CREATE DATABASE IF NOT EXISTS food_order_db DEFAULT CHARACTER SET utf8mb4;
 USE food_order_db;
 
 -- --------------------------------------------------------
--- Tables
+-- Step 1: Add new columns to orders table
 -- --------------------------------------------------------
-
-CREATE TABLE IF NOT EXISTS categories (
-    id   INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS food_items (
-    id               INT AUTO_INCREMENT PRIMARY KEY,
-    category_id      INT,
-    name             VARCHAR(200) NOT NULL,
-    description      TEXT,
-    ingredients      TEXT,
-    nutritional_info TEXT,
-    price            DECIMAL(10,2) NOT NULL,
-    image_url        VARCHAR(500) DEFAULT 'images/placeholder.jpg',
-    rating           DOUBLE       DEFAULT 0.0,
-    is_available     BOOLEAN      DEFAULT TRUE,
-    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
-);
-
-CREATE TABLE IF NOT EXISTS addons (
-    id           INT AUTO_INCREMENT PRIMARY KEY,
-    food_item_id INT NOT NULL,
-    name         VARCHAR(100) NOT NULL,
-    extra_price  DECIMAL(10,2) DEFAULT 0.00,
-    FOREIGN KEY (food_item_id) REFERENCES food_items(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS users (
-    id            INT AUTO_INCREMENT PRIMARY KEY,
-    username      VARCHAR(100) NOT NULL UNIQUE,
-    email         VARCHAR(200) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
-    phone         VARCHAR(20),
-    role          VARCHAR(20)  DEFAULT 'CUSTOMER',
-    created_at    TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS orders (
-    id               INT AUTO_INCREMENT PRIMARY KEY,
-    user_id          INT NOT NULL,
-    total_price      DECIMAL(10,2),
-    status           VARCHAR(50)  DEFAULT 'PENDING',
-    delivery_address VARCHAR(255),
-    payment_method   VARCHAR(50),
-    created_at       TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
-CREATE TABLE IF NOT EXISTS order_items (
-    id       INT AUTO_INCREMENT PRIMARY KEY,
-    order_id INT NOT NULL,
-    food_id  INT NOT NULL,
-    quantity INT NOT NULL,
-    subtotal DECIMAL(10,2),
-    FOREIGN KEY (order_id) REFERENCES orders(id),
-    FOREIGN KEY (food_id)  REFERENCES food_items(id)
-);
-
-CREATE TABLE IF NOT EXISTS order_item_addons (
-    id            INT AUTO_INCREMENT PRIMARY KEY,
-    order_item_id INT NOT NULL,
-    addon_id      INT NOT NULL,
-    FOREIGN KEY (order_item_id) REFERENCES order_items(id) ON DELETE CASCADE,
-    FOREIGN KEY (addon_id)      REFERENCES addons(id)
-);
+ALTER TABLE orders
+ADD COLUMN delivery_address VARCHAR(255) AFTER status,
+ADD COLUMN payment_method VARCHAR(50) AFTER delivery_address;
 
 -- --------------------------------------------------------
--- Categories
+-- Step 1b: Fix typo in Black Pepper Beef image filename
 -- --------------------------------------------------------
+UPDATE food_items SET image_url = 'images/blackpepperbeef.png' WHERE id = 18;
+
+-- --------------------------------------------------------
+-- Step 1c: Fix category name typo
+-- --------------------------------------------------------
+UPDATE categories SET name = 'Main Dishes' WHERE name = 'MainDishes';
+
+-- --------------------------------------------------------
+-- Step 1d: Fix Mixed Vegetables image filename typo
+-- --------------------------------------------------------
+UPDATE food_items SET image_url = 'images/mixedvege.png' WHERE image_url = 'images/mixedvege.jpng';
+
+-- --------------------------------------------------------
+-- Step 2: Clear all data (keeps table structure)
+-- --------------------------------------------------------
+SET FOREIGN_KEY_CHECKS = 0;
+
+TRUNCATE TABLE order_item_addons;
+TRUNCATE TABLE order_items;
+TRUNCATE TABLE orders;
+TRUNCATE TABLE addons;
+TRUNCATE TABLE food_items;
+TRUNCATE TABLE categories;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- --------------------------------------------------------
+-- Step 3: Re-insert clean data
+-- --------------------------------------------------------
+
 INSERT INTO categories (name) VALUES
 ('Rice'),
 ('Noodles'),
@@ -90,9 +56,6 @@ INSERT INTO categories (name) VALUES
 ('Desserts'),
 ('Drinks');
 
--- --------------------------------------------------------
--- Food Items
--- --------------------------------------------------------
 INSERT INTO food_items (category_id, name, description, ingredients, nutritional_info, price, rating, is_available, image_url) VALUES
 -- Rice (1)
 (1,'Nasi Lemak Special','Malaysia national dish — fragrant coconut rice served with sambal, fried anchovies, peanuts, cucumber and half-boiled egg','Coconut rice, sambal tumis, ikan bilis, peanuts, cucumber, egg','Calories: 490 | Protein: 14g | Carbs: 58g | Fat: 22g',8.90,4.9,TRUE,'images/nasilemak.png'),
@@ -106,7 +69,7 @@ INSERT INTO food_items (category_id, name, description, ingredients, nutritional
 (2,'Mee Goreng Mamak','Spicy Indian-Muslim style fried yellow noodles with tofu, potato and tomato','Yellow noodles, tofu, potato, egg, tomato, bean sprouts, sambal, lime','Calories: 460 | Protein: 14g | Carbs: 62g | Fat: 14g',9.90,4.7,TRUE,'images/meegorengmamak.png'),
 (2,'Asam Laksa','Tangy tamarind-based fish noodle soup topped with pineapple and mint — Penang classic','Rice noodles, mackerel, tamarind, lemongrass, pineapple, cucumber, mint, prawn paste','Calories: 380 | Protein: 18g | Carbs: 55g | Fat: 8g',11.90,4.8,TRUE,'images/asamlaksa.png'),
 
--- Bread & Flatbread (3)
+-- Bread & FlatBread (3)
 (3,'Roti Canai','Flaky crispy flatbread served with dhal curry and sambal — Malaysian breakfast staple','Flour, butter, egg, salt, dhal curry, sambal','Calories: 320 | Protein: 8g | Carbs: 48g | Fat: 12g',3.50,4.9,TRUE,'images/roticanai.png'),
 (3,'Egg Roti','Crispy flatbread stuffed with egg and onion, served with curry sauce','Flour, egg, onion, butter, curry sauce','Calories: 380 | Protein: 12g | Carbs: 46g | Fat: 16g',4.50,4.7,TRUE,'images/eggroti.png'),
 (3,'Kaya Toast','Toasted bread generously spread with homemade pandan kaya and butter','White bread, kaya jam, butter, pandan','Calories: 280 | Protein: 6g | Carbs: 40g | Fat: 12g',4.90,4.8,TRUE,'images/kayatoast.png'),
@@ -149,9 +112,6 @@ INSERT INTO food_items (category_id, name, description, ingredients, nutritional
 (8,'Lemon Tea','Refreshing iced tea with a bright squeeze of fresh lemon — light and zesty','Black tea, lemon juice, sugar syrup, ice','Calories: 80 | Sugar: 18g | Fat: 0g',4.50,4.7,TRUE,'images/lemontea.png'),
 (8,'Iced Milo','Classic chilled Milo made with condensed milk over ice — a childhood favourite','Milo, condensed milk, ice, water','Calories: 180 | Sugar: 26g | Fat: 4g',4.50,4.8,TRUE,'images/icedmilo.png');
 
--- --------------------------------------------------------
--- Add-ons (linked to food_items via FK)
--- --------------------------------------------------------
 INSERT INTO addons (food_item_id, name, extra_price) VALUES
 (1,'Extra Sambal',1.00),(1,'Extra Fried Egg',1.50),(1,'Extra Ikan Bilis',1.00),
 (2,'Extra Fried Egg',1.00),(2,'Extra Prawn',3.00),(2,'Less Spicy',0.00),
@@ -194,10 +154,9 @@ INSERT INTO addons (food_item_id, name, extra_price) VALUES
 (39,'Less Sugar',0.00),(39,'Extra Milo Powder',1.00),(39,'Extra Ice',0.00);
 
 -- --------------------------------------------------------
--- Admin account  (username: admin | password: admin123)
+-- Admin account (username: admin | password: admin123)
 -- --------------------------------------------------------
-INSERT INTO users (username, email, password_hash, phone, role) VALUES
+INSERT IGNORE INTO users (username, email, password_hash, phone, role) VALUES
 ('admin','admin@foodorder.com',
  '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9',
  '0123456789','ADMIN');
- 
