@@ -24,6 +24,11 @@ UPDATE food_items SET image_url = 'images/blackpepperbeef.png' WHERE id = 18;
 UPDATE categories SET name = 'Main Dishes' WHERE name = 'MainDishes';
 
 -- --------------------------------------------------------
+-- Step 1d: Fix Mixed Vegetables image filename typo
+-- --------------------------------------------------------
+UPDATE food_items SET image_url = 'images/mixedvege.png' WHERE image_url = 'images/mixedvege.jpng';
+
+-- --------------------------------------------------------
 -- Step 2: Clear all data (keeps table structure)
 -- --------------------------------------------------------
 SET FOREIGN_KEY_CHECKS = 0;
