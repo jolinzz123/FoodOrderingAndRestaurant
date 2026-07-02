@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
-    request.setAttribute("pageTitle", "About Us — FoodOrder");
+    request.setAttribute("pageTitle", "About Us — HotServe");
     String ctx = request.getContextPath();
 %>
 <jsp:include page="header.jsp" />
@@ -11,8 +11,8 @@
       <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=700&q=80" class="img-fluid rounded-4 shadow-sm" alt="Our kitchen">
     </div>
     <div class="col-md-6">
-      <h2>About FoodOrder</h2>
-      <p class="text-muted">FoodOrder connects you with our partner restaurants' best dishes — from comforting classics to chef-crafted specials — and gets them to your door fresh and fast.</p>
+      <h2>About HotServe</h2>
+      <p class="text-muted">HotServe connects you with our partner restaurants' best dishes — from comforting classics to chef-crafted specials — and gets them to your door fresh and fast.</p>
       <p class="text-muted">We built this platform around three things: quality ingredients, transparent pricing, and a smooth ordering experience from browsing to checkout.</p>
       <ul class="list-unstyled text-muted">
         <li class="mb-2">🌿 Locally sourced ingredients wherever possible</li>
@@ -24,7 +24,7 @@
 
   <div class="section-title mt-5">
     <h2>Our Team</h2>
-    <p>The people behind FoodOrder</p>
+    <p>The people behind HotServe</p>
   </div>
   <div class="row g-4 text-center">
     <div class="col-md-3">

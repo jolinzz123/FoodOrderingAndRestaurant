@@ -1,0 +1,403 @@
+/* =====================================================
+   Admin Layout — Makan Express
+   ===================================================== */
+
+body.admin-body {
+  padding-top: 0 !important;
+  background: #F0F2F5;
+  margin: 0;
+}
+
+/* ===== Outer flex shell ===== */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ===== Sidebar ===== */
+.adm-sidebar {
+  width: 240px;
+  min-width: 0;
+  background: #2D1B69;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 200;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: width 0.25s ease;
+}
+
+.adm-brand {
+  height: 60px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  flex-shrink: 0;
+}
+
+.adm-brand .brand-icon { font-size: 1.25rem; flex-shrink: 0; }
+
+.adm-brand .brand-name {
+  color: #F9FAFB;
+  font-weight: 700;
+  font-size: 1.0rem;
+  font-family: var(--font-heading);
+  letter-spacing: 0.1px;
+  flex: 1;
+  white-space: nowrap;
+}
+
+/* ===== Nav items ===== */
+.adm-nav {
+  flex: 1;
+  padding: 16px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.adm-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 14px;
+  border-radius: 9px;
+  color: #9CA3AF;
+  font-weight: 500;
+  font-size: 0.875rem;
+  text-decoration: none !important;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.adm-nav-item:hover {
+  background: rgba(255,255,255,0.07);
+  color: #E5E7EB;
+}
+
+.adm-nav-item.active {
+  background: #7C6FE8;
+  color: #fff !important;
+}
+
+.adm-nav-item i {
+  font-size: 1rem;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* ===== Sidebar footer (user + logout) ===== */
+.adm-sidebar-footer {
+  padding: 14px 12px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  flex-shrink: 0;
+}
+
+.adm-user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 2px;
+  overflow: hidden;
+}
+
+.adm-user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #7C6FE8;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.adm-user-name {
+  color: #F3F4F6;
+  font-weight: 600;
+  font-size: 0.83rem;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.adm-user-role {
+  color: #6B7280;
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+.adm-logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.11);
+  color: #9CA3AF;
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none !important;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+
+.adm-logout-btn:hover {
+  background: rgba(255,255,255,0.07);
+  color: #fff;
+  border-color: rgba(255,255,255,0.22);
+}
+
+/* ===== Content area ===== */
+.adm-content {
+  margin-left: 240px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: margin-left 0.25s ease;
+}
+
+.adm-topbar {
+  background: #fff;
+  border-bottom: 1px solid #E5E7EB;
+  padding: 0 28px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  flex-shrink: 0;
+}
+
+.adm-page-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.adm-main {
+  flex: 1;
+  padding: 28px;
+  background: #F0F2F5;
+}
+
+/* ===== Hamburger toggle button (in sidebar) ===== */
+.adm-toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-radius: 7px;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.adm-toggle-btn:hover { background: rgba(255,255,255,0.1); }
+.adm-toggle-btn span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: #C4B5FD;
+  border-radius: 2px;
+  transition: background 0.15s;
+}
+.adm-toggle-btn:hover span { background: #fff; }
+
+/* ===== Collapsed: icon-only sidebar ===== */
+.admin-layout.sidebar-collapsed .adm-sidebar { width: 62px; }
+.admin-layout.sidebar-collapsed .adm-content { margin-left: 62px; }
+
+.admin-layout.sidebar-collapsed .adm-brand { justify-content: center; padding: 0; }
+.admin-layout.sidebar-collapsed .brand-icon,
+.admin-layout.sidebar-collapsed .brand-name { display: none; }
+
+.admin-layout.sidebar-collapsed .adm-nav { padding: 16px 6px; align-items: center; }
+.admin-layout.sidebar-collapsed .adm-nav-item { justify-content: center; padding: 11px; width: 100%; }
+.admin-layout.sidebar-collapsed .adm-nav-item span { display: none; }
+.admin-layout.sidebar-collapsed .adm-nav-item i { width: auto; font-size: 1.15rem; }
+
+.admin-layout.sidebar-collapsed .adm-sidebar-footer { padding: 14px 6px; display: flex; justify-content: center; }
+.admin-layout.sidebar-collapsed .adm-user-info { flex-direction: column; align-items: center; gap: 0; margin-bottom: 0; }
+.admin-layout.sidebar-collapsed .adm-user-name,
+.admin-layout.sidebar-collapsed .adm-user-role,
+.admin-layout.sidebar-collapsed .adm-logout-btn { display: none; }
+
+/* ===== Icon action buttons ===== */
+.btn-icon-edit, .btn-icon-delete {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  transition: all 0.15s;
+}
+.btn-icon-edit {
+  background: #F5F3FF;
+  border: 1px solid #DDD6FE;
+  color: #7C6FE8;
+}
+.btn-icon-edit:hover {
+  background: #7C6FE8;
+  border-color: #7C6FE8;
+  color: #fff;
+}
+.btn-icon-delete {
+  background: #FFF1F2;
+  border: 1px solid #FECDD3;
+  color: #E11D48;
+}
+.btn-icon-delete:hover {
+  background: #E11D48;
+  border-color: #E11D48;
+  color: #fff;
+}
+
+/* ===== Admin product cards (manage-food.jsp) ===== */
+.adm-food-card .food-card-img-wrap {
+  position: relative;
+}
+.adm-food-card-cat {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 0.7rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+.adm-food-card-id {
+  color: #9CA3AF;
+  font-weight: 600;
+  font-size: 0.78rem;
+}
+.adm-food-card-desc {
+  font-size: 0.78rem;
+  color: #6B7280;
+  margin-bottom: 10px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* ===== Stat cards ===== */
+.adm-stat-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.adm-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06), 0 12px 28px rgba(0,0,0,0.09);
+}
+
+.adm-stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  margin-bottom: 14px;
+  transition: transform 0.2s ease;
+}
+
+.adm-stat-card:hover .adm-stat-icon {
+  transform: scale(1.1);
+}
+
+.adm-stat-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #6B7280;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.adm-stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1;
+  font-family: 'Poppins', sans-serif;
+  margin-bottom: 12px;
+}
+
+.adm-stat-link { font-size: 0.8rem; color: #7C6FE8; font-weight: 500; text-decoration: none !important; }
+.adm-stat-link:hover { color: #6558D4; text-decoration: underline !important; }
+
+/* ===== Generic content card ===== */
+.adm-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+}
+
+.adm-card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 18px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* =====================================================
+   Responsive
+   ===================================================== */
+@media (max-width: 900px) {
+  /* auto-collapse to icon-only sidebar to free up width */
+  .adm-sidebar { width: 62px; }
+  .adm-content { margin-left: 62px; }
+
+  .adm-brand { justify-content: center; padding: 0; }
+  .adm-brand .brand-name,
+  .adm-brand .adm-toggle-btn { display: none; }
+
+  .adm-nav { padding: 16px 6px; align-items: center; }
+  .adm-nav-item { justify-content: center; padding: 11px; width: 100%; }
+  .adm-nav-item span { display: none; }
+  .adm-nav-item i { width: auto; font-size: 1.15rem; }
+
+  .adm-sidebar-footer { padding: 14px 6px; display: flex; justify-content: center; }
+  .adm-user-info { flex-direction: column; align-items: center; gap: 0; margin-bottom: 0; }
+  .adm-user-name, .adm-user-role, .adm-logout-btn { display: none; }
+
+  .adm-main { padding: 16px; }
+  .adm-topbar { padding: 0 16px; }
+  .adm-card { padding: 16px; }
+}
+
+@media (max-width: 600px) {
+  .adm-page-title { font-size: 1rem; }
+  table.table-brand { font-size: 0.85rem; }
+}

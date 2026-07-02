@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="com.foodorder.model.CartItem, java.util.Map, java.util.LinkedHashMap, java.math.BigDecimal" %>
 <%
-    request.setAttribute("pageTitle", "Checkout — FoodOrder");
+    request.setAttribute("pageTitle", "Checkout — HotServe");
     String ctx = request.getContextPath();
     String error = (String) request.getAttribute("error");
 

@@ -18,12 +18,15 @@ public class AdminCategoryServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         String idParam = req.getParameter("id");
+        String q = req.getParameter("q");
+        boolean hasQuery = q != null && !q.trim().isEmpty();
 
         if ("delete".equals(action) && idParam != null) {
             categoryDAO.delete(Integer.parseInt(idParam));
         }
 
-        req.setAttribute("categories", categoryDAO.findAll());
+        req.setAttribute("categories", hasQuery ? categoryDAO.search(q.trim()) : categoryDAO.findAll());
+        req.setAttribute("searchQuery", q);
         req.getRequestDispatcher("/admin/manage-category.jsp").forward(req, resp);
     }
 

@@ -22,10 +22,14 @@ public class AdminFoodServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         String idParam = req.getParameter("id");
+        String q = req.getParameter("q");
+        boolean hasQuery = q != null && !q.trim().isEmpty();
 
         if ("delete".equals(action) && idParam != null) {
             foodDAO.delete(Integer.parseInt(idParam));
-            resp.sendRedirect(req.getContextPath() + "/admin/food");
+            String redirectUrl = req.getContextPath() + "/admin/food";
+            if (hasQuery) redirectUrl += "?q=" + java.net.URLEncoder.encode(q.trim(), "UTF-8");
+            resp.sendRedirect(redirectUrl);
             return;
         }
 
@@ -33,8 +37,9 @@ public class AdminFoodServlet extends HttpServlet {
             req.setAttribute("editItem", foodDAO.findById(Integer.parseInt(idParam)));
         }
 
-        req.setAttribute("foodItems", foodDAO.findAll());
+        req.setAttribute("foodItems", hasQuery ? foodDAO.search(q.trim()) : foodDAO.findAll());
         req.setAttribute("categories", categoryDAO.findAll());
+        req.setAttribute("searchQuery", q);
         req.getRequestDispatcher("/admin/manage-food.jsp").forward(req, resp);
     }
 

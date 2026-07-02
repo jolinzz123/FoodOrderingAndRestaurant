@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="java.util.Collection, com.foodorder.model.CartItem, java.math.BigDecimal" %>
 <%
-    request.setAttribute("pageTitle", "Your Cart — FoodOrder");
+    request.setAttribute("pageTitle", "Your Cart — HotServe");
     String ctx = request.getContextPath();
     String error = (String) request.getAttribute("error");
     Collection<CartItem> cartItems = (Collection<CartItem>) request.getAttribute("cartItems");

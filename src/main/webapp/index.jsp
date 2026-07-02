@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="com.foodorder.dao.FoodDAO, com.foodorder.model.FoodItem, java.util.List, java.util.Comparator" %>
 <%
-    request.setAttribute("pageTitle", "FoodOrder — Home");
+    request.setAttribute("pageTitle", "HotServe — Home");
     List<FoodItem> all = new FoodDAO().findAll();
     all.sort(Comparator.comparingDouble(FoodItem::getRating).reversed());
     List<FoodItem> popularItems = all.size() > 6 ? all.subList(0, 6) : all;

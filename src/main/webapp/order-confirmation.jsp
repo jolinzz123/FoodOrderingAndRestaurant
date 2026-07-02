@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="java.util.List, com.foodorder.model.OrderItem, java.math.BigDecimal" %>
 <%
-    request.setAttribute("pageTitle", "Order Confirmed — FoodOrder");
+    request.setAttribute("pageTitle", "Order Confirmed — HotServe");
     String ctx = request.getContextPath();
     Object orderIdObj = request.getAttribute("orderId");
     List<OrderItem> orderItems = (List<OrderItem>) request.getAttribute("orderItems");

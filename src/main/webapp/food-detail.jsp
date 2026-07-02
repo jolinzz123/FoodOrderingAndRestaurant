@@ -2,7 +2,7 @@
 <%@ page import="com.foodorder.model.FoodItem, com.foodorder.model.User, com.foodorder.model.Addon, java.util.List" %>
 <%
     FoodItem item = (FoodItem) request.getAttribute("item");
-    request.setAttribute("pageTitle", item.getName() + " — FoodOrder");
+    request.setAttribute("pageTitle", item.getName() + " — HotServe");
     String ctx = request.getContextPath();
     String error = (String) request.getAttribute("error");
     User currentUser = (User) session.getAttribute("user");

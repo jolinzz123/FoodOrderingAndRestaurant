@@ -27,6 +27,23 @@ public class FoodDAO {
         return list;
     }
 
+    public List<FoodItem> search(String keyword) {
+        List<FoodItem> list = new ArrayList<>();
+        String sql = BASE_SELECT + "WHERE f.name LIKE ? OR c.name LIKE ? ORDER BY c.id, f.name";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            String like = "%" + keyword + "%";
+            ps.setString(1, like);
+            ps.setString(2, like);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) list.add(mapRow(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public List<FoodItem> findByCategory(int categoryId) {
         List<FoodItem> list = new ArrayList<>();
         String sql = BASE_SELECT + "WHERE f.category_id = ? ORDER BY f.name";

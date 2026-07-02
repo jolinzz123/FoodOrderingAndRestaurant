@@ -4,7 +4,7 @@
     User currentUser = (User) session.getAttribute("user");
     String ctx = request.getContextPath();
     Object titleAttr = request.getAttribute("pageTitle");
-    String pageTitle = (titleAttr != null) ? titleAttr.toString() : "FoodOrder";
+    String pageTitle = (titleAttr != null) ? titleAttr.toString() : "HotServe";
     String uri = request.getRequestURI();
 %>
 <!DOCTYPE html>
@@ -21,7 +21,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-foodorder fixed-top">
   <div class="container">
-    <a class="navbar-brand" href="<%= ctx %>/index.jsp">🥗 FoodOrder</a>
+    <a class="navbar-brand" href="<%= ctx %>/index.jsp">🥗 HotServe</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
       <span class="navbar-toggler-icon"></span>
     </button>

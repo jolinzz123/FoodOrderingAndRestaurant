@@ -116,6 +116,47 @@ public class OrderDAO {
         return orders;
     }
 
+    public List<Order> search(String keyword) {
+        List<Order> orders = new ArrayList<>();
+        String sql = "SELECT o.*, u.username FROM orders o JOIN users u ON o.user_id = u.id " +
+                     "WHERE u.username LIKE ? OR o.status LIKE ? OR CAST(o.id AS CHAR) LIKE ? " +
+                     "ORDER BY o.created_at DESC";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            String like = "%" + keyword + "%";
+            ps.setString(1, like);
+            ps.setString(2, like);
+            ps.setString(3, like);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Order o = mapOrderRow(rs);
+                    o.setUsername(rs.getString("username"));
+                    orders.add(o);
+                }
+            }
+            for (Order o : orders) o.setItems(findItemsByOrderId(o.getId()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orders;
+    }
+
+    /** Returns order counts grouped by status, e.g. {"COMPLETED": 12, "PENDING": 3, ...}. */
+    public java.util.Map<String, Integer> countsByStatus() {
+        java.util.Map<String, Integer> counts = new java.util.HashMap<>();
+        String sql = "SELECT status, COUNT(*) AS cnt FROM orders GROUP BY status";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                counts.put(rs.getString("status"), rs.getInt("cnt"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return counts;
+    }
+
     public boolean updateStatus(int orderId, String status) {
         String sql = "UPDATE orders SET status = ? WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();

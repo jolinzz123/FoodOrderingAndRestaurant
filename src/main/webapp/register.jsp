@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
-    request.setAttribute("pageTitle", "Sign Up — FoodOrder");
+    request.setAttribute("pageTitle", "Sign Up — HotServe");
     String ctx = request.getContextPath();
     String error = (String) request.getAttribute("error");
     String username = (String) request.getAttribute("username");

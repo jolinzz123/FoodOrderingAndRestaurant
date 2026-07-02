@@ -16,7 +16,19 @@ public class AdminOrderServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("orders", orderDAO.findAll());
+        String q = req.getParameter("q");
+        boolean hasQuery = q != null && !q.trim().isEmpty();
+        req.setAttribute("orders", hasQuery ? orderDAO.search(q.trim()) : orderDAO.findAll());
+        req.setAttribute("searchQuery", q);
+
+        java.util.Map<String, Integer> statusCounts = orderDAO.countsByStatus();
+        int totalOrders = 0;
+        for (int c : statusCounts.values()) totalOrders += c;
+        req.setAttribute("totalOrdersCount", totalOrders);
+        req.setAttribute("completedOrdersCount", statusCounts.getOrDefault("COMPLETED", 0));
+        req.setAttribute("pendingOrdersCount", statusCounts.getOrDefault("PENDING", 0));
+        req.setAttribute("cancelledOrdersCount", statusCounts.getOrDefault("CANCELLED", 0));
+
         req.getRequestDispatcher("/admin/orders.jsp").forward(req, resp);
     }
 
@@ -24,7 +36,10 @@ public class AdminOrderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int orderId = Integer.parseInt(req.getParameter("orderId"));
         String status = req.getParameter("status");
+        String q = req.getParameter("q");
         orderDAO.updateStatus(orderId, status);
-        resp.sendRedirect(req.getContextPath() + "/admin/orders");
+        String redirectUrl = req.getContextPath() + "/admin/orders";
+        if (q != null && !q.trim().isEmpty()) redirectUrl += "?q=" + java.net.URLEncoder.encode(q.trim(), "UTF-8");
+        resp.sendRedirect(redirectUrl);
     }
 }

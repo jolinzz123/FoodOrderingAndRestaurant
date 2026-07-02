@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" isErrorPage="true" %>
 <%
-    request.setAttribute("pageTitle", "Oops! — FoodOrder");
+    request.setAttribute("pageTitle", "Oops! — HotServe");
     String ctx = request.getContextPath();
 %>
 <jsp:include page="header.jsp" />
