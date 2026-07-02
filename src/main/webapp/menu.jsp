@@ -18,7 +18,7 @@
 
     // Cart from session
     @SuppressWarnings("unchecked")
-    Map<Integer, CartItem> cart = (Map<Integer, CartItem>) session.getAttribute("cart");
+    Map<String, CartItem> cart = (Map<String, CartItem>) session.getAttribute("cart");
     if (cart == null) cart = new LinkedHashMap<>();
     java.math.BigDecimal cartTotal = java.math.BigDecimal.ZERO;
     for (CartItem ci : cart.values()) cartTotal = cartTotal.add(ci.getSubtotal());
@@ -27,9 +27,30 @@
 %>
 <jsp:include page="header.jsp" />
 
+<style>
+.cat-bar-inner {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+  gap: 8px !important;
+  padding: 2px 16px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+.cat-bar-inner::-webkit-scrollbar { display: none !important; }
+.cat-pill {
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+  padding: 5px 11px !important;
+  font-size: .75rem !important;
+}
+</style>
+
 <!-- Category bar -->
 <div class="cat-bar">
-  <div class="cat-bar-inner">
+  <div class="cat-bar-inner" style="display:flex;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;gap:8px;padding:2px 16px;width:100%;box-sizing:border-box;scrollbar-width:none;justify-content:center;">
     <a href="<%= ctx %>/menu"
        class="cat-pill <%= (selectedCategory == null || selectedCategory.isEmpty()) ? "active" : "" %>">
       🍽️ All
@@ -42,7 +63,8 @@
        catEmoji.put("Mee",            "🍜");
        catEmoji.put("Bread & FlatBread","🫓");
        catEmoji.put("Roti",           "🫓");
-       catEmoji.put("Main Dishes",     "🍖");
+       catEmoji.put("Main Dishes", "🍖");
+       catEmoji.put("MainDishes",  "🍖");
        catEmoji.put("Lauk",           "🍖");
        catEmoji.put("Vegetables",     "🥦");
        catEmoji.put("Sayur",          "🥦");
@@ -120,20 +142,10 @@
                   <input type="hidden" name="action" value="add">
                   <input type="hidden" name="foodId" value="<%= food.getId() %>">
                   <input type="hidden" name="quantity" value="1">
-                  <button type="submit" class="btn-add-cart" title="Add to cart">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-                    </svg>
-                  </button>
+                  <button type="submit" class="btn-add-cart" title="Add to cart">&#128722;</button>
                 </form>
                 <% } else { %>
-                <a href="<%= ctx %>/login.jsp" class="btn-add-cart" title="Log in to order">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-                  </svg>
-                </a>
+                <a href="<%= ctx %>/login.jsp" class="btn-add-cart" title="Log in to order">&#128722;</a>
                 <% } %>
               </div>
             </div>
@@ -177,8 +189,7 @@
               <!-- update qty form -->
               <form action="<%= ctx %>/cart" method="post" style="display:flex;align-items:center;gap:6px;margin:0;">
                 <input type="hidden" name="action" value="update">
-                <input type="hidden" name="foodId" value="<%= ci.getFoodId() %>">
-                <input type="hidden" name="returnTo" value="/menu<%= selectedCategory != null && !selectedCategory.isEmpty() ? "?category=" + selectedCategory : "" %>">
+                <input type="hidden" name="cartKey" value="<%= ci.getCartKey() %>">
                 <button type="submit" name="quantity" value="<%= ci.getQuantity() - 1 %>" class="cart-sidebar-qty-btn">−</button>
                 <span class="cart-sidebar-qty-num"><%= ci.getQuantity() %></span>
                 <button type="submit" name="quantity" value="<%= ci.getQuantity() + 1 %>" class="cart-sidebar-qty-btn">+</button>
@@ -208,15 +219,15 @@
         <!-- Payment method (visual selection only — actual selection at checkout) -->
         <div style="font-size:.78rem; font-weight:600; color:var(--color-text-muted); margin-bottom:8px;">Payment Method</div>
         <div class="pay-methods">
-          <div class="pay-method-btn active">
+          <div class="pay-method-btn active" data-pay="cod">
             <span class="pay-method-icon">💵</span>
             <span>Cash</span>
           </div>
-          <div class="pay-method-btn">
+          <div class="pay-method-btn" data-pay="card">
             <span class="pay-method-icon">💳</span>
             <span>Debit</span>
           </div>
-          <div class="pay-method-btn">
+          <div class="pay-method-btn" data-pay="ewallet">
             <span class="pay-method-icon">📱</span>
             <span>QR</span>
           </div>
@@ -239,8 +250,10 @@
   var cartPanel = document.querySelector('.menu-cart-panel');
   var menuUrl = window.location.href;
 
-  function cartFetch(action, foodId, quantity) {
-    var params = new URLSearchParams({ action: action, foodId: foodId });
+  function cartFetch(action, key, quantity, isCartKey) {
+    var params = new URLSearchParams({ action: action });
+    if (isCartKey) params.set('cartKey', key);
+    else params.set('foodId', key);
     if (quantity !== undefined) params.set('quantity', quantity);
     return fetch('<%= ctx %>/cart', {
       method: 'POST',
@@ -272,8 +285,8 @@
       e.preventDefault();
       var foodId = form.querySelector('[name="foodId"]').value;
       var btn = form.querySelector('.btn-add-cart');
-      if (btn) { btn.textContent = '✓'; btn.disabled = true; setTimeout(function(){ btn.textContent = '+'; btn.disabled = false; }, 900); }
-      cartFetch('add', foodId, 1).then(refreshSidebar);
+      if (btn) { var orig = btn.innerHTML; btn.textContent = '✓'; btn.disabled = true; setTimeout(function(){ btn.innerHTML = orig; btn.disabled = false; }, 900); }
+      cartFetch('add', foodId, 1, false).then(refreshSidebar);
     });
   });
 
@@ -283,17 +296,21 @@
       btn.addEventListener('click', function(e) {
         e.preventDefault(); // stop form submit
         var form = btn.closest('form');
-        var foodId = form.querySelector('[name="foodId"]').value;
-        cartFetch('update', foodId, btn.value).then(refreshSidebar);
+        var cartKey = form.querySelector('[name="cartKey"]').value;
+        cartFetch('update', cartKey, btn.value, true).then(refreshSidebar);
       });
     });
   }
 
   function bindPaymentBtns() {
+    // Restore saved choice
+    var saved = localStorage.getItem('selectedPayment') || 'cod';
     cartPanel.querySelectorAll('.pay-method-btn').forEach(function(btn) {
+      btn.classList.toggle('active', btn.dataset.pay === saved);
       btn.addEventListener('click', function() {
         cartPanel.querySelectorAll('.pay-method-btn').forEach(function(b) { b.classList.remove('active'); });
         btn.classList.add('active');
+        localStorage.setItem('selectedPayment', btn.dataset.pay || 'cod');
       });
     });
   }

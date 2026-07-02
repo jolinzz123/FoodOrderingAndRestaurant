@@ -29,7 +29,7 @@ public class CartServlet extends HttpServlet {
     @SuppressWarnings("unchecked")
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        Map<Integer, CartItem> cart = (Map<Integer, CartItem>) session.getAttribute("cart");
+        Map<String, CartItem> cart = (Map<String, CartItem>) session.getAttribute("cart");
         if (cart == null) cart = new LinkedHashMap<>();
         req.setAttribute("cartItems", cart.values());
         req.setAttribute("cartTotal", calculateTotal(cart));
@@ -40,7 +40,7 @@ public class CartServlet extends HttpServlet {
     @SuppressWarnings("unchecked")
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        Map<Integer, CartItem> cart = (Map<Integer, CartItem>) session.getAttribute("cart");
+        Map<String, CartItem> cart = (Map<String, CartItem>) session.getAttribute("cart");
         if (cart == null) {
             cart = new LinkedHashMap<>();
             session.setAttribute("cart", cart);
@@ -53,7 +53,6 @@ public class CartServlet extends HttpServlet {
             int quantity = parseQuantity(req.getParameter("quantity"));
             String[] addonIdParams = req.getParameterValues("addons");
 
-            // Resolve addon IDs → names + prices from the addons table
             BigDecimal addonsPrice = BigDecimal.ZERO;
             StringBuilder addonsLabel = new StringBuilder();
             List<Integer> selectedAddonIds = new ArrayList<>();
@@ -74,25 +73,28 @@ public class CartServlet extends HttpServlet {
 
             FoodItem food = foodDAO.findById(foodId);
             if (food != null) {
-                CartItem existing = cart.get(foodId);
+                String key = CartItem.buildKey(foodId, selectedAddonIds);
+                CartItem existing = cart.get(key);
                 if (existing != null) {
                     existing.setQuantity(existing.getQuantity() + quantity);
                 } else {
-                    cart.put(foodId, new CartItem(foodId, food.getName(), food.getPrice(), quantity,
+                    cart.put(key, new CartItem(foodId, food.getName(), food.getPrice(), quantity,
                             addonsLabel.toString(), addonsPrice, selectedAddonIds, food.getImageUrl()));
                 }
             }
         } else if ("update".equals(action)) {
-            int foodId = Integer.parseInt(req.getParameter("foodId"));
-            int quantity = parseQuantity(req.getParameter("quantity"));
-            CartItem item = cart.get(foodId);
-            if (item != null) {
-                if (quantity <= 0) cart.remove(foodId);
-                else item.setQuantity(quantity);
+            String cartKey = req.getParameter("cartKey");
+            int quantity = parseQuantityAllowZero(req.getParameter("quantity"));
+            if (cartKey != null) {
+                CartItem item = cart.get(cartKey);
+                if (item != null) {
+                    if (quantity <= 0) cart.remove(cartKey);
+                    else item.setQuantity(quantity);
+                }
             }
         } else if ("remove".equals(action)) {
-            int foodId = Integer.parseInt(req.getParameter("foodId"));
-            cart.remove(foodId);
+            String cartKey = req.getParameter("cartKey");
+            if (cartKey != null) cart.remove(cartKey);
         } else if ("clear".equals(action)) {
             cart.clear();
         }
@@ -114,7 +116,15 @@ public class CartServlet extends HttpServlet {
         }
     }
 
-    private BigDecimal calculateTotal(Map<Integer, CartItem> cart) {
+    private int parseQuantityAllowZero(String s) {
+        try {
+            return Math.max(Integer.parseInt(s), 0);
+        } catch (NumberFormatException | NullPointerException e) {
+            return 1;
+        }
+    }
+
+    private BigDecimal calculateTotal(Map<String, CartItem> cart) {
         BigDecimal total = BigDecimal.ZERO;
         for (CartItem item : cart.values()) total = total.add(item.getSubtotal());
         return total;

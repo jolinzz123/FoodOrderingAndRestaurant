@@ -7,6 +7,7 @@ import java.util.List;
 
 public class CartItem implements Serializable {
     private int foodId;
+    private String cartKey;            // unique key: foodId + sorted addonIds
     private String foodName;
     private BigDecimal unitPrice;
     private int quantity;
@@ -25,6 +26,7 @@ public class CartItem implements Serializable {
         this.addons = addons;
         this.addonsPrice = addonsPrice;
         this.selectedAddonIds = selectedAddonIds != null ? selectedAddonIds : new ArrayList<>();
+        this.cartKey = buildKey(foodId, this.selectedAddonIds);
     }
 
     public CartItem(int foodId, String foodName, BigDecimal unitPrice, int quantity, String addons, BigDecimal addonsPrice, List<Integer> selectedAddonIds, String imageUrl) {
@@ -32,8 +34,23 @@ public class CartItem implements Serializable {
         this.imageUrl = imageUrl;
     }
 
+    public static String buildKey(int foodId, List<Integer> addonIds) {
+        if (addonIds == null || addonIds.isEmpty()) return String.valueOf(foodId);
+        List<Integer> sorted = new ArrayList<>(addonIds);
+        java.util.Collections.sort(sorted);
+        StringBuilder sb = new StringBuilder(String.valueOf(foodId));
+        for (int id : sorted) sb.append('_').append(id);
+        return sb.toString();
+    }
+
     public int getFoodId() { return foodId; }
     public void setFoodId(int foodId) { this.foodId = foodId; }
+
+    public String getCartKey() {
+        if (cartKey == null) cartKey = buildKey(foodId, selectedAddonIds);
+        return cartKey;
+    }
+    public void setCartKey(String cartKey) { this.cartKey = cartKey; }
 
     public String getFoodName() { return foodName; }
     public void setFoodName(String foodName) { this.foodName = foodName; }

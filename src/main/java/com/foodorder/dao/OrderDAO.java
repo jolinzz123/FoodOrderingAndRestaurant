@@ -16,8 +16,8 @@ public class OrderDAO {
      * Persists a new order + its line items inside a single transaction.
      * Returns the generated order id, or -1 on failure.
      */
-    public int placeOrder(int userId, List<CartItem> cartItems, BigDecimal total) {
-        String orderSql   = "INSERT INTO orders (user_id, total_price, status) VALUES (?, ?, 'PENDING')";
+    public int placeOrder(int userId, List<CartItem> cartItems, BigDecimal total, String deliveryAddress, String paymentMethod) {
+        String orderSql   = "INSERT INTO orders (user_id, total_price, status, delivery_address, payment_method) VALUES (?, ?, 'PENDING', ?, ?)";
         String itemSql    = "INSERT INTO order_items (order_id, food_id, quantity, subtotal) VALUES (?, ?, ?, ?)";
         String addonSql   = "INSERT INTO order_item_addons (order_item_id, addon_id) VALUES (?, ?)";
 
@@ -30,6 +30,8 @@ public class OrderDAO {
             try (PreparedStatement ps = conn.prepareStatement(orderSql, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setInt(1, userId);
                 ps.setBigDecimal(2, total);
+                ps.setString(3, deliveryAddress);
+                ps.setString(4, paymentMethod);
                 ps.executeUpdate();
                 try (ResultSet keys = ps.getGeneratedKeys()) {
                     if (!keys.next()) throw new SQLException("Failed to obtain order id");
@@ -166,6 +168,8 @@ public class OrderDAO {
         o.setUserId(rs.getInt("user_id"));
         o.setTotalPrice(rs.getBigDecimal("total_price"));
         o.setStatus(rs.getString("status"));
+        o.setDeliveryAddress(rs.getString("delivery_address"));
+        o.setPaymentMethod(rs.getString("payment_method"));
         o.setCreatedAt(rs.getTimestamp("created_at"));
         return o;
     }
