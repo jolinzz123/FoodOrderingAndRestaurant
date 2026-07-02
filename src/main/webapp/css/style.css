@@ -672,6 +672,7 @@ table.table-brand th { color: var(--color-text); }
 }
 .cat-bar-inner {
   display: flex !important;
+  flex-wrap: nowrap !important;
   gap: 8px;
   overflow-x: auto;
   overflow-y: hidden;
