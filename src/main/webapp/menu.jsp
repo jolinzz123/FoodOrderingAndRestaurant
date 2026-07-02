@@ -34,11 +34,28 @@
        class="cat-pill <%= (selectedCategory == null || selectedCategory.isEmpty()) ? "active" : "" %>">
       🍽️ All
     </a>
-    <% for (Category cat : categories) {
-         boolean active = String.valueOf(cat.getId()).equals(selectedCategory); %>
+    <%
+       java.util.Map<String,String> catEmoji = new java.util.HashMap<>();
+       catEmoji.put("Rice",           "🍚");
+       catEmoji.put("Nasi",           "🍚");
+       catEmoji.put("Noodles",        "🍜");
+       catEmoji.put("Mee",            "🍜");
+       catEmoji.put("Bread & FlatBread","🫓");
+       catEmoji.put("Roti",           "🫓");
+       catEmoji.put("Main Dishes",     "🍖");
+       catEmoji.put("Lauk",           "🍖");
+       catEmoji.put("Vegetables",     "🥦");
+       catEmoji.put("Sayur",          "🥦");
+       catEmoji.put("Western",        "🍔");
+       catEmoji.put("Desserts",       "🍮");
+       catEmoji.put("Drinks",         "🧋");
+       for (Category cat : categories) {
+         boolean active = String.valueOf(cat.getId()).equals(selectedCategory);
+         String emoji = catEmoji.getOrDefault(cat.getName(), "🍴");
+    %>
     <a href="<%= ctx %>/menu?category=<%= cat.getId() %>"
        class="cat-pill <%= active ? "active" : "" %>">
-      <%= cat.getName() %>
+      <%= emoji %> <%= cat.getName() %>
     </a>
     <% } %>
   </div>
@@ -62,44 +79,61 @@
 
       <div class="row g-3">
         <% for (FoodItem food : entry.getValue()) { %>
+        <%
+          int soldCount = 10 + (food.getId() * 7 % 41);
+          boolean isHot = soldCount >= 45;
+        %>
         <div class="col-lg-4 col-md-6 col-sm-6">
           <div class="food-card">
+            <!-- image -->
             <div class="food-card-img-wrap">
-              <a href="<%= ctx %>/food?id=<%= food.getId() %>">
+              <a href="<%= ctx %>/food?id=<%= food.getId() %>" class="food-card-img-link">
                 <img src="<%= ctx %>/<%= food.getImageUrl() %>"
                      alt="<%= food.getName() %>"
                      onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=70'">
               </a>
             </div>
+            <!-- card info -->
             <div class="food-card-body">
               <div class="food-card-name">
-                <a href="<%= ctx %>/food?id=<%= food.getId() %>" style="color:inherit;"><%= food.getName() %></a>
+                <a href="<%= ctx %>/food?id=<%= food.getId() %>"><%= food.getName() %></a>
               </div>
               <div class="food-card-meta">
-                <span class="stars" style="font-size:.7rem;">
+                <span class="food-card-stars">
                   <%
                     double r = food.getRating();
                     for (int s = 1; s <= 5; s++) {
                         if (s <= (int) r) out.print("★");
-                        else if (s - r < 1) out.print("✩");
                         else out.print("☆");
                     }
                   %>
                 </span>
-                <%= String.format("%.1f", food.getRating()) %>
+                <span class="food-card-rating-num"><%= String.format("%.1f", food.getRating()) %></span>
+                <span class="food-card-dot">·</span>
+                <span class="food-card-sold"><%= soldCount %> sold</span>
+                <% if (isHot) { %><span class="food-card-bestseller">⭐ Best Seller</span><% } %>
               </div>
               <div class="food-card-footer">
                 <span class="food-card-price">RM <%= String.format("%,.2f", food.getPrice()) %></span>
                 <% if (currentUser != null) { %>
-                <form action="<%= ctx %>/cart" method="post" style="margin:0;">
+                <form action="<%= ctx %>/cart" method="post" class="food-card-cart-form">
                   <input type="hidden" name="action" value="add">
                   <input type="hidden" name="foodId" value="<%= food.getId() %>">
                   <input type="hidden" name="quantity" value="1">
-                  <input type="hidden" name="returnTo" value="/menu<%= selectedCategory != null && !selectedCategory.isEmpty() ? "?category=" + selectedCategory : "" %>">
-                  <button type="submit" class="btn-add-cart" title="Add to cart">+</button>
+                  <button type="submit" class="btn-add-cart" title="Add to cart">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                    </svg>
+                  </button>
                 </form>
                 <% } else { %>
-                <a href="<%= ctx %>/login.jsp" class="btn-add-cart" title="Log in to order" style="text-decoration:none;">+</a>
+                <a href="<%= ctx %>/login.jsp" class="btn-add-cart" title="Log in to order">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                  </svg>
+                </a>
                 <% } %>
               </div>
             </div>
@@ -199,14 +233,74 @@
 
 </div><!-- end menu-layout -->
 
+
 <script>
-  // Payment method button toggle
-  document.querySelectorAll('.pay-method-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.pay-method-btn').forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
+(function() {
+  var cartPanel = document.querySelector('.menu-cart-panel');
+  var menuUrl = window.location.href;
+
+  function cartFetch(action, foodId, quantity) {
+    var params = new URLSearchParams({ action: action, foodId: foodId });
+    if (quantity !== undefined) params.set('quantity', quantity);
+    return fetch('<%= ctx %>/cart', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params.toString(),
+      credentials: 'same-origin',
+      redirect: 'follow'
+    });
+  }
+
+  function refreshSidebar() {
+    fetch(menuUrl, { credentials: 'same-origin' })
+      .then(function(r) { return r.text(); })
+      .then(function(html) {
+        var tmp = document.createElement('div');
+        tmp.innerHTML = html;
+        var fresh = tmp.querySelector('.menu-cart-panel');
+        if (fresh && cartPanel) {
+          cartPanel.innerHTML = fresh.innerHTML;
+          bindSidebarQty();
+          bindPaymentBtns();
+        }
+      });
+  }
+
+  // Add-to-cart buttons (food grid)
+  document.querySelectorAll('.food-card-footer form[action*="/cart"]').forEach(function(form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var foodId = form.querySelector('[name="foodId"]').value;
+      var btn = form.querySelector('.btn-add-cart');
+      if (btn) { btn.textContent = '✓'; btn.disabled = true; setTimeout(function(){ btn.textContent = '+'; btn.disabled = false; }, 900); }
+      cartFetch('add', foodId, 1).then(refreshSidebar);
     });
   });
+
+  // Qty +/− buttons in sidebar (bound fresh each refresh)
+  function bindSidebarQty() {
+    cartPanel.querySelectorAll('button[name="quantity"]').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault(); // stop form submit
+        var form = btn.closest('form');
+        var foodId = form.querySelector('[name="foodId"]').value;
+        cartFetch('update', foodId, btn.value).then(refreshSidebar);
+      });
+    });
+  }
+
+  function bindPaymentBtns() {
+    cartPanel.querySelectorAll('.pay-method-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        cartPanel.querySelectorAll('.pay-method-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+      });
+    });
+  }
+
+  bindSidebarQty();
+  bindPaymentBtns();
+})();
 </script>
 
 <jsp:include page="footer.jsp" />
