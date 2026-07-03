@@ -288,9 +288,9 @@
 
 /* Why section */
 .hp-why-section {
-  background: var(--color-bg-soft);
+  background: #F5F3FF !important;
   padding: 70px 0 80px;
-  margin-top: 20px;
+  margin-top: 0;
 }
 .hp-why-card {
   background: #fff;
