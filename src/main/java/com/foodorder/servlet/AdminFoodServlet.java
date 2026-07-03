@@ -2,6 +2,7 @@ package com.foodorder.servlet;
 
 import com.foodorder.dao.CategoryDAO;
 import com.foodorder.dao.FoodDAO;
+import com.foodorder.model.Category;
 import com.foodorder.model.FoodItem;
 
 import jakarta.servlet.ServletException;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.List;
 
 @WebServlet("/admin/food")
 public class AdminFoodServlet extends HttpServlet {
@@ -23,13 +25,16 @@ public class AdminFoodServlet extends HttpServlet {
         String action = req.getParameter("action");
         String idParam = req.getParameter("id");
         String q = req.getParameter("q");
+        String categoryIdParam = req.getParameter("categoryId");
         boolean hasQuery = q != null && !q.trim().isEmpty();
+        boolean hasCategoryFilter = categoryIdParam != null && !categoryIdParam.trim().isEmpty();
 
         if ("delete".equals(action) && idParam != null) {
             foodDAO.delete(Integer.parseInt(idParam));
-            String redirectUrl = req.getContextPath() + "/admin/food";
-            if (hasQuery) redirectUrl += "?q=" + java.net.URLEncoder.encode(q.trim(), "UTF-8");
-            resp.sendRedirect(redirectUrl);
+            StringBuilder redirectUrl = new StringBuilder(req.getContextPath()).append("/admin/food");
+            if (hasQuery) redirectUrl.append("?q=").append(java.net.URLEncoder.encode(q.trim(), "UTF-8"));
+            else if (hasCategoryFilter) redirectUrl.append("?categoryId=").append(categoryIdParam.trim());
+            resp.sendRedirect(redirectUrl.toString());
             return;
         }
 
@@ -37,9 +42,25 @@ public class AdminFoodServlet extends HttpServlet {
             req.setAttribute("editItem", foodDAO.findById(Integer.parseInt(idParam)));
         }
 
-        req.setAttribute("foodItems", hasQuery ? foodDAO.search(q.trim()) : foodDAO.findAll());
-        req.setAttribute("categories", categoryDAO.findAll());
+        List<Category> categories = categoryDAO.findAll();
+        String categoryFilterName = null;
+
+        if (hasCategoryFilter) {
+            int filterId = Integer.parseInt(categoryIdParam.trim());
+            req.setAttribute("foodItems", foodDAO.findByCategory(filterId));
+            for (Category c : categories) {
+                if (c.getId() == filterId) { categoryFilterName = c.getName(); break; }
+            }
+        } else if (hasQuery) {
+            req.setAttribute("foodItems", foodDAO.search(q.trim()));
+        } else {
+            req.setAttribute("foodItems", foodDAO.findAll());
+        }
+
+        req.setAttribute("categories", categories);
         req.setAttribute("searchQuery", q);
+        req.setAttribute("categoryFilterId", hasCategoryFilter ? categoryIdParam.trim() : null);
+        req.setAttribute("categoryFilterName", categoryFilterName);
         req.getRequestDispatcher("/admin/manage-food.jsp").forward(req, resp);
     }
 

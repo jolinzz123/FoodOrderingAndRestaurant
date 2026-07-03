@@ -37,17 +37,19 @@
     <div class="adm-card">
       <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
         <div class="adm-card-title mb-0">All Categories</div>
-        <form method="get" action="<%= ctx %>/admin/category" class="d-flex" style="max-width:260px; width:100%;">
-          <div class="input-group input-group-sm">
-            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-            <input type="text" name="q" class="form-control" placeholder="Search categories..."
-                   value="<%= searchQuery != null ? WebUtil.escapeHtml(searchQuery) : "" %>">
-            <% if (searchQuery != null && !searchQuery.isEmpty()) { %>
-              <a href="<%= ctx %>/admin/category" class="btn btn-outline-secondary" title="Clear search"><i class="bi bi-x-lg"></i></a>
-            <% } %>
-          </div>
-        </form>
-        <span class="badge bg-secondary"><%= categories != null ? categories.size() : 0 %> total</span>
+        <div class="d-flex align-items-center flex-wrap gap-2 adm-list-toolbar-right">
+          <form method="get" action="<%= ctx %>/admin/category" class="d-flex flex-grow-1">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+              <input type="text" name="q" class="form-control" placeholder="Search categories..."
+                     value="<%= searchQuery != null ? WebUtil.escapeHtml(searchQuery) : "" %>">
+              <% if (searchQuery != null && !searchQuery.isEmpty()) { %>
+                <a href="<%= ctx %>/admin/category" class="btn btn-outline-secondary" title="Clear search"><i class="bi bi-x-lg"></i></a>
+              <% } %>
+            </div>
+          </form>
+          <span class="badge bg-secondary text-nowrap"><%= categories != null ? categories.size() : 0 %> total</span>
+        </div>
       </div>
 
       <% if (categories == null || categories.isEmpty()) { %>

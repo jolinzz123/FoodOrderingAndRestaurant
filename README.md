@@ -1,4 +1,4 @@
-# 🥗 Food Ordering and Restaurant Management System
+# 🥗 HotServe — Food Ordering and Restaurant Management System
 
 A Java EE (JSP + Servlet + JDBC) restaurant ordering and management system built for a university group assignment.
 
@@ -7,14 +7,14 @@ A Java EE (JSP + Servlet + JDBC) restaurant ordering and management system built
 ## 📌 Overview
 
 This system allows customers to browse the restaurant's menu, view dish details (ingredients, price, ratings),
-register/log in, add items to a cart, and place orders. Admins can log in to a separate dashboard to manage
-food items, categories, and view all customer orders.
+register/log in, add items to a cart, and place orders. Admins log in to a separate dashboard to manage
+food items, categories, and view/update all customer orders.
 
 ## 🛠 Tech Stack
 
 | Category | Technology |
 |---|---|
-| Front-end | HTML5, CSS3, Bootstrap 5, JavaScript |
+| Front-end | HTML5, CSS3, Bootstrap 5, Bootstrap Icons |
 | Back-end | JSP, Servlet (Jakarta EE 9+ / Tomcat 10.1), JavaBeans |
 | Data access | JDBC + PreparedStatement |
 | Database | MySQL 8+ |
@@ -26,32 +26,30 @@ food items, categories, and view all customer orders.
 > `javax.servlet`, or the project won't compile.
 
 > ℹ️ The project does **not** use the JSTL tag library (`<c:forEach>`, `<c:if>`, etc.). All page logic
-> is implemented with plain Java scriptlets (`<% %>` / `<%= %>`) instead, to avoid needing an extra JSTL
-> dependency jar.
+> is implemented with plain Java scriptlets (`<% %>` / `<%= %>`) instead.
 
 ---
 
 ## 📁 Project Structure
 
 ```
-FoodOrderApp/
+FoodOrderingAndRestaurant/
 ├── database/
-│   └── schema.sql              ← Database schema + seed data. Import this first.
-├── src/
-│   └── com/foodorder/
-│       ├── model/              ← JavaBeans (User, FoodItem, Category, CartItem, Order, OrderItem)
-│       ├── dao/                ← Data access layer (UserDAO, FoodDAO, CategoryDAO, OrderDAO)
-│       ├── servlet/            ← Business logic (register, login, menu, cart, checkout, admin CRUD)
-│       ├── filter/              ← AuthFilter (ordering requires login), AdminFilter (admin-only access)
-│       └── util/               ← DBConnection (JDBC connection), PasswordUtil (password hashing)
-└── WebContent/
-    ├── *.jsp                   ← Customer-facing pages (home, menu, cart, login, register, etc.)
-    ├── admin/                  ← Admin dashboard pages
-    ├── css/style.css           ← White & green theme styling
-    ├── js/validate.js          ← Client-side form validation
+│   └── setup.sql                ← Database schema + seed data. Import this first.
+├── src/main/java/com/foodorder/
+│   ├── model/                   ← JavaBeans (User, FoodItem, Category, Addon, CartItem, Order, OrderItem)
+│   ├── dao/                     ← Data access layer (UserDAO, FoodDAO, CategoryDAO, AddonDAO, OrderDAO)
+│   ├── servlet/                 ← Business logic (register, login, menu, cart, checkout, admin CRUD)
+│   ├── filter/                  ← AuthFilter, AdminFilter, AdminRedirectFilter
+│   └── util/                    ← DBConnection, PasswordUtil, WebUtil, db.properties(.example)
+└── src/main/webapp/
+    ├── *.jsp                    ← Customer-facing pages (home, menu, cart, login, register, etc.)
+    ├── admin/                   ← Admin dashboard pages
+    ├── css/style.css, admin.css ← Site + admin panel styling
+    ├── images/                  ← Food photos
     └── WEB-INF/
         ├── web.xml
-        └── lib/                ← Place the MySQL driver jar here (mysql-connector-j-x.x.x.jar)
+        └── lib/                 ← MySQL Connector/J driver jar (already included)
 ```
 
 ---
@@ -64,35 +62,36 @@ FoodOrderApp/
 - **Apache Tomcat 10.1**
 - **MySQL 8+**
 
-### 2. Create the Eclipse Project
-1. File → New → **Dynamic Web Project**
-2. Set the Target Runtime to Tomcat 10.1
-3. Set Dynamic Web Module version to **5.0** (matches Jakarta EE 9)
-4. Copy this project's `src/com/foodorder` into `src/main/java/com/foodorder`
-5. Copy everything under this project's `WebContent` into `src/main/webapp`
+### 2. Import the Project
+This repo is already a complete Eclipse Dynamic Web Project — no need to create a new project or copy files by hand.
 
-### 3. Download and Place the MySQL Driver
-1. Download `mysql-connector-j` from the [MySQL website](https://dev.mysql.com/downloads/connector/j/)
-2. Place the jar file in `WEB-INF/lib/`
+1. In Eclipse: **File → Import → Git → Projects from Git → Clone URI**
+2. Repo URL: `https://github.com/jolinzz123/FoodOrderingAndRestaurant.git`
+3. Finish the wizard and let Eclipse import it as an existing Eclipse project
 
-### 4. Import the Database
+The MySQL driver jar is already checked into `WEB-INF/lib/`, so no manual download is needed.
+
+### 3. Import the Database
 1. Open MySQL Workbench or the MySQL command line
-2. Run `database/schema.sql` — it creates the database, tables, and seed data automatically
+2. Run `database/setup.sql` — it creates the database, tables, and seed data automatically
 
-### 5. Configure the Database Connection
-Open `src/com/foodorder/util/DBConnection.java` and update it with your own credentials:
-```java
-private static final String DB_URL  = "jdbc:mysql://localhost:3306/food_order_db?useSSL=false&serverTimezone=UTC";
-private static final String DB_USER = "root";
-private static final String DB_PASSWORD = "your_mysql_password";
-```
+### 4. Configure the Database Connection
+`db.properties` is gitignored (each teammate uses their own local MySQL password), so it won't be in your clone yet:
 
-### 6. Run the Project
+1. Copy `src/main/java/com/foodorder/util/db.properties.example` → `db.properties` (same folder)
+2. Edit it with your own MySQL password:
+   ```properties
+   db.url=jdbc:mysql://localhost:3306/food_order_db?useSSL=false&serverTimezone=UTC
+   db.user=root
+   db.password=your_mysql_password
+   ```
+
+### 5. Run the Project
 Right-click the project → Run As → **Run on Server** → select Tomcat 10.1 → Finish
 
 The app will open at:
 ```
-http://localhost:8080/your-project-name/
+http://localhost:8080/FoodOrderingAndRestaurant/
 ```
 
 ---
@@ -118,7 +117,10 @@ http://localhost:8080/your-project-name/
 - [x] Order confirmation page
 - [x] About Us / Contact Us / FAQ pages
 - [x] Access control (login required to order, admin-only dashboard access)
-- [ ] Admin dashboard pages (Dashboard / Manage Food / Manage Categories / Manage Orders JSPs — in progress)
+- [x] Admin dashboard (stats overview, quick actions, recent orders)
+- [x] Admin product management (card grid, search, category filter, edit/delete)
+- [x] Admin category management (search, add/delete)
+- [x] Admin order management (status stats, search, status updates)
 
 ---
 

@@ -12,6 +12,7 @@
     FoodItem editItem = (FoodItem) request.getAttribute("editItem");
     boolean isEdit = (editItem != null);
     String searchQuery = (String) request.getAttribute("searchQuery");
+    String categoryFilterName = (String) request.getAttribute("categoryFilterName");
 
     request.setAttribute("pageTitle", isEdit ? "Edit Product" : "Products");
     request.setAttribute("activePage", "food");
@@ -99,25 +100,37 @@
 <!-- Food Items Grid -->
 <div class="adm-card">
   <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
-    <div class="adm-card-title mb-0">All Products</div>
-    <form method="get" action="<%= ctx %>/admin/food" class="d-flex" style="max-width:300px; width:100%;">
-      <div class="input-group input-group-sm">
-        <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-        <input type="text" name="q" class="form-control" placeholder="Search by name or category..."
-               value="<%= searchQuery != null ? WebUtil.escapeHtml(searchQuery) : "" %>">
-        <% if (searchQuery != null && !searchQuery.isEmpty()) { %>
-          <a href="<%= ctx %>/admin/food" class="btn btn-outline-secondary" title="Clear search"><i class="bi bi-x-lg"></i></a>
-        <% } %>
-      </div>
-    </form>
-    <span class="badge bg-secondary"><%= foodItems != null ? foodItems.size() : 0 %> total</span>
+    <div class="adm-card-title mb-0 d-flex align-items-center flex-wrap gap-2">
+      All Products
+      <% if (categoryFilterName != null) { %>
+        <span class="adm-filter-chip">
+          <%= WebUtil.escapeHtml(categoryFilterName) %>
+          <a href="<%= ctx %>/admin/food" title="Clear filter"><i class="bi bi-x-lg"></i></a>
+        </span>
+      <% } %>
+    </div>
+    <div class="d-flex align-items-center flex-wrap gap-2 adm-list-toolbar-right">
+      <form method="get" action="<%= ctx %>/admin/food" class="d-flex flex-grow-1">
+        <div class="input-group input-group-sm">
+          <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+          <input type="text" name="q" class="form-control" placeholder="Search by name or category..."
+                 value="<%= searchQuery != null ? WebUtil.escapeHtml(searchQuery) : "" %>">
+          <% if (searchQuery != null && !searchQuery.isEmpty()) { %>
+            <a href="<%= ctx %>/admin/food" class="btn btn-outline-secondary" title="Clear search"><i class="bi bi-x-lg"></i></a>
+          <% } %>
+        </div>
+      </form>
+      <span class="badge bg-secondary text-nowrap"><%= foodItems != null ? foodItems.size() : 0 %> total</span>
+    </div>
   </div>
 
   <% if (foodItems == null || foodItems.isEmpty()) { %>
     <p class="text-muted">
       <%= (searchQuery != null && !searchQuery.isEmpty())
           ? "No products match \"" + WebUtil.escapeHtml(searchQuery) + "\"."
-          : "No products found. Add one above." %>
+          : (categoryFilterName != null)
+              ? "No products in \"" + WebUtil.escapeHtml(categoryFilterName) + "\" yet."
+              : "No products found. Add one above." %>
     </p>
   <% } else { %>
   <div class="row g-3">
@@ -127,7 +140,8 @@
         <div class="food-card-img-wrap">
           <img src="<%= ctx %>/<%= f.getImageUrl() %>" alt="<%= f.getName() %>"
                onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=70'">
-          <span class="badge-category adm-food-card-cat"><%= f.getCategoryName() != null ? f.getCategoryName() : "-" %></span>
+          <a href="<%= ctx %>/admin/food?categoryId=<%= f.getCategoryId() %>"
+             class="badge-category adm-food-card-cat" title="View all <%= f.getCategoryName() != null ? f.getCategoryName() : "" %> items"><%= f.getCategoryName() != null ? f.getCategoryName() : "-" %></a>
         </div>
         <div class="food-card-body">
           <div class="food-card-name"><span class="adm-food-card-id">#<%= f.getId() %></span> <%= f.getName() %></div>

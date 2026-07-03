@@ -59,22 +59,26 @@
 </div>
 
 <!-- Status legend + Search -->
-<div class="d-flex flex-wrap gap-2 mb-4 align-items-center">
-  <span style="font-size:0.8rem; color:#6B7280; font-weight:600;">Status:</span>
-  <% for (String s : statuses) { %>
-    <span class="status-pill status-<%= s %>"><%= s %></span>
-  <% } %>
-  <form method="get" action="<%= ctx %>/admin/orders" class="d-flex ms-auto" style="max-width:280px; width:100%;">
-    <div class="input-group input-group-sm">
-      <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-      <input type="text" name="q" class="form-control" placeholder="Search by order #, customer, status..."
-             value="<%= searchQuery != null ? WebUtil.escapeHtml(searchQuery) : "" %>">
-      <% if (searchQuery != null && !searchQuery.isEmpty()) { %>
-        <a href="<%= ctx %>/admin/orders" class="btn btn-outline-secondary" title="Clear search"><i class="bi bi-x-lg"></i></a>
-      <% } %>
-    </div>
-  </form>
-  <span class="badge bg-secondary"><%= orders != null ? orders.size() : 0 %> orders</span>
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4 adm-orders-toolbar">
+  <div class="d-flex flex-wrap align-items-center gap-2">
+    <span class="adm-orders-status-label">Status:</span>
+    <% for (String s : statuses) { %>
+      <span class="status-pill status-<%= s %>"><%= s %></span>
+    <% } %>
+  </div>
+  <div class="d-flex flex-wrap align-items-center gap-2 adm-orders-search-group">
+    <form method="get" action="<%= ctx %>/admin/orders" class="d-flex flex-grow-1">
+      <div class="input-group input-group-sm">
+        <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+        <input type="text" name="q" class="form-control" placeholder="Search by order #, customer, status..."
+               value="<%= searchQuery != null ? WebUtil.escapeHtml(searchQuery) : "" %>">
+        <% if (searchQuery != null && !searchQuery.isEmpty()) { %>
+          <a href="<%= ctx %>/admin/orders" class="btn btn-outline-secondary" title="Clear search"><i class="bi bi-x-lg"></i></a>
+        <% } %>
+      </div>
+    </form>
+    <span class="badge bg-secondary text-nowrap"><%= orders != null ? orders.size() : 0 %> orders</span>
+  </div>
 </div>
 
 <% if (orders == null || orders.isEmpty()) { %>
