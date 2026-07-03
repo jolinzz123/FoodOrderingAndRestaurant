@@ -179,12 +179,20 @@
              }
         %>
         <div class="cart-sidebar-item">
-          <img src="<%= thumb %>" alt="<%= ci.getFoodName() %>"
-               onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&q=70'">
+          <a href="<%= ctx %>/food?id=<%= ci.getFoodId() %>" title="Edit add-ons" style="display:block;flex-shrink:0;">
+            <img src="<%= thumb %>" alt="<%= ci.getFoodName() %>"
+                 onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&q=70'"
+                 style="border-radius:var(--radius-sm);width:58px;height:58px;object-fit:cover;">
+          </a>
           <div class="cart-sidebar-item-info">
-            <div class="cart-sidebar-item-name"><%= ci.getFoodName() %></div>
+            <div class="cart-sidebar-item-name">
+              <a href="<%= ctx %>/food?id=<%= ci.getFoodId() %>" style="color:inherit;text-decoration:none;">
+                <%= ci.getFoodName() %>
+              </a>
+            </div>
             <div class="cart-sidebar-item-cat">
               <%= (ci.getAddons() == null || ci.getAddons().isEmpty()) ? "No add-ons" : ci.getAddons() %>
+              <a href="<%= ctx %>/food?id=<%= ci.getFoodId() %>&editKey=<%= java.net.URLEncoder.encode(ci.getCartKey(), "UTF-8") %>" style="margin-left:6px;font-size:.7rem;color:var(--color-primary);font-weight:600;">Edit</a>
             </div>
             <div class="cart-sidebar-qty">
               <!-- update qty form -->

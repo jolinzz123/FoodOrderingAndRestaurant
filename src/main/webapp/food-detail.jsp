@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page import="com.foodorder.model.FoodItem, com.foodorder.model.User, com.foodorder.model.Addon, java.util.List" %>
+<%@ page import="com.foodorder.model.FoodItem, com.foodorder.model.User, com.foodorder.model.Addon, com.foodorder.model.CartItem, java.util.List, java.util.Map" %>
 <%
     FoodItem item = (FoodItem) request.getAttribute("item");
     request.setAttribute("pageTitle", item.getName() + " — HotServe");
@@ -8,6 +8,20 @@
     User currentUser = (User) session.getAttribute("user");
     @SuppressWarnings("unchecked")
     List<Addon> addons = (List<Addon>) request.getAttribute("addons");
+
+    // Edit mode: pre-select add-ons from existing cart entry
+    String editKey = request.getParameter("editKey");
+    java.util.Set<Integer> preselectedAddonIds = new java.util.HashSet<>();
+    if (editKey != null && !editKey.isEmpty()) {
+        @SuppressWarnings("unchecked")
+        Map<String, CartItem> cart = (Map<String, CartItem>) session.getAttribute("cart");
+        if (cart != null) {
+            CartItem editing = cart.get(editKey);
+            if (editing != null && editing.getSelectedAddonIds() != null) {
+                preselectedAddonIds.addAll(editing.getSelectedAddonIds());
+            }
+        }
+    }
 
     // Star rendering helper
     double rating = item.getRating();
@@ -77,6 +91,9 @@
         <input type="hidden" name="action" value="add">
         <input type="hidden" name="foodId" value="<%= item.getId() %>">
         <input type="hidden" name="returnTo" value="/menu">
+        <% if (editKey != null && !editKey.isEmpty()) { %>
+        <input type="hidden" name="editKey" value="<%= editKey %>">
+        <% } %>
 
         <!-- Qty + price row -->
         <div class="fd-order-top">
@@ -102,7 +119,8 @@
           <div class="fd-addon-grid">
             <% for (Addon a : addons) { %>
             <label class="fd-addon-chip">
-              <input type="checkbox" name="addons" value="<%= a.getId() %>">
+              <input type="checkbox" name="addons" value="<%= a.getId() %>"
+                     <%= preselectedAddonIds.contains(a.getId()) ? "checked" : "" %>>
               <span class="fd-addon-inner">
                 <span class="fd-addon-name"><%= a.getName() %></span>
                 <span class="fd-addon-price">
@@ -119,7 +137,9 @@
 
         <!-- CTA -->
         <% if (currentUser != null) { %>
-          <button type="submit" class="fd-btn-add">Add to Cart</button>
+          <button type="submit" class="fd-btn-add">
+            <%= editKey != null && !editKey.isEmpty() ? "Update Order" : "Add to Cart" %>
+          </button>
         <% } else { %>
           <a href="<%= ctx %>/login.jsp" class="fd-btn-add">Log in to Order</a>
         <% } %>
