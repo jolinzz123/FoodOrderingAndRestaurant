@@ -11,7 +11,8 @@
   }
 
   // Generic Bootstrap-style validation for forms with novalidate
-  document.querySelectorAll('form[novalidate]').forEach(function (form) {
+  // (contactForm has its own dedicated handler below, so it's excluded here)
+  document.querySelectorAll('form[novalidate]:not(#contactForm)').forEach(function (form) {
     form.addEventListener('submit', function (e) {
       let valid = true;
       form.querySelectorAll('input[required], select[required], textarea[required]').forEach(function (input) {
@@ -53,13 +54,20 @@
   // Contact form (no backend — demo client-side only)
   const contactForm = document.getElementById('contactForm');
   if (contactForm) {
+    const emailPattern = /^[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}$/;
     contactForm.addEventListener('submit', function (e) {
       e.preventDefault();
+      document.getElementById('contactSuccess').classList.add('d-none');
       let valid = true;
       ['contactName', 'contactEmail', 'contactSubject', 'contactMessage'].forEach(function (id) {
         const el = document.getElementById(id);
         if (!el.value.trim()) { markInvalid(el); valid = false; } else { clearInvalid(el); }
       });
+      const emailEl = document.getElementById('contactEmail');
+      if (emailEl.value.trim() && !emailPattern.test(emailEl.value.trim())) {
+        markInvalid(emailEl);
+        valid = false;
+      }
       if (valid) {
         document.getElementById('contactSuccess').classList.remove('d-none');
         contactForm.reset();

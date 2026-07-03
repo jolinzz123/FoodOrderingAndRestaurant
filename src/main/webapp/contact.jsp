@@ -13,11 +13,25 @@
 
   <div class="row g-5">
     <div class="col-md-5">
-      <h5>Reach Us</h5>
-      <p class="text-muted">📍 123 Garden Street, Sepang, Selangor, Malaysia</p>
-      <p class="text-muted">📞 +60 12-345 6789</p>
-      <p class="text-muted">✉️ hello@foodorder.com</p>
-      <p class="text-muted">🕒 Mon–Sun, 10:00 AM – 10:00 PM</p>
+      <h5 class="mb-3">Reach Us</h5>
+      <div class="contact-info-list">
+        <div class="contact-info-item">
+          <span class="contact-info-icon"><i class="bi bi-geo-alt-fill"></i></span>
+          <span>123 Garden Street, Sepang, Selangor, Malaysia</span>
+        </div>
+        <a class="contact-info-item" href="https://wa.me/60123456789" target="_blank" rel="noopener">
+          <span class="contact-info-icon contact-info-icon--whatsapp"><i class="bi bi-whatsapp"></i></span>
+          <span>+60 12-345 6789</span>
+        </a>
+        <a class="contact-info-item" href="mailto:hello@foodorder.com">
+          <span class="contact-info-icon"><i class="bi bi-envelope-fill"></i></span>
+          <span>hello@foodorder.com</span>
+        </a>
+        <div class="contact-info-item">
+          <span class="contact-info-icon"><i class="bi bi-clock-fill"></i></span>
+          <span>Mon–Sun, 10:00 AM – 10:00 PM</span>
+        </div>
+      </div>
     </div>
     <div class="col-md-7">
       <div id="contactSuccess" class="alert alert-success d-none">Thanks for reaching out! We'll reply within 1–2 business days.</div>

@@ -1,0 +1,163 @@
+/* ==========================================================
+   About Us page
+   ========================================================== */
+
+/* ---------- Hero banner ---------- */
+.about-hero {
+  background: linear-gradient(135deg, #5B4FCC 0%, #7C6FE8 50%, #A89EF0 100%);
+  padding: 64px 20px 76px;
+  border-radius: 0 0 48px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.about-hero::before {
+  content: '';
+  position: absolute;
+  top: -50px; right: -50px;
+  width: 260px; height: 260px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 50%;
+}
+.about-hero::after {
+  content: '';
+  position: absolute;
+  bottom: -70px; left: -30px;
+  width: 200px; height: 200px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 50%;
+}
+.about-hero-tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.35);
+  color: #fff;
+  border-radius: 50px;
+  padding: 8px 20px;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  margin-bottom: 18px;
+  position: relative;
+  z-index: 1;
+}
+.about-hero-title {
+  color: #fff;
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: -.5px;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 10px;
+}
+.about-hero-sub {
+  color: rgba(255,255,255,0.85);
+  font-size: 1.05rem;
+  max-width: 560px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Story row ---------- */
+.about-eyebrow {
+  display: inline-block;
+  color: var(--color-primary);
+  background: var(--color-accent);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  border-radius: 50px;
+  padding: 5px 14px;
+  margin-bottom: 12px;
+}
+.about-img-wrap {
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 16px 44px rgba(44,36,22,0.16);
+  aspect-ratio: 4 / 3;
+}
+.about-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ---------- Feature cards ---------- */
+.about-feature-row { margin-top: 56px; }
+.about-feature-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 26px 22px;
+  height: 100%;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.about-feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(108, 99, 255, 0.16);
+}
+.about-feature-icon {
+  width: 52px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  background: var(--color-accent);
+  border-radius: 50%;
+  margin-bottom: 14px;
+}
+.about-feature-card h6 { font-weight: 700; margin-bottom: 6px; }
+
+/* ---------- Stats strip ---------- */
+.about-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 24px;
+  background: linear-gradient(135deg, #FFFBF5 0%, #F0EDFA 100%);
+  border-radius: var(--radius);
+  padding: 36px 20px;
+  margin-top: 56px;
+  text-align: center;
+}
+.about-stat-num {
+  display: block;
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+.about-stat-lbl {
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+/* ---------- Chef cards ---------- */
+.chef-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 30px 16px 24px;
+  height: 100%;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.chef-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(108, 99, 255, 0.18);
+}
+.chef-avatar {
+  width: 76px; height: 76px;
+  margin: 0 auto;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.1rem;
+  background: var(--color-accent);
+  border-radius: 50%;
+}
+.chef-card h6 { font-weight: 700; }
+
+@media (max-width: 767px) {
+  .about-hero { padding: 50px 20px 60px; border-radius: 0 0 32px 32px; }
+  .about-hero-title { font-size: 1.8rem; }
+  .about-stats { gap: 20px 12px; }
+}

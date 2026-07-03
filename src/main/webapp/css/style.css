@@ -9,3 +9,4 @@
 @import url('shared-ui.css');        /* forms, footer, cart summary widget, admin dashboard, misc */
 @import url('menu-food.css');        /* menu page, food detail, cart sidebar, payment, toast */
 @import url('cart-and-responsive.css'); /* cart page + global responsive overrides */
+@import url('about.css');            /* about us page: hero, story, stats, chefs */
