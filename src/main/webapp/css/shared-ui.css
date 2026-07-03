@@ -92,10 +92,11 @@ table.table-brand th { color: var(--color-text); }
   align-items: center;
   gap: 14px;
   padding: 10px 8px;
+  margin: 0 -8px;
   border-radius: var(--radius-sm);
   color: var(--color-text);
   text-decoration: none;
-  transition: background-color .2s;
+  transition: background-color .2s, box-shadow .2s, transform .2s, border-color .2s;
 }
 a.contact-info-item:hover { background-color: var(--color-accent); color: var(--color-text); }
 .contact-info-icon {
@@ -108,6 +109,28 @@ a.contact-info-item:hover { background-color: var(--color-accent); color: var(--
   border-radius: 50%;
 }
 .contact-info-icon--whatsapp { background: #E7F9EF; color: #25D366; }
+
+.contact-info-item--lg { gap: 18px; font-size: 1.1rem; font-weight: 600; }
+.contact-info-icon--lg { width: 52px; height: 52px; font-size: 1.35rem; }
+
+.contact-info-item--link {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+}
+.contact-info-item--link:hover {
+  background-color: var(--color-bg);
+  border-color: var(--color-primary-light);
+  box-shadow: 0 10px 24px rgba(124, 111, 232, 0.18);
+  transform: translateY(-2px);
+}
+.contact-info-arrow {
+  margin-left: auto;
+  color: var(--color-text-muted);
+  font-size: .95rem;
+  transition: transform .2s, color .2s;
+}
+.contact-info-item--link:hover .contact-info-arrow { color: var(--color-primary); transform: translate(3px, -3px); }
 
 /* ---------- FAQ page ---------- */
 .faq-search-wrap { position: relative; }

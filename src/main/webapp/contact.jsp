@@ -15,20 +15,23 @@
     <div class="col-md-5">
       <h5 class="mb-3">Reach Us</h5>
       <div class="contact-info-list">
-        <div class="contact-info-item">
-          <span class="contact-info-icon"><i class="bi bi-geo-alt-fill"></i></span>
-          <span>123 Garden Street, Sepang, Selangor, Malaysia</span>
-        </div>
-        <a class="contact-info-item" href="https://wa.me/60123456789" target="_blank" rel="noopener">
-          <span class="contact-info-icon contact-info-icon--whatsapp"><i class="bi bi-whatsapp"></i></span>
+        <a class="contact-info-item contact-info-item--lg contact-info-item--link" href="https://www.google.com/maps/search/?api=1&query=Xiamen+University+Malaysia" target="_blank" rel="noopener">
+          <span class="contact-info-icon contact-info-icon--lg"><i class="bi bi-geo-alt-fill"></i></span>
+          <span>Xiamen University Malaysia</span>
+          <i class="bi bi-box-arrow-up-right contact-info-arrow"></i>
+        </a>
+        <a class="contact-info-item contact-info-item--lg contact-info-item--link" href="https://wa.me/60123456789" target="_blank" rel="noopener">
+          <span class="contact-info-icon contact-info-icon--lg contact-info-icon--whatsapp"><i class="bi bi-whatsapp"></i></span>
           <span>+60 12-345 6789</span>
+          <i class="bi bi-box-arrow-up-right contact-info-arrow"></i>
         </a>
-        <a class="contact-info-item" href="mailto:hello@foodorder.com">
-          <span class="contact-info-icon"><i class="bi bi-envelope-fill"></i></span>
+        <a class="contact-info-item contact-info-item--lg contact-info-item--link" href="mailto:hello@foodorder.com">
+          <span class="contact-info-icon contact-info-icon--lg"><i class="bi bi-envelope-fill"></i></span>
           <span>hello@foodorder.com</span>
+          <i class="bi bi-box-arrow-up-right contact-info-arrow"></i>
         </a>
-        <div class="contact-info-item">
-          <span class="contact-info-icon"><i class="bi bi-clock-fill"></i></span>
+        <div class="contact-info-item contact-info-item--lg">
+          <span class="contact-info-icon contact-info-icon--lg"><i class="bi bi-clock-fill"></i></span>
           <span>Mon–Sun, 10:00 AM – 10:00 PM</span>
         </div>
       </div>
@@ -54,7 +57,7 @@
             <textarea class="form-control" id="contactMessage" rows="5" required></textarea>
           </div>
           <div class="col-12">
-            <button type="submit" class="btn btn-brand">Send Message</button>
+            <button type="submit" class="btn btn-brand w-100">Send Message</button>
           </div>
         </div>
       </form>
