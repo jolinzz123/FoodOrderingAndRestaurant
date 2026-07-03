@@ -1,0 +1,90 @@
+/* ---------- Forms ---------- */
+.form-card {
+  background-color: var(--color-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  padding: 36px;
+  max-width: 480px;
+  margin: 40px auto;
+}
+.form-control {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
+.form-control:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 0.2rem rgba(108, 99, 255, 0.15);
+}
+label { font-weight: 500; color: var(--color-text); }
+
+/* ---------- Footer ---------- */
+footer.site-footer {
+  background: #2C2416;
+  color: #C8BFB0;
+  padding: 40px 0 20px;
+  margin-top: 60px;
+}
+footer.site-footer a { color: #A89EF0; }
+footer.site-footer a:hover { color: #fff; }
+
+/* ---------- Cart / Checkout ---------- */
+.cart-table th { color: var(--color-text); border-bottom: 2px solid var(--color-border); font-weight: 600; }
+.cart-summary {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  padding: 24px;
+  position: sticky;
+  top: 90px;
+}
+.total-line { font-size: 1.3rem; font-weight: 700; color: var(--color-text); }
+
+/* ---------- Admin Dashboard ---------- */
+.admin-sidebar {
+  background: linear-gradient(160deg, #6558D4 0%, #7C6FE8 100%);
+  min-height: calc(100vh - 70px);
+  color: #EDE9FF;
+  padding-top: 24px;
+}
+.admin-sidebar a {
+  color: #EDE9FF;
+  display: block;
+  padding: 12px 24px;
+  font-weight: 500;
+}
+.admin-sidebar a:hover, .admin-sidebar a.active {
+  background-color: rgba(255,255,255,0.15);
+  color: #fff;
+}
+.admin-stat-card {
+  background-color: var(--color-bg);
+  border-left: 5px solid var(--color-primary);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  padding: 20px;
+}
+.admin-stat-card .stat-number { font-size: 2rem; font-weight: 700; color: var(--color-primary); }
+
+table.table-brand thead { background-color: var(--color-accent); }
+table.table-brand th { color: var(--color-text); }
+
+.status-pill {
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-block;
+  white-space: nowrap;
+}
+.status-PENDING  { background-color: #FFF3CD; color: #8A6D00; }
+.status-CONFIRMED { background-color: #EDE9FF; color: var(--color-primary-dark); }
+.status-PREPARING { background-color: #D0E8F2; color: #0B5C7A; }
+.status-COMPLETED { background-color: #D4EDDA; color: #155724; }
+.status-CANCELLED { background-color: #F8D7DA; color: #842029; }
+
+/* ---------- Misc ---------- */
+.section-title { text-align: center; margin-bottom: 40px; }
+.section-title h2 { font-size: 2rem; }
+.section-title p { color: var(--color-text-muted); }
+
