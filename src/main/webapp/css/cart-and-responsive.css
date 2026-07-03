@@ -5,13 +5,15 @@
 .cart-page-hero {
   background: linear-gradient(135deg, #7C6FE8 0%, #A89EF0 100%);
   color: #fff;
-  padding: 40px 20px;
-  text-align: center;
-  border-radius: 0 0 32px 32px;
-  margin-bottom: 36px;
+  padding: 18px 32px;
+  text-align: left;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
-.cart-page-hero h1 { font-size: 2rem; margin-bottom: 4px; color: #fff; }
-.cart-page-hero p { color: rgba(255,255,255,0.85); margin: 0; }
+.cart-page-hero h1 { font-size: 1.3rem; font-weight: 800; margin: 0; color: #fff; }
+.cart-page-hero p { color: rgba(255,255,255,0.85); margin: 0; font-size: .85rem; }
 
 .cart-item-row {
   display: flex;

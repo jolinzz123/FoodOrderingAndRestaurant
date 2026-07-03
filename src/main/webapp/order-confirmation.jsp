@@ -18,6 +18,14 @@
 <jsp:include page="header.jsp" />
 
 <style>
+.co-steps { display: flex; align-items: center; gap: 0; margin-bottom: 36px; max-width: 640px; margin-left: auto; margin-right: auto; }
+.co-step { display: flex; align-items: center; gap: 8px; font-size: .82rem; font-weight: 600; color: #bbb; }
+.co-step-num { width: 30px; height: 30px; border-radius: 50%; background: #e8e4f4; color: #bbb; display: flex; align-items: center; justify-content: center; font-size: .78rem; font-weight: 800; flex-shrink: 0; }
+.co-step.done .co-step-num { background: #7C6FE8; color: #fff; }
+.co-step.done { color: #7C6FE8; }
+.co-step-line { flex: 1; height: 2px; background: #e8e4f4; margin: 0 10px; min-width: 30px; }
+.co-step-line.done { background: #7C6FE8; }
+
 .oc-card { background:#fff; border:1px solid var(--color-border); border-radius:16px; padding:32px; max-width:640px; margin:0 auto; }
 .oc-header { text-align:center; margin-bottom:28px; }
 .oc-check { font-size:3.5rem; }
@@ -33,6 +41,25 @@
 </style>
 
 <div class="container py-5">
+
+  <!-- Steps — all completed -->
+  <div class="co-steps">
+    <div class="co-step done">
+      <div class="co-step-num">✓</div>
+      <span>Review Order</span>
+    </div>
+    <div class="co-step-line done"></div>
+    <div class="co-step done">
+      <div class="co-step-num">✓</div>
+      <span>Delivery &amp; Payment</span>
+    </div>
+    <div class="co-step-line done"></div>
+    <div class="co-step done">
+      <div class="co-step-num">✓</div>
+      <span>Confirmation</span>
+    </div>
+  </div>
+
   <div class="oc-card">
     <div class="oc-header">
       <div class="oc-check">✅</div>

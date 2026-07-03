@@ -19,11 +19,14 @@
 
 /* Steps indicator */
 .co-steps { display: flex; align-items: center; gap: 0; margin-bottom: 36px; }
-.co-step { display: flex; align-items: center; gap: 8px; font-size: .82rem; font-weight: 600; color: var(--color-text-muted); }
-.co-step-num { width: 28px; height: 28px; border-radius: 50%; background: #e8e4f4; color: #9b8fcf; display: flex; align-items: center; justify-content: center; font-size: .78rem; font-weight: 800; }
-.co-step.active .co-step-num { background: var(--color-accent); color: #fff; }
-.co-step.active { color: var(--color-accent); }
-.co-step-line { flex: 1; height: 2px; background: #e8e4f4; margin: 0 10px; min-width: 30px; }
+.co-step { display: flex; align-items: center; gap: 8px; font-size: .82rem; font-weight: 600; color: #bbb; }
+.co-step-num { width: 30px; height: 30px; border-radius: 50%; background: #e8e4f4; color: #bbb; display: flex; align-items: center; justify-content: center; font-size: .78rem; font-weight: 800; flex-shrink: 0; }
+.co-step.active .co-step-num { background: #7C6FE8; color: #fff; }
+.co-step.active { color: #7C6FE8; }
+.co-step.done .co-step-num { background: #7C6FE8; color: #fff; }
+.co-step.done { color: #7C6FE8; }
+.co-step-line { flex: 1; height: 2px; background: #e8e4f4; margin: 0 10px; min-width: 30px; transition: background .3s; }
+.co-step-line.done { background: #7C6FE8; }
 
 /* Cards */
 .co-card {
@@ -48,8 +51,7 @@
 .co-item-name { font-weight: 700; font-size: .9rem; color: var(--color-text); }
 .co-item-addons { font-size: .75rem; color: var(--color-text-muted); margin-top: 2px; }
 .co-item-qty-badge {
-  display: inline-block; background: #f0ecff; color: var(--color-accent);
-  font-size: .7rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; margin-top: 4px;
+  display: inline-block; font-size: .78rem; color: var(--color-text-muted); margin-top: 2px;
 }
 .co-item-price { font-weight: 700; color: var(--color-primary); white-space: nowrap; font-size: .92rem; }
 .co-remove-btn {
@@ -103,14 +105,14 @@
 
   <!-- Steps -->
   <div class="co-steps">
-    <div class="co-step active">
-      <div class="co-step-num">1</div>
+    <div class="co-step done">
+      <div class="co-step-num">✓</div>
       <span>Review Order</span>
     </div>
-    <div class="co-step-line"></div>
-    <div class="co-step active">
-      <div class="co-step-num">2</div>
-      <span>Delivery & Payment</span>
+    <div class="co-step-line done"></div>
+    <div class="co-step done">
+      <div class="co-step-num">✓</div>
+      <span>Delivery &amp; Payment</span>
     </div>
     <div class="co-step-line"></div>
     <div class="co-step">

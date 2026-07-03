@@ -13,8 +13,11 @@
 <jsp:include page="header.jsp" />
 
 <div class="cart-page-hero">
-  <h1>Your Cart</h1>
-  <p><%= cartItems.size() %> item<%= cartItems.size() == 1 ? "" : "s" %> ready for checkout</p>
+  <span style="font-size:1.6rem;">🛒</span>
+  <div>
+    <h1>Your Cart</h1>
+    <p><%= cartItems.size() %> item<%= cartItems.size() == 1 ? "" : "s" %> ready for checkout</p>
+  </div>
 </div>
 
 <div class="container pb-5">
