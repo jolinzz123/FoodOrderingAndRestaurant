@@ -78,7 +78,7 @@
               }
             %>
             <button type="submit" name="sort" value="<%= nameNextSort %>"
-                    class="btn btn-sm <%= sort.isEmpty() ? "btn-outline-brand" : "btn-brand-active" %>" title="<%= nameSortTitle %>">
+                    class="btn adm-sort-toggle-btn <%= sort.isEmpty() ? "" : "adm-sort-active" %>" title="<%= nameSortTitle %>">
               <i class="bi <%= nameSortIcon %>"></i>
             </button>
           </form>

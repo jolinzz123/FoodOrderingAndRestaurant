@@ -21,7 +21,7 @@
 <div class="adm-card mb-4">
   <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
     <div class="adm-card-title mb-0">Orders by <%= WebUtil.escapeHtml(viewOrdersUser.getUsername()) %></div>
-    <a href="<%= ctx %>/admin/users" class="btn btn-outline-brand btn-sm text-nowrap">&larr; Back to Users</a>
+    <a href="<%= ctx %>/admin/users" class="btn btn-outline-brand btn-sm text-nowrap">Close</a>
   </div>
   <% if (viewOrdersList == null || viewOrdersList.isEmpty()) { %>
     <p class="text-muted mb-0">This user hasn't placed any orders yet.</p>
@@ -96,10 +96,10 @@
         <tr>
           <th>#</th>
           <th>Username</th>
-          <th>Email</th>
-          <th>Phone</th>
+          <th class="d-none d-md-table-cell">Email</th>
+          <th class="d-none d-lg-table-cell">Phone</th>
           <th>Role</th>
-          <th>Registered</th>
+          <th class="d-none d-lg-table-cell">Registered</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -107,9 +107,12 @@
         <% int rowNum = 0; for (User u : users) { rowNum++; %>
         <tr>
           <td><%= rowNum %></td>
-          <td><strong><%= WebUtil.escapeHtml(u.getUsername()) %></strong></td>
-          <td><%= WebUtil.escapeHtml(u.getEmail()) %></td>
-          <td><%= u.getPhone() != null ? WebUtil.escapeHtml(u.getPhone()) : "-" %></td>
+          <td>
+            <strong><%= WebUtil.escapeHtml(u.getUsername()) %></strong>
+            <div class="d-md-none" style="font-size:0.78rem; color:#6B7280;"><%= WebUtil.escapeHtml(u.getEmail()) %></div>
+          </td>
+          <td class="d-none d-md-table-cell"><%= WebUtil.escapeHtml(u.getEmail()) %></td>
+          <td class="d-none d-lg-table-cell"><%= u.getPhone() != null ? WebUtil.escapeHtml(u.getPhone()) : "-" %></td>
           <td>
             <% if (u.isAdmin()) { %>
               <span class="status-pill status-CONFIRMED">ADMIN</span>
@@ -117,7 +120,7 @@
               <span class="badge-category">CUSTOMER</span>
             <% } %>
           </td>
-          <td class="text-nowrap" style="font-size:0.85rem; color:#6B7280;">
+          <td class="d-none d-lg-table-cell text-nowrap" style="font-size:0.85rem; color:#6B7280;">
             <%= u.getCreatedAt() != null ? u.getCreatedAt().toString().substring(0, 10) : "-" %>
           </td>
           <td>
@@ -126,13 +129,19 @@
                 <i class="bi bi-receipt"></i>
               </a>
               <% if (currentUser != null && currentUser.getId() == u.getId()) { %>
-                <span class="badge bg-secondary align-self-center" title="You can't change your own role">You</span>
+                <span class="btn btn-sm btn-icon-disabled" title="You can't change your own role">
+                  <i class="bi bi-person-fill"></i>
+                </span>
               <% } else if (u.isAdmin()) { %>
-                <a href="<%= ctx %>/admin/users?action=demote&id=<%= u.getId() %>" class="btn btn-sm btn-outline-danger text-nowrap"
-                   onclick="return confirm('Demote \'<%= u.getUsername() %>\' to a regular customer?')">Demote</a>
+                <a href="<%= ctx %>/admin/users?action=demote&id=<%= u.getId() %>" class="btn btn-sm btn-icon-delete" title="Demote to Customer"
+                   onclick="return confirm('Demote \'<%= u.getUsername() %>\' to a regular customer?')">
+                  <i class="bi bi-arrow-down-circle-fill"></i>
+                </a>
               <% } else { %>
-                <a href="<%= ctx %>/admin/users?action=promote&id=<%= u.getId() %>" class="btn btn-sm btn-outline-brand text-nowrap"
-                   onclick="return confirm('Promote \'<%= u.getUsername() %>\' to admin?')">Promote</a>
+                <a href="<%= ctx %>/admin/users?action=promote&id=<%= u.getId() %>" class="btn btn-sm btn-icon-edit" title="Promote to Admin"
+                   onclick="return confirm('Promote \'<%= u.getUsername() %>\' to admin?')">
+                  <i class="bi bi-arrow-up-circle-fill"></i>
+                </a>
               <% } %>
             </div>
           </td>

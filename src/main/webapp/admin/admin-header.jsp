@@ -87,6 +87,7 @@
 <script>
   document.getElementById('sidebarToggle').addEventListener('click', function() {
     document.querySelector('.admin-layout').classList.toggle('sidebar-collapsed');
+    document.querySelector('.admin-layout').classList.toggle('mobile-sidebar-open');
   });
   document.getElementById('mobileSidebarToggle').addEventListener('click', function() {
     document.querySelector('.admin-layout').classList.toggle('mobile-sidebar-open');
