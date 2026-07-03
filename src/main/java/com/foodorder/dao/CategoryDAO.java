@@ -41,11 +41,38 @@ public class CategoryDAO {
         return list;
     }
 
+    public Category findById(int id) {
+        String sql = "SELECT * FROM categories WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return new Category(rs.getInt("id"), rs.getString("name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public boolean add(String name) {
         String sql = "INSERT INTO categories (name) VALUES (?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, name);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean update(int id, String name) {
+        String sql = "UPDATE categories SET name = ? WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.setInt(2, id);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();

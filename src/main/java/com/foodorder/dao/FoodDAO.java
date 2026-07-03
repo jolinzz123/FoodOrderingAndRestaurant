@@ -12,7 +12,7 @@ public class FoodDAO {
 
     private static final String BASE_SELECT =
         "SELECT f.*, c.name AS category_name FROM food_items f " +
-        "JOIN categories c ON f.category_id = c.id ";
+        "LEFT JOIN categories c ON f.category_id = c.id ";
 
     public List<FoodItem> findAll() {
         List<FoodItem> list = new ArrayList<>();

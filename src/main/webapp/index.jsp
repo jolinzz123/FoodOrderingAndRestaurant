@@ -80,7 +80,7 @@
              onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300&q=70'">
       </div>
       <div class="hp-dish-body">
-        <span class="hp-dish-cat"><%= item.getCategoryName() %></span>
+        <span class="hp-dish-cat"><%= item.getCategoryName() != null ? item.getCategoryName() : "Uncategorized" %></span>
         <h6 class="hp-dish-name"><%= item.getName() %></h6>
         <div class="hp-dish-footer">
           <span class="hp-dish-price">RM <%= String.format("%,.2f", item.getPrice()) %></span>
@@ -112,7 +112,7 @@
                onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300&q=70'">
         </div>
         <div class="hp-dish-body">
-          <span class="hp-dish-cat"><%= item.getCategoryName() %></span>
+          <span class="hp-dish-cat"><%= item.getCategoryName() != null ? item.getCategoryName() : "Uncategorized" %></span>
           <h6 class="hp-dish-name"><%= item.getName() %></h6>
           <div class="hp-dish-footer">
             <span class="hp-dish-price">RM <%= String.format("%,.2f", item.getPrice()) %></span>
@@ -146,7 +146,7 @@
              onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300&q=70'">
       </div>
       <div class="hp-dish-body">
-        <span class="hp-dish-cat"><%= item.getCategoryName() %></span>
+        <span class="hp-dish-cat"><%= item.getCategoryName() != null ? item.getCategoryName() : "Uncategorized" %></span>
         <h6 class="hp-dish-name"><%= item.getName() %></h6>
         <div class="hp-dish-footer">
           <span class="hp-dish-price">RM <%= String.format("%,.2f", item.getPrice()) %></span>

@@ -154,9 +154,9 @@ INSERT INTO addons (food_item_id, name, extra_price) VALUES
 (39,'Less Sugar',0.00),(39,'Extra Milo Powder',1.00),(39,'Extra Ice',0.00);
 
 -- --------------------------------------------------------
--- Admin account (username: admin | password: admin123)
+-- Admin account (username: admin | password: admin306)
 -- --------------------------------------------------------
 INSERT IGNORE INTO users (username, email, password_hash, phone, role) VALUES
 ('admin','admin@foodorder.com',
- '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9',
+ '1621514f4abb2d0b68bb344ebc60e12233fcf7bff1a99c9b1e4ac257f949f698',
  '0123456789','ADMIN');

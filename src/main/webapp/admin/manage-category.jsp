@@ -8,20 +8,38 @@
     @SuppressWarnings("unchecked")
     List<Category> categories = (List<Category>) request.getAttribute("categories");
     String searchQuery = (String) request.getAttribute("searchQuery");
+
+    Category editItem = (Category) request.getAttribute("editItem");
+    boolean isEdit = (editItem != null);
 %>
 <jsp:include page="/admin/admin-header.jsp" />
 
 <div class="row g-4">
-  <!-- Add Category Form -->
+  <!-- Add / Edit Category Form -->
   <div class="col-md-4">
     <div class="adm-card h-100">
-      <div class="adm-card-title">Add New Category</div>
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="adm-card-title mb-0"><%= isEdit ? "Edit: " + editItem.getName() : "Add New Category" %></div>
+        <% if (isEdit) { %>
+          <a href="<%= ctx %>/admin/category" class="btn btn-outline-brand btn-sm">+ Add New</a>
+        <% } %>
+      </div>
       <form method="post" action="<%= ctx %>/admin/category">
+        <% if (isEdit) { %>
+          <input type="hidden" name="action" value="update">
+          <input type="hidden" name="id" value="<%= editItem.getId() %>">
+        <% } %>
         <div class="mb-3">
           <label class="form-label">Category Name <span class="text-danger">*</span></label>
-          <input type="text" name="name" class="form-control" placeholder="e.g. Drinks, Meals, Desserts" required>
+          <input type="text" name="name" class="form-control" placeholder="e.g. Drinks, Meals, Desserts" required
+                 value="<%= isEdit ? WebUtil.escapeHtml(editItem.getName()) : "" %>">
         </div>
-        <button type="submit" class="btn btn-primary w-100">Add Category</button>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-primary flex-grow-1"><%= isEdit ? "Save Changes" : "Add Category" %></button>
+          <% if (isEdit) { %>
+            <a href="<%= ctx %>/admin/category" class="btn btn-outline-brand">Cancel</a>
+          <% } %>
+        </div>
       </form>
 
       <hr class="my-3">
@@ -70,19 +88,25 @@
             </tr>
           </thead>
           <tbody>
-            <% for (Category c : categories) { %>
-            <tr>
-              <td><%= c.getId() %></td>
+            <% int rowNum = 0; for (Category c : categories) { rowNum++; %>
+            <tr class="adm-row-clickable" data-href="<%= ctx %>/admin/food?categoryId=<%= c.getId() %>">
+              <td><%= rowNum %></td>
               <td>
-                <span class="badge-category fs-6 px-3 py-2"><%= c.getName() %></span>
+                <a href="<%= ctx %>/admin/food?categoryId=<%= c.getId() %>"
+                   class="badge-category fs-6 px-3 py-2" title="View products in <%= c.getName() %>"><%= c.getName() %></a>
               </td>
               <td>
-                <a href="<%= ctx %>/admin/category?action=delete&id=<%= c.getId() %>"
-                   class="btn btn-sm btn-icon-delete" title="Delete"
-                   onclick="return confirm('Delete category \'<%= c.getName() %>\'?')">
-                  <i class="bi bi-trash-fill"></i>
-
-                </a>
+                <div class="d-flex gap-1 flex-nowrap">
+                  <a href="<%= ctx %>/admin/category?action=edit&id=<%= c.getId() %>"
+                     class="btn btn-sm btn-icon-edit" title="Edit">
+                    <i class="bi bi-pencil-fill"></i>
+                  </a>
+                  <a href="<%= ctx %>/admin/category?action=delete&id=<%= c.getId() %>"
+                     class="btn btn-sm btn-icon-delete" title="Delete"
+                     onclick="return confirm('Delete category \'<%= c.getName() %>\'?')">
+                    <i class="bi bi-trash-fill"></i>
+                  </a>
+                </div>
               </td>
             </tr>
             <% } %>

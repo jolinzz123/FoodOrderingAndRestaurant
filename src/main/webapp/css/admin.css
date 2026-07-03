@@ -275,6 +275,15 @@ body.admin-body {
   color: #fff;
 }
 
+/* ===== Clickable table rows (manage-category.jsp) ===== */
+.adm-row-clickable {
+  cursor: pointer;
+}
+.adm-row-clickable td a.btn,
+.adm-row-clickable td a.badge-category {
+  cursor: pointer;
+}
+
 /* ===== Admin product cards (manage-food.jsp) ===== */
 .adm-food-card .food-card-img-wrap {
   position: relative;
@@ -282,6 +291,12 @@ body.admin-body {
 .adm-food-card .food-card-img-wrap img {
   height: auto;
   aspect-ratio: 4 / 3;
+}
+.adm-food-card .food-card-name {
+  min-height: 2.6em;
+}
+.adm-food-card .food-card-footer {
+  margin-top: auto;
 }
 .adm-food-card .food-card-price {
   white-space: nowrap;

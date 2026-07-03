@@ -26,7 +26,7 @@
     <div class="adm-card-title mb-0"><%= isEdit ? "Edit: " + editItem.getName() : "Add New Product" %></div>
 
     <% if (isEdit) { %>
-      <a href="<%= ctx %>/admin/food" class="btn btn-outline-secondary btn-sm">+ Add New Item</a>
+      <a href="<%= ctx %>/admin/food" class="btn btn-outline-brand btn-sm">+ Add New Item</a>
     <% } %>
   </div>
 
@@ -91,7 +91,7 @@
         <%= isEdit ? "Save Changes" : "Add Product" %>
       </button>
       <% if (isEdit) { %>
-        <a href="<%= ctx %>/admin/food" class="btn btn-outline-secondary">Cancel</a>
+        <a href="<%= ctx %>/admin/food" class="btn btn-outline-brand">Cancel</a>
       <% } %>
     </div>
   </form>
@@ -136,12 +136,16 @@
   <div class="row g-3">
     <% for (FoodItem f : foodItems) { %>
     <div class="col-lg-3 col-md-4 col-sm-6">
-      <div class="food-card adm-food-card">
+      <div class="food-card adm-food-card adm-row-clickable" data-href="<%= ctx %>/admin/food?action=edit&id=<%= f.getId() %>">
         <div class="food-card-img-wrap">
           <img src="<%= ctx %>/<%= f.getImageUrl() %>" alt="<%= f.getName() %>"
                onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=70'">
-          <a href="<%= ctx %>/admin/food?categoryId=<%= f.getCategoryId() %>"
-             class="badge-category adm-food-card-cat" title="View all <%= f.getCategoryName() != null ? f.getCategoryName() : "" %> items"><%= f.getCategoryName() != null ? f.getCategoryName() : "-" %></a>
+          <% if (f.getCategoryName() != null) { %>
+            <a href="<%= ctx %>/admin/food?categoryId=<%= f.getCategoryId() %>"
+               class="badge-category adm-food-card-cat" title="View all <%= f.getCategoryName() %> items"><%= f.getCategoryName() %></a>
+          <% } else { %>
+            <span class="badge-category adm-food-card-cat" title="No category assigned">Uncategorized</span>
+          <% } %>
         </div>
         <div class="food-card-body">
           <div class="food-card-name"><span class="adm-food-card-id">#<%= f.getId() %></span> <%= f.getName() %></div>

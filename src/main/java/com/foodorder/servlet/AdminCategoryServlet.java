@@ -25,6 +25,10 @@ public class AdminCategoryServlet extends HttpServlet {
             categoryDAO.delete(Integer.parseInt(idParam));
         }
 
+        if ("edit".equals(action) && idParam != null) {
+            req.setAttribute("editItem", categoryDAO.findById(Integer.parseInt(idParam)));
+        }
+
         req.setAttribute("categories", hasQuery ? categoryDAO.search(q.trim()) : categoryDAO.findAll());
         req.setAttribute("searchQuery", q);
         req.getRequestDispatcher("/admin/manage-category.jsp").forward(req, resp);
@@ -32,9 +36,16 @@ public class AdminCategoryServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
         String name = req.getParameter("name");
+
         if (name != null && !name.trim().isEmpty()) {
-            categoryDAO.add(name.trim());
+            if ("update".equals(action)) {
+                int id = Integer.parseInt(req.getParameter("id"));
+                categoryDAO.update(id, name.trim());
+            } else {
+                categoryDAO.add(name.trim());
+            }
         }
         resp.sendRedirect(req.getContextPath() + "/admin/category");
     }

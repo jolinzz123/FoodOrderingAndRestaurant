@@ -55,8 +55,8 @@
   <div class="adm-card-title">Quick Actions</div>
   <div class="d-flex flex-wrap gap-2">
     <a href="<%= ctx %>/admin/food" class="btn btn-primary btn-sm">+ Add Product</a>
-    <a href="<%= ctx %>/admin/category" class="btn btn-outline-secondary btn-sm">+ Add Category</a>
-    <a href="<%= ctx %>/admin/orders" class="btn btn-outline-secondary btn-sm">View All Orders</a>
+    <a href="<%= ctx %>/admin/category" class="btn btn-outline-brand btn-sm">+ Add Category</a>
+    <a href="<%= ctx %>/admin/orders" class="btn btn-outline-brand btn-sm">View All Orders</a>
   </div>
 </div>
 
@@ -89,7 +89,7 @@
             <%= o.getCreatedAt() != null ? o.getCreatedAt().toString().substring(0, 16) : "-" %>
           </td>
           <td>
-            <a href="<%= ctx %>/admin/orders" class="btn btn-sm btn-outline-secondary">Update</a>
+            <a href="<%= ctx %>/admin/orders" class="btn btn-sm btn-outline-brand">Update</a>
           </td>
         </tr>
         <% } %>

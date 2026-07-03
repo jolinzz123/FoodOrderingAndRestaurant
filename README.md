@@ -100,7 +100,7 @@ http://localhost:8080/FoodOrderingAndRestaurant/
 
 | Role | Username | Password |
 |---|---|---|
-| Admin | `admin` | `admin123` |
+| Admin | `admin` | `admin306` |
 | Customer | Create one via the Register page | — |
 
 ---

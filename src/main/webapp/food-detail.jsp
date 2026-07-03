@@ -48,7 +48,7 @@
 
       <!-- Header -->
       <div class="fd-header">
-        <span class="fd-cat-badge"><%= item.getCategoryName() %></span>
+        <span class="fd-cat-badge"><%= item.getCategoryName() != null ? item.getCategoryName() : "Uncategorized" %></span>
         <h2 class="fd-title"><%= item.getName() %></h2>
         <p class="fd-desc"><%= item.getDescription() %></p>
 
