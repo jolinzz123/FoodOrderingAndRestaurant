@@ -41,7 +41,9 @@
 .empty-cart { text-align: center; padding: 60px 20px; color: var(--color-text-muted); }
 .empty-cart .icon { font-size: 3rem; margin-bottom: 12px; opacity: .5; }
 
+/* ── Tablet (≤ 900px) ─────────────────────────────────── */
 @media (max-width: 900px) {
+  /* Menu page */
   .menu-layout { flex-direction: column; }
   .menu-cart-panel {
     width: 100%;
@@ -50,7 +52,60 @@
     border-left: none;
     border-top: 1px solid var(--color-border);
   }
+  /* Checkout two-column → single column */
+  .co-page-grid { flex-direction: column; }
+  /* Misc */
   .hero h1 { font-size: 2rem; }
   .form-card { padding: 24px; margin: 20px; }
   .cat-bar { top: 0; }
+}
+
+/* ── Mobile (≤ 600px) ─────────────────────────────────── */
+@media (max-width: 600px) {
+
+  /* Navbar */
+  .navbar-foodorder .btn-cart { padding: 5px 12px; font-size: .82rem; }
+
+  /* Hero (home) */
+  .hp-hero { padding-bottom: 60px; }
+  .hp-hero-heading { font-size: 2rem; }
+  .hp-hero-actions { flex-direction: column; gap: 10px; }
+  .hp-hero-actions a { width: 100%; text-align: center; }
+  .hp-stats-row { flex-wrap: wrap; gap: 0; }
+  .hp-stat-box { flex: 1 1 45%; padding: 14px 8px; }
+  .hp-stat-divider { display: none; }
+
+  /* Category bar */
+  .cat-bar { gap: 6px; padding: 8px 12px; }
+  .cat-btn { font-size: .75rem; padding: 5px 12px; }
+
+  /* Menu food cards */
+  .food-cards-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* Cart page */
+  .cart-page-hero { padding: 14px 18px; }
+  .cart-item-row { flex-wrap: wrap; gap: 10px; }
+  .cart-item-row img { width: 56px; height: 56px; }
+  .cart-item-price { min-width: auto; }
+
+  /* Checkout */
+  .co-steps { gap: 4px; }
+  .co-step span { display: none; }       /* hide step labels, keep circles */
+  .co-step-line { min-width: 18px; }
+  .co-card { padding: 16px 14px; }
+  .co-pay-grid { grid-template-columns: 1fr; }
+
+  /* Order confirmation */
+  .oc-card { padding: 20px 16px; }
+  .oc-actions { flex-direction: column; }
+  .oc-actions a { width: 100%; text-align: center; }
+
+  /* Forms (login / register) */
+  .form-card { margin: 12px; padding: 20px 16px; }
+}
+
+/* ── Small mobile (≤ 400px) ──────────────────────────── */
+@media (max-width: 400px) {
+  .food-cards-grid { grid-template-columns: 1fr; }
+  .hp-hero-heading { font-size: 1.7rem; }
 }

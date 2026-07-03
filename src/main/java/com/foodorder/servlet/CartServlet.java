@@ -51,6 +51,8 @@ public class CartServlet extends HttpServlet {
         if ("add".equals(action)) {
             int foodId = Integer.parseInt(req.getParameter("foodId"));
             int quantity = parseQuantity(req.getParameter("quantity"));
+            String editKey = req.getParameter("editKey");
+            if (editKey != null && !editKey.isEmpty()) cart.remove(editKey);
             String[] addonIdParams = req.getParameterValues("addons");
 
             BigDecimal addonsPrice = BigDecimal.ZERO;
