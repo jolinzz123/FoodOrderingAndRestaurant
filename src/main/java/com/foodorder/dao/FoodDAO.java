@@ -15,8 +15,12 @@ public class FoodDAO {
         "LEFT JOIN categories c ON f.category_id = c.id ";
 
     public List<FoodItem> findAll() {
+        return findAll(null);
+    }
+
+    public List<FoodItem> findAll(String sort) {
         List<FoodItem> list = new ArrayList<>();
-        String sql = BASE_SELECT + "ORDER BY c.id, f.name";
+        String sql = BASE_SELECT + orderClause(sort, "ORDER BY c.id, f.name");
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -28,8 +32,12 @@ public class FoodDAO {
     }
 
     public List<FoodItem> search(String keyword) {
+        return search(keyword, null);
+    }
+
+    public List<FoodItem> search(String keyword, String sort) {
         List<FoodItem> list = new ArrayList<>();
-        String sql = BASE_SELECT + "WHERE f.name LIKE ? OR c.name LIKE ? ORDER BY c.id, f.name";
+        String sql = BASE_SELECT + "WHERE f.name LIKE ? OR c.name LIKE ? " + orderClause(sort, "ORDER BY c.id, f.name");
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             String like = "%" + keyword + "%";
@@ -45,8 +53,12 @@ public class FoodDAO {
     }
 
     public List<FoodItem> findByCategory(int categoryId) {
+        return findByCategory(categoryId, null);
+    }
+
+    public List<FoodItem> findByCategory(int categoryId, String sort) {
         List<FoodItem> list = new ArrayList<>();
-        String sql = BASE_SELECT + "WHERE f.category_id = ? ORDER BY f.name";
+        String sql = BASE_SELECT + "WHERE f.category_id = ? " + orderClause(sort, "ORDER BY f.name");
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, categoryId);
@@ -57,6 +69,13 @@ public class FoodDAO {
             e.printStackTrace();
         }
         return list;
+    }
+
+    /** Whitelists the "sort" query param to a safe ORDER BY clause (avoids building SQL from arbitrary input). */
+    private String orderClause(String sort, String defaultClause) {
+        if ("price_asc".equals(sort)) return "ORDER BY f.price ASC";
+        if ("price_desc".equals(sort)) return "ORDER BY f.price DESC";
+        return defaultClause;
     }
 
     public FoodItem findById(int id) {

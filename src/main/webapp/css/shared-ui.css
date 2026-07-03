@@ -80,6 +80,8 @@ table.table-brand th { color: var(--color-text); }
 .status-PENDING  { background-color: #FFF3CD; color: #8A6D00; }
 .status-CONFIRMED { background-color: #EDE9FF; color: var(--color-primary-dark); }
 .status-PREPARING { background-color: #D0E8F2; color: #0B5C7A; }
+.status-READY { background-color: #FDE9CB; color: #9A5B13; }
+.status-DELIVERED { background-color: #D4EDDA; color: #155724; }
 .status-COMPLETED { background-color: #D4EDDA; color: #155724; }
 .status-CANCELLED { background-color: #F8D7DA; color: #842029; }
 

@@ -19,6 +19,7 @@ public class AdminCategoryServlet extends HttpServlet {
         String action = req.getParameter("action");
         String idParam = req.getParameter("id");
         String q = req.getParameter("q");
+        String sort = req.getParameter("sort");
         boolean hasQuery = q != null && !q.trim().isEmpty();
 
         if ("delete".equals(action) && idParam != null) {
@@ -29,8 +30,9 @@ public class AdminCategoryServlet extends HttpServlet {
             req.setAttribute("editItem", categoryDAO.findById(Integer.parseInt(idParam)));
         }
 
-        req.setAttribute("categories", hasQuery ? categoryDAO.search(q.trim()) : categoryDAO.findAll());
+        req.setAttribute("categories", hasQuery ? categoryDAO.search(q.trim(), sort) : categoryDAO.findAll(sort));
         req.setAttribute("searchQuery", q);
+        req.setAttribute("sort", sort);
         req.getRequestDispatcher("/admin/manage-category.jsp").forward(req, resp);
     }
 

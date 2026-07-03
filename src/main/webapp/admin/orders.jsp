@@ -9,36 +9,19 @@
     List<Order> orders = (List<Order>) request.getAttribute("orders");
     String searchQuery = (String) request.getAttribute("searchQuery");
 
-    Integer totalOrdersCount = (Integer) request.getAttribute("totalOrdersCount");
-    Integer completedOrdersCount = (Integer) request.getAttribute("completedOrdersCount");
     Integer pendingOrdersCount = (Integer) request.getAttribute("pendingOrdersCount");
+    Integer preparingOrdersCount = (Integer) request.getAttribute("preparingOrdersCount");
+    Integer readyOrdersCount = (Integer) request.getAttribute("readyOrdersCount");
+    Integer deliveredOrdersCount = (Integer) request.getAttribute("deliveredOrdersCount");
     Integer cancelledOrdersCount = (Integer) request.getAttribute("cancelledOrdersCount");
 
-    String[] statuses = {"PENDING", "CONFIRMED", "PREPARING", "COMPLETED", "CANCELLED"};
+    String[] statuses = {"PENDING", "PREPARING", "READY", "DELIVERED", "CANCELLED"};
 %>
 <jsp:include page="/admin/admin-header.jsp" />
 
 <!-- Stat Cards -->
 <div class="row g-4 mb-4">
-  <div class="col-6 col-md-3">
-    <div class="adm-stat-card">
-      <div class="adm-stat-icon" style="background:#EDE9FE; color:#7C6FE8;">
-        <i class="bi bi-receipt"></i>
-      </div>
-      <div class="adm-stat-label">Total Orders</div>
-      <div class="adm-stat-number"><%= totalOrdersCount %></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="adm-stat-card">
-      <div class="adm-stat-icon" style="background:#DCFCE7; color:#15803D;">
-        <i class="bi bi-check-circle-fill"></i>
-      </div>
-      <div class="adm-stat-label">Completed Orders</div>
-      <div class="adm-stat-number"><%= completedOrdersCount %></div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
+  <div class="col-6 col-md-4 col-lg">
     <div class="adm-stat-card">
       <div class="adm-stat-icon" style="background:#FFF3CD; color:#8A6D00;">
         <i class="bi bi-clock-fill"></i>
@@ -47,7 +30,34 @@
       <div class="adm-stat-number"><%= pendingOrdersCount %></div>
     </div>
   </div>
-  <div class="col-6 col-md-3">
+  <div class="col-6 col-md-4 col-lg">
+    <div class="adm-stat-card">
+      <div class="adm-stat-icon" style="background:#D0E8F2; color:#0B5C7A;">
+        <i class="bi bi-fire"></i>
+      </div>
+      <div class="adm-stat-label">Preparing Orders</div>
+      <div class="adm-stat-number"><%= preparingOrdersCount %></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-4 col-lg">
+    <div class="adm-stat-card">
+      <div class="adm-stat-icon" style="background:#FDE9CB; color:#9A5B13;">
+        <i class="bi bi-bag-check-fill"></i>
+      </div>
+      <div class="adm-stat-label">Ready Orders</div>
+      <div class="adm-stat-number"><%= readyOrdersCount %></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-4 col-lg">
+    <div class="adm-stat-card">
+      <div class="adm-stat-icon" style="background:#DCFCE7; color:#15803D;">
+        <i class="bi bi-check-circle-fill"></i>
+      </div>
+      <div class="adm-stat-label">Delivered Orders</div>
+      <div class="adm-stat-number"><%= deliveredOrdersCount %></div>
+    </div>
+  </div>
+  <div class="col-6 col-md-4 col-lg">
     <div class="adm-stat-card">
       <div class="adm-stat-icon" style="background:#FEE2E2; color:#B91C1C;">
         <i class="bi bi-slash-circle-fill"></i>

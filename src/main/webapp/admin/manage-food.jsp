@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page import="com.foodorder.model.FoodItem, com.foodorder.model.Category, java.util.List, com.foodorder.util.WebUtil" %>
+<%@ page import="com.foodorder.model.FoodItem, com.foodorder.model.Category, com.foodorder.model.Addon, java.util.List, java.math.BigDecimal, com.foodorder.util.WebUtil" %>
 <%
     String ctx = request.getContextPath();
 
@@ -9,10 +9,16 @@
     @SuppressWarnings("unchecked")
     List<Category> categories = (List<Category>) request.getAttribute("categories");
 
+    @SuppressWarnings("unchecked")
+    List<Addon> productAddons = (List<Addon>) request.getAttribute("productAddons");
+
     FoodItem editItem = (FoodItem) request.getAttribute("editItem");
     boolean isEdit = (editItem != null);
     String searchQuery = (String) request.getAttribute("searchQuery");
     String categoryFilterName = (String) request.getAttribute("categoryFilterName");
+    String categoryFilterId = (String) request.getAttribute("categoryFilterId");
+    String sort = (String) request.getAttribute("sort");
+    if (sort == null) sort = "";
 
     request.setAttribute("pageTitle", isEdit ? "Edit Product" : "Products");
     request.setAttribute("activePage", "food");
@@ -21,12 +27,12 @@
 
 <!-- Add / Edit Form -->
 <div class="adm-card mb-4">
-  <div class="d-flex align-items-center justify-content-between mb-3">
+  <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
 
     <div class="adm-card-title mb-0"><%= isEdit ? "Edit: " + editItem.getName() : "Add New Product" %></div>
 
     <% if (isEdit) { %>
-      <a href="<%= ctx %>/admin/food" class="btn btn-outline-brand btn-sm">+ Add New Item</a>
+      <a href="<%= ctx %>/admin/food" class="btn btn-outline-brand btn-sm text-nowrap">+ Add New Item</a>
     <% } %>
   </div>
 
@@ -85,17 +91,57 @@
       </div>
     </div>
 
-    <div class="mt-3 d-flex gap-2">
-      <button type="submit" class="btn btn-primary">
-
+    <div class="mt-3 d-flex gap-2 adm-form-actions">
+      <button type="submit" class="btn btn-primary flex-grow-1 text-nowrap">
         <%= isEdit ? "Save Changes" : "Add Product" %>
       </button>
       <% if (isEdit) { %>
-        <a href="<%= ctx %>/admin/food" class="btn btn-outline-brand">Cancel</a>
+        <a href="<%= ctx %>/admin/food" class="btn btn-outline-brand text-nowrap">Cancel</a>
       <% } %>
     </div>
   </form>
 </div>
+
+<% if (isEdit) { %>
+<!-- Add-ons for this product -->
+<div class="adm-card mb-4">
+  <div class="adm-card-title">Add-ons for "<%= WebUtil.escapeHtml(editItem.getName()) %>"</div>
+
+  <% if (productAddons == null || productAddons.isEmpty()) { %>
+    <p class="text-muted" style="font-size:0.85rem;">No add-ons yet for this product.</p>
+  <% } else { %>
+    <div class="d-flex flex-wrap gap-2 mb-3">
+      <% for (Addon a : productAddons) { %>
+        <span class="adm-addon-chip">
+          <%= WebUtil.escapeHtml(a.getName()) %>
+          <% if (a.getExtraPrice() != null && a.getExtraPrice().compareTo(BigDecimal.ZERO) > 0) { %>
+            <span class="adm-addon-price">+RM <%= String.format("%.2f", a.getExtraPrice()) %></span>
+          <% } %>
+          <a href="<%= ctx %>/admin/addon?action=delete&id=<%= a.getId() %>&foodItemId=<%= editItem.getId() %>"
+             title="Remove add-on" onclick="return confirm('Remove add-on \'<%= a.getName() %>\'?')">
+            <i class="bi bi-x-lg"></i>
+          </a>
+        </span>
+      <% } %>
+    </div>
+  <% } %>
+
+  <form method="post" action="<%= ctx %>/admin/addon" class="row g-2 align-items-end">
+    <input type="hidden" name="foodItemId" value="<%= editItem.getId() %>">
+    <div class="col-md-6">
+      <label class="form-label">Add-on Name</label>
+      <input type="text" name="name" class="form-control form-control-sm" placeholder="e.g. Extra Cheese" required>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Extra Price (RM)</label>
+      <input type="number" name="extraPrice" class="form-control form-control-sm" step="0.01" min="0" placeholder="0.00">
+    </div>
+    <div class="col-md-3">
+      <button type="submit" class="btn btn-outline-brand btn-sm w-100">+ Add Add-on</button>
+    </div>
+  </form>
+</div>
+<% } %>
 
 <!-- Food Items Grid -->
 <div class="adm-card">
@@ -110,8 +156,11 @@
       <% } %>
     </div>
     <div class="d-flex align-items-center flex-wrap gap-2 adm-list-toolbar-right">
-      <form method="get" action="<%= ctx %>/admin/food" class="d-flex flex-grow-1">
-        <div class="input-group input-group-sm">
+      <form method="get" action="<%= ctx %>/admin/food" class="d-flex flex-wrap align-items-center gap-2 flex-grow-1">
+        <% if (categoryFilterId != null) { %>
+          <input type="hidden" name="categoryId" value="<%= categoryFilterId %>">
+        <% } %>
+        <div class="input-group input-group-sm adm-toolbar-search">
           <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
           <input type="text" name="q" class="form-control" placeholder="Search by name or category..."
                  value="<%= searchQuery != null ? WebUtil.escapeHtml(searchQuery) : "" %>">
@@ -119,6 +168,20 @@
             <a href="<%= ctx %>/admin/food" class="btn btn-outline-secondary" title="Clear search"><i class="bi bi-x-lg"></i></a>
           <% } %>
         </div>
+        <%
+          String priceNextSort, priceSortIcon, priceSortTitle;
+          if ("price_asc".equals(sort)) {
+            priceNextSort = "price_desc"; priceSortIcon = "bi-sort-numeric-down"; priceSortTitle = "Sorted: Price Low to High (click for High to Low)";
+          } else if ("price_desc".equals(sort)) {
+            priceNextSort = ""; priceSortIcon = "bi-sort-numeric-up"; priceSortTitle = "Sorted: Price High to Low (click to reset)";
+          } else {
+            priceNextSort = "price_asc"; priceSortIcon = "bi-arrow-down-up"; priceSortTitle = "Sort by price";
+          }
+        %>
+        <button type="submit" name="sort" value="<%= priceNextSort %>"
+                class="btn btn-sm <%= sort.isEmpty() ? "btn-outline-brand" : "btn-brand-active" %>" title="<%= priceSortTitle %>">
+          <i class="bi <%= priceSortIcon %>"></i>
+        </button>
       </form>
       <span class="badge bg-secondary text-nowrap"><%= foodItems != null ? foodItems.size() : 0 %> total</span>
     </div>
@@ -136,7 +199,7 @@
   <div class="row g-3">
     <% for (FoodItem f : foodItems) { %>
     <div class="col-lg-3 col-md-4 col-sm-6">
-      <div class="food-card adm-food-card adm-row-clickable" data-href="<%= ctx %>/admin/food?action=edit&id=<%= f.getId() %>">
+      <div class="food-card adm-food-card adm-row-clickable" data-modal-target="#foodDetailModal<%= f.getId() %>">
         <div class="food-card-img-wrap">
           <img src="<%= ctx %>/<%= f.getImageUrl() %>" alt="<%= f.getName() %>"
                onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=70'">
@@ -175,6 +238,56 @@
                  onclick="return confirm('Delete \'<%= f.getName() %>\'?')">
                 <i class="bi bi-trash-fill"></i>
               </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail Modal -->
+      <div class="modal fade" id="foodDetailModal<%= f.getId() %>" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title"><span class="adm-food-card-id">#<%= f.getId() %></span> <%= f.getName() %></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row g-4">
+                <div class="col-md-5">
+                  <img src="<%= ctx %>/<%= f.getImageUrl() %>" alt="<%= f.getName() %>" class="img-fluid rounded"
+                       onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=70'">
+                </div>
+                <div class="col-md-7">
+                  <div class="d-flex align-items-center gap-2 mb-3">
+                    <span class="badge-category"><%= f.getCategoryName() != null ? f.getCategoryName() : "Uncategorized" %></span>
+                    <span class="badge-rating">&#x2605; <%= String.format("%.1f", f.getRating()) %></span>
+                    <% if (f.isAvailable()) { %>
+                      <span class="status-pill status-CONFIRMED">Available</span>
+                    <% } else { %>
+                      <span class="status-pill status-CANCELLED">Unavailable</span>
+                    <% } %>
+                  </div>
+                  <% if (f.getDescription() != null && !f.getDescription().isEmpty()) { %>
+                    <p><strong>Description:</strong> <%= f.getDescription() %></p>
+                  <% } %>
+                  <% if (f.getIngredients() != null && !f.getIngredients().isEmpty()) { %>
+                    <p><strong>Ingredients:</strong> <%= f.getIngredients() %></p>
+                  <% } %>
+                  <% if (f.getNutritionalInfo() != null && !f.getNutritionalInfo().isEmpty()) { %>
+                    <p class="mb-0"><strong>Nutritional Info:</strong> <%= f.getNutritionalInfo() %></p>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <span class="food-card-price me-auto">RM <%= String.format("%.2f", f.getPrice()) %></span>
+              <button type="button" class="btn btn-outline-brand btn-sm" data-bs-dismiss="modal">Close</button>
+              <a href="<%= ctx %>/admin/food?action=delete&id=<%= f.getId() %>"
+                 class="btn btn-danger-brand btn-sm" title="Delete"
+                 onclick="return confirm('Delete \'<%= f.getName() %>\'?')">
+                <i class="bi bi-trash-fill"></i> Delete
+              </a>
+              <a href="<%= ctx %>/admin/food?action=edit&id=<%= f.getId() %>" class="btn btn-primary btn-sm">Edit</a>
             </div>
           </div>
         </div>

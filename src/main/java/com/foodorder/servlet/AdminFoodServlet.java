@@ -1,5 +1,6 @@
 package com.foodorder.servlet;
 
+import com.foodorder.dao.AddonDAO;
 import com.foodorder.dao.CategoryDAO;
 import com.foodorder.dao.FoodDAO;
 import com.foodorder.model.Category;
@@ -19,6 +20,7 @@ public class AdminFoodServlet extends HttpServlet {
 
     private final FoodDAO foodDAO = new FoodDAO();
     private final CategoryDAO categoryDAO = new CategoryDAO();
+    private final AddonDAO addonDAO = new AddonDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -26,20 +28,24 @@ public class AdminFoodServlet extends HttpServlet {
         String idParam = req.getParameter("id");
         String q = req.getParameter("q");
         String categoryIdParam = req.getParameter("categoryId");
+        String sort = req.getParameter("sort");
         boolean hasQuery = q != null && !q.trim().isEmpty();
         boolean hasCategoryFilter = categoryIdParam != null && !categoryIdParam.trim().isEmpty();
 
         if ("delete".equals(action) && idParam != null) {
             foodDAO.delete(Integer.parseInt(idParam));
-            StringBuilder redirectUrl = new StringBuilder(req.getContextPath()).append("/admin/food");
-            if (hasQuery) redirectUrl.append("?q=").append(java.net.URLEncoder.encode(q.trim(), "UTF-8"));
-            else if (hasCategoryFilter) redirectUrl.append("?categoryId=").append(categoryIdParam.trim());
+            StringBuilder redirectUrl = new StringBuilder(req.getContextPath()).append("/admin/food?");
+            if (hasQuery) redirectUrl.append("q=").append(java.net.URLEncoder.encode(q.trim(), "UTF-8")).append("&");
+            if (hasCategoryFilter) redirectUrl.append("categoryId=").append(categoryIdParam.trim()).append("&");
+            if (sort != null && !sort.isEmpty()) redirectUrl.append("sort=").append(sort).append("&");
             resp.sendRedirect(redirectUrl.toString());
             return;
         }
 
         if ("edit".equals(action) && idParam != null) {
-            req.setAttribute("editItem", foodDAO.findById(Integer.parseInt(idParam)));
+            int editId = Integer.parseInt(idParam);
+            req.setAttribute("editItem", foodDAO.findById(editId));
+            req.setAttribute("productAddons", addonDAO.findByFoodItemId(editId));
         }
 
         List<Category> categories = categoryDAO.findAll();
@@ -47,20 +53,21 @@ public class AdminFoodServlet extends HttpServlet {
 
         if (hasCategoryFilter) {
             int filterId = Integer.parseInt(categoryIdParam.trim());
-            req.setAttribute("foodItems", foodDAO.findByCategory(filterId));
+            req.setAttribute("foodItems", foodDAO.findByCategory(filterId, sort));
             for (Category c : categories) {
                 if (c.getId() == filterId) { categoryFilterName = c.getName(); break; }
             }
         } else if (hasQuery) {
-            req.setAttribute("foodItems", foodDAO.search(q.trim()));
+            req.setAttribute("foodItems", foodDAO.search(q.trim(), sort));
         } else {
-            req.setAttribute("foodItems", foodDAO.findAll());
+            req.setAttribute("foodItems", foodDAO.findAll(sort));
         }
 
         req.setAttribute("categories", categories);
         req.setAttribute("searchQuery", q);
         req.setAttribute("categoryFilterId", hasCategoryFilter ? categoryIdParam.trim() : null);
         req.setAttribute("categoryFilterName", categoryFilterName);
+        req.setAttribute("sort", sort);
         req.getRequestDispatcher("/admin/manage-food.jsp").forward(req, resp);
     }
 

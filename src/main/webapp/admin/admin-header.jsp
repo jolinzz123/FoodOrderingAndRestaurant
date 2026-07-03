@@ -54,6 +54,10 @@
         <i class="bi bi-receipt"></i>
         <span>Orders</span>
       </a>
+      <a href="<%= ctx %>/admin/users" class="adm-nav-item <%= "users".equals(activePage) ? "active" : "" %>">
+        <i class="bi bi-people-fill"></i>
+        <span>Users</span>
+      </a>
     </div>
 
     <div class="adm-sidebar-footer">
@@ -64,8 +68,8 @@
           <div class="adm-user-role">Administrator</div>
         </div>
       </div>
-      <a href="<%= ctx %>/logout" class="adm-logout-btn">
-        <i class="bi bi-box-arrow-right"></i> Logout
+      <a href="<%= ctx %>/logout" class="adm-logout-btn" title="Logout">
+        <i class="bi bi-box-arrow-right"></i> <span>Logout</span>
       </a>
     </div>
   </nav>
@@ -73,11 +77,21 @@
   <!-- ===== Content area ===== -->
   <div class="adm-content">
     <div class="adm-topbar">
+      <button id="mobileSidebarToggle" class="adm-mobile-toggle-btn" title="Menu">
+        <span></span><span></span><span></span>
+      </button>
       <h4 class="adm-page-title"><%= pageTitle %></h4>
     </div>
     <main class="adm-main">
+<div class="adm-sidebar-backdrop" id="sidebarBackdrop"></div>
 <script>
   document.getElementById('sidebarToggle').addEventListener('click', function() {
     document.querySelector('.admin-layout').classList.toggle('sidebar-collapsed');
+  });
+  document.getElementById('mobileSidebarToggle').addEventListener('click', function() {
+    document.querySelector('.admin-layout').classList.toggle('mobile-sidebar-open');
+  });
+  document.getElementById('sidebarBackdrop').addEventListener('click', function() {
+    document.querySelector('.admin-layout').classList.remove('mobile-sidebar-open');
   });
 </script>

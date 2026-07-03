@@ -22,11 +22,10 @@ public class AdminOrderServlet extends HttpServlet {
         req.setAttribute("searchQuery", q);
 
         java.util.Map<String, Integer> statusCounts = orderDAO.countsByStatus();
-        int totalOrders = 0;
-        for (int c : statusCounts.values()) totalOrders += c;
-        req.setAttribute("totalOrdersCount", totalOrders);
-        req.setAttribute("completedOrdersCount", statusCounts.getOrDefault("COMPLETED", 0));
         req.setAttribute("pendingOrdersCount", statusCounts.getOrDefault("PENDING", 0));
+        req.setAttribute("preparingOrdersCount", statusCounts.getOrDefault("PREPARING", 0));
+        req.setAttribute("readyOrdersCount", statusCounts.getOrDefault("READY", 0));
+        req.setAttribute("deliveredOrdersCount", statusCounts.getOrDefault("DELIVERED", 0));
         req.setAttribute("cancelledOrdersCount", statusCounts.getOrDefault("CANCELLED", 0));
 
         req.getRequestDispatcher("/admin/orders.jsp").forward(req, resp);
