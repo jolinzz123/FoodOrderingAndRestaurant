@@ -28,68 +28,64 @@
 %>
 <jsp:include page="header.jsp" />
 
-<style>
-.cat-bar-inner {
-  display: flex !important;
-  flex-wrap: nowrap !important;
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
-  scrollbar-width: none !important;
-  gap: 8px !important;
-  padding: 2px 16px !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-}
-.cat-bar-inner::-webkit-scrollbar { display: none !important; }
-.cat-pill {
-  flex-shrink: 0 !important;
-  white-space: nowrap !important;
-  padding: 5px 11px !important;
-  font-size: .75rem !important;
-}
-</style>
-
-<!-- Category bar -->
-<div class="cat-bar">
-  <div class="cat-bar-inner" style="display:flex;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;gap:8px;padding:2px 16px;width:100%;box-sizing:border-box;scrollbar-width:none;justify-content:center;">
-    <a href="<%= ctx %>/menu"
-       class="cat-pill <%= (selectedCategory == null || selectedCategory.isEmpty()) ? "active" : "" %>">
-      🍽️ All
-    </a>
-    <%
-       java.util.Map<String,String> catEmoji = new java.util.HashMap<>();
-       catEmoji.put("Rice",           "🍚");
-       catEmoji.put("Nasi",           "🍚");
-       catEmoji.put("Noodles",        "🍜");
-       catEmoji.put("Mee",            "🍜");
-       catEmoji.put("Bread & FlatBread","🫓");
-       catEmoji.put("Roti",           "🫓");
-       catEmoji.put("Main Dishes", "🍖");
-       catEmoji.put("MainDishes",  "🍖");
-       catEmoji.put("Lauk",           "🍖");
-       catEmoji.put("Vegetables",     "🥦");
-       catEmoji.put("Sayur",          "🥦");
-       catEmoji.put("Western",        "🍔");
-       catEmoji.put("Desserts",       "🍮");
-       catEmoji.put("Drinks",         "🧋");
-       for (Category cat : categories) {
-         boolean active = String.valueOf(cat.getId()).equals(selectedCategory);
-         String emoji = catEmoji.getOrDefault(cat.getName(), "🍴");
-    %>
-    <a href="<%= ctx %>/menu?category=<%= cat.getId() %>"
-       class="cat-pill <%= active ? "active" : "" %>">
-      <%= emoji %> <%= cat.getName() %>
-    </a>
-    <% } %>
-  </div>
-</div>
-
 <!-- 2-panel layout -->
 <div class="menu-layout">
 
   <!-- LEFT: food grid -->
   <div class="menu-food-panel">
 
+    <!-- Search bar (inside food panel) -->
+    <div class="menu-search-wrap">
+      <div class="menu-search-box">
+        <input type="text" id="menuSearch" placeholder="Search menu..." autocomplete="off">
+        <span class="menu-search-icon">🔍</span>
+      </div>
+    </div>
+
+    <!-- Category bar (inside food panel) -->
+    <div class="cat-bar">
+      <div class="cat-bar-header">
+        <span class="cat-bar-label">Category</span>
+      </div>
+      <div class="cat-bar-inner">
+        <a href="<%= ctx %>/menu"
+           class="cat-pill <%= (selectedCategory == null || selectedCategory.isEmpty()) ? "active" : "" %>">
+          <span class="cat-pill-icon">🍽️</span>
+          <span>All</span>
+        </a>
+        <%
+           java.util.Map<String,String> catEmoji = new java.util.HashMap<>();
+           catEmoji.put("Rice",              "🍚");
+           catEmoji.put("Nasi",              "🍚");
+           catEmoji.put("Noodles",           "🍜");
+           catEmoji.put("Mee",               "🍜");
+           catEmoji.put("Bread & FlatBread", "🫓");
+           catEmoji.put("Roti",              "🫓");
+           catEmoji.put("Main Dishes",       "🍖");
+           catEmoji.put("MainDishes",        "🍖");
+           catEmoji.put("Lauk",              "🍖");
+           catEmoji.put("Vegetables",        "🥦");
+           catEmoji.put("Sayur",             "🥦");
+           catEmoji.put("Western",           "🍔");
+           catEmoji.put("Desserts",          "🍰");
+           catEmoji.put("Drinks",            "🧋");
+           catEmoji.put("Coffee",            "☕");
+           catEmoji.put("Juice",             "🧃");
+           catEmoji.put("Snack",             "🍟");
+           for (Category c : categories) {
+             boolean active = String.valueOf(c.getId()).equals(selectedCategory);
+             String emoji = catEmoji.getOrDefault(c.getName(), "🍴");
+        %>
+        <a href="<%= ctx %>/menu?category=<%= c.getId() %>"
+           class="cat-pill <%= active ? "active" : "" %>">
+          <span class="cat-pill-icon"><%= emoji %></span>
+          <span><%= c.getName() %></span>
+        </a>
+        <% } %>
+      </div>
+    </div>
+
+    <div style="padding: 8px 24px 24px; background: #F5F3FF; min-height: 100%;">
     <% if (foodItems.isEmpty()) { %>
       <div class="text-center text-muted py-5">
         <p style="font-size:2rem;">🍽️</p>
@@ -106,7 +102,7 @@
           int soldCount = 10 + (food.getId() * 7 % 41);
           boolean isHot = soldCount >= 45;
         %>
-        <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="col-lg-4 col-md-6 col-sm-6 food-card-col" data-name="<%= food.getName().toLowerCase() %>">
           <div class="food-card">
             <!-- image -->
             <div class="food-card-img-wrap">
@@ -156,6 +152,7 @@
       </div>
 
     <% } } %>
+    </div><!-- end food grid padding -->
   </div><!-- end food panel -->
 
   <!-- RIGHT: cart sidebar -->
@@ -255,6 +252,23 @@
 
 
 <script>
+// Live search filter
+document.getElementById('menuSearch').addEventListener('input', function() {
+  var q = this.value.trim().toLowerCase();
+  var cols = document.querySelectorAll('.food-card-col');
+  cols.forEach(function(col) {
+    col.style.display = (!q || col.dataset.name.includes(q)) ? '' : 'none';
+  });
+  // Hide section labels when all cards in that section are hidden
+  document.querySelectorAll('.section-label').forEach(function(label) {
+    var row = label.nextElementSibling;
+    if (!row) return;
+    var visible = row.querySelectorAll('.food-card-col:not([style*="none"])').length;
+    label.style.display = visible === 0 ? 'none' : '';
+    row.style.display   = visible === 0 ? 'none' : '';
+  });
+});
+
 (function() {
   var cartPanel = document.querySelector('.menu-cart-panel');
   var menuUrl = window.location.href;

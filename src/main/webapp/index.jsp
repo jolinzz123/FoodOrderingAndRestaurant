@@ -72,6 +72,14 @@
 
 </section>
 
+<div class="hp-promo-banner">
+  <div class="container hp-promo-inner">
+    <span class="hp-promo-icon">🔥</span>
+    <span class="hp-promo-text">Today's special: Free delivery on orders over RM30!</span>
+    <a href="<%= ctx %>/menu" class="hp-promo-cta">Order now →</a>
+  </div>
+</div>
+
 <div class="hp-stats-bar" style="background:#F5F3FF;">
   <div class="container">
     <div class="hp-stats-row">
@@ -130,6 +138,155 @@
       </div>
     </a>
     <% } } %>
+  </div>
+</div>
+
+<!-- New Arrivals -->
+<div class="container py-4">
+  <div class="d-flex align-items-end justify-content-between mb-4">
+    <div>
+      <p class="hp-section-pre">Just Added</p>
+      <h2 class="hp-section-title">New Arrivals</h2>
+    </div>
+  </div>
+  <div class="hp-dishes-grid">
+    <%
+      List<FoodItem> newItems = all.size() > 3 ? all.subList(all.size() - 3, all.size()) : all;
+      for (FoodItem item : newItems) {
+    %>
+    <a href="<%= ctx %>/food?id=<%= item.getId() %>" class="hp-dish-card">
+      <div class="hp-dish-img-wrap">
+        <span class="hp-dish-new-badge">NEW</span>
+        <img src="<%= ctx %>/<%= item.getImageUrl() %>"
+             alt="<%= item.getName() %>"
+             onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300&q=70'">
+      </div>
+      <div class="hp-dish-body">
+        <span class="hp-dish-cat"><%= item.getCategoryName() != null ? item.getCategoryName() : "Uncategorized" %></span>
+        <h6 class="hp-dish-name"><%= item.getName() %></h6>
+        <div class="hp-dish-footer">
+          <span class="hp-dish-price">RM <%= String.format("%,.2f", item.getPrice()) %></span>
+          <span class="hp-dish-cart">🛒</span>
+        </div>
+      </div>
+    </a>
+    <% } %>
+  </div>
+</div>
+
+<!-- Today's Combo -->
+<div class="container py-4">
+  <div class="d-flex align-items-end justify-content-between mb-4">
+    <div>
+      <p class="hp-section-pre">Limited Time</p>
+      <h2 class="hp-section-title">Today's Combo</h2>
+    </div>
+  </div>
+  <div class="hp-dishes-grid">
+    <a href="#" class="hp-dish-card">
+      <div class="hp-dish-img-wrap">
+        <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80" alt="Set A">
+      </div>
+      <div class="hp-dish-body">
+        <span class="hp-dish-cat">COMBO</span>
+        <h6 class="hp-dish-name">Set A — Rice + Drink</h6>
+        <div class="hp-dish-footer">
+          <span class="hp-dish-price">RM 12.90</span>
+          <span class="hp-dish-cart">🛒</span>
+        </div>
+      </div>
+    </a>
+    <a href="#" class="hp-dish-card">
+      <div class="hp-dish-img-wrap">
+        <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400&q=80" alt="Set B">
+      </div>
+      <div class="hp-dish-body">
+        <span class="hp-dish-cat">COMBO</span>
+        <h6 class="hp-dish-name">Set B — Noodle + Side</h6>
+        <div class="hp-dish-footer">
+          <span class="hp-dish-price">RM 14.90</span>
+          <span class="hp-dish-cart">🛒</span>
+        </div>
+      </div>
+    </a>
+    <a href="#" class="hp-dish-card">
+      <div class="hp-dish-img-wrap">
+        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80" alt="Family Set">
+      </div>
+      <div class="hp-dish-body">
+        <span class="hp-dish-cat">COMBO</span>
+        <h6 class="hp-dish-name">Family Set — 2 Mains + 2 Drinks</h6>
+        <div class="hp-dish-footer">
+          <span class="hp-dish-price">RM 28.90</span>
+          <span class="hp-dish-cart">🛒</span>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- Testimonials -->
+<div class="hp-testimonials-section">
+  <div class="container">
+    <p class="hp-section-pre text-center">What They Say</p>
+    <h2 class="hp-section-title text-center mb-5">Customer Reviews</h2>
+    <div class="hp-testimonials-grid">
+      <div class="hp-testimonial-card">
+        <p class="hp-testimonial-text">The flavors are so authentic and the portions are generous — our go-to order every week!</p>
+        <div class="hp-testimonial-person">
+          <img src="https://i.pravatar.cc/40?img=15" alt="Customer avatar" class="hp-testimonial-avatar">
+          <div class="hp-testimonial-info">
+            <div class="hp-testimonial-name-row">
+              <span class="hp-testimonial-name">Wei Ling</span>
+              <span class="hp-testimonial-stars">★★★★★</span>
+            </div>
+            <div class="hp-testimonial-role">Regular · 3 years</div>
+          </div>
+        </div>
+      </div>
+      <div class="hp-testimonial-card">
+        <p class="hp-testimonial-text">Delivery is always fast and the food still arrives hot. Packaging is thoughtful too.</p>
+        <div class="hp-testimonial-person">
+          <img src="https://i.pravatar.cc/40?img=32" alt="Customer avatar" class="hp-testimonial-avatar">
+          <div class="hp-testimonial-info">
+            <div class="hp-testimonial-name-row">
+              <span class="hp-testimonial-name">Ah Meng</span>
+              <span class="hp-testimonial-stars">★★★★★</span>
+            </div>
+            <div class="hp-testimonial-role">Regular · 1 year</div>
+          </div>
+        </div>
+      </div>
+      <div class="hp-testimonial-card">
+        <p class="hp-testimonial-text">Great value, generous portions, and their signature dish never gets old.</p>
+        <div class="hp-testimonial-person">
+          <img src="https://i.pravatar.cc/40?img=47" alt="Customer avatar" class="hp-testimonial-avatar">
+          <div class="hp-testimonial-info">
+            <div class="hp-testimonial-name-row">
+              <span class="hp-testimonial-name">Siti</span>
+              <span class="hp-testimonial-stars">★★★★★</span>
+            </div>
+            <div class="hp-testimonial-role">Regular · 2 years</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Our Story -->
+<div class="hp-about-simple">
+  <div class="container">
+    <div class="hp-about-simple-inner">
+      <p class="hp-section-pre">Our Story</p>
+      <h2 class="hp-section-title mb-3">Started in our home kitchen</h2>
+      <p class="hp-about-desc">
+        HotServe began in a small home kitchen, with one simple rule: every dish is made
+        fresh, every day, from real ingredients — no shortcuts, no pre-made mixes.
+        We believe great flavor comes from care, not a production line.
+      </p>
+      <a href="<%= ctx %>/about.jsp" class="hp-btn-outline">Read our full story</a>
+    </div>
   </div>
 </div>
 
