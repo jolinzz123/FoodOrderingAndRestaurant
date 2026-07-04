@@ -213,13 +213,23 @@
           <span>Subtotal (<%= cart.size() %> item<%= cart.size()==1?"":"s" %>)</span>
           <span>RM <%= String.format("%,.2f", cartTotal) %></span>
         </div>
+        <%
+          java.math.BigDecimal sideFee = cartTotal.compareTo(new java.math.BigDecimal("30.00")) >= 0
+              ? java.math.BigDecimal.ZERO : new java.math.BigDecimal("3.00");
+          java.math.BigDecimal sideTotal = cartTotal.add(sideFee);
+        %>
         <div class="cart-summary-row">
           <span>Delivery Fee</span>
-          <span>RM 0.00</span>
+          <span style="color:<%= sideFee.compareTo(java.math.BigDecimal.ZERO)==0 ? "#22C55E" : "inherit" %>">
+            <%= sideFee.compareTo(java.math.BigDecimal.ZERO)==0 ? "FREE" : "RM " + String.format("%,.2f", sideFee) %>
+          </span>
         </div>
+        <% if (sideFee.compareTo(java.math.BigDecimal.ZERO) > 0) { %>
+        <div style="font-size:.72rem;color:var(--color-text-muted);margin:-4px 0 6px;text-align:right;">Add RM <%= String.format("%.2f", new java.math.BigDecimal("30.00").subtract(cartTotal)) %> more for free delivery</div>
+        <% } %>
         <div class="cart-summary-total">
           <span>Total</span>
-          <span>RM <%= String.format("%,.2f", cartTotal) %></span>
+          <span>RM <%= String.format("%,.2f", sideTotal) %></span>
         </div>
 
         <!-- Payment method (visual selection only — actual selection at checkout) -->

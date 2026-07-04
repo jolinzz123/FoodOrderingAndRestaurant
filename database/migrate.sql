@@ -29,6 +29,23 @@ UPDATE categories SET name = 'Main Dishes' WHERE name = 'MainDishes';
 UPDATE food_items SET image_url = 'images/mixedvege.png' WHERE image_url = 'images/mixedvege.jpng';
 
 -- --------------------------------------------------------
+-- Step 1e: Add reviews table
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS reviews (
+  id        INT AUTO_INCREMENT PRIMARY KEY,
+  food_id   INT NOT NULL,
+  order_id  INT NOT NULL,
+  user_id   INT NOT NULL,
+  rating    TINYINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+  comment   TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_user_food_order (user_id, food_id, order_id),
+  FOREIGN KEY (food_id)  REFERENCES food_items(id) ON DELETE CASCADE,
+  FOREIGN KEY (order_id) REFERENCES orders(id)     ON DELETE CASCADE,
+  FOREIGN KEY (user_id)  REFERENCES users(id)      ON DELETE CASCADE
+);
+
+-- --------------------------------------------------------
 -- Step 2: Clear all data (keeps table structure)
 -- --------------------------------------------------------
 SET FOREIGN_KEY_CHECKS = 0;

@@ -53,8 +53,12 @@ public class CheckoutServlet extends HttpServlet {
         List<CartItem> items = new ArrayList<>(cart.values());
         BigDecimal total = BigDecimal.ZERO;
         for (CartItem item : items) total = total.add(item.getSubtotal());
+        java.math.BigDecimal freeDeliveryThreshold = new java.math.BigDecimal("30.00");
+        java.math.BigDecimal deliveryFee = total.compareTo(freeDeliveryThreshold) >= 0
+                ? java.math.BigDecimal.ZERO : new java.math.BigDecimal("3.00");
+        java.math.BigDecimal grandTotal = total.add(deliveryFee);
 
-        int orderId = orderDAO.placeOrder(user.getId(), items, total, address.trim(), paymentMethod);
+        int orderId = orderDAO.placeOrder(user.getId(), items, grandTotal, address.trim(), paymentMethod);
 
         if (orderId > 0) {
             cart.clear();
@@ -70,7 +74,8 @@ public class CheckoutServlet extends HttpServlet {
                 orderItems.add(oi);
             }
             req.setAttribute("orderId", orderId);
-            req.setAttribute("orderTotal", total);
+            req.setAttribute("orderTotal", grandTotal);
+            req.setAttribute("deliveryFee", deliveryFee);
             req.setAttribute("orderItems", orderItems);
             req.setAttribute("deliveryAddress", address.trim());
             req.setAttribute("paymentMethod", paymentMethod);

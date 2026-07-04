@@ -75,10 +75,10 @@
   display: flex;
   gap: 10px;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: visible;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding-bottom: 4px;
+  padding: 4px 4px 10px;
   flex-wrap: nowrap;
 }
 .cat-bar-inner::-webkit-scrollbar { display: none; }

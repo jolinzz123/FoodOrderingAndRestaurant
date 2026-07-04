@@ -65,17 +65,12 @@
     </div>
   </div>
 
-  <!-- wave bottom -->
-  <div class="hp-wave">
-    <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#F5F3FF"/></svg>
-  </div>
-
 </section>
 
 <div class="hp-promo-banner">
   <div class="container hp-promo-inner">
     <span class="hp-promo-icon">🔥</span>
-    <span class="hp-promo-text">Today's special: Free delivery on orders over RM30!</span>
+    <span class="hp-promo-text">Spend RM30 or more and enjoy FREE delivery — every day!</span>
     <a href="<%= ctx %>/menu" class="hp-promo-cta">Order now →</a>
   </div>
 </div>
@@ -94,8 +89,8 @@
       </div>
       <div class="hp-stat-divider"></div>
       <div class="hp-stat-box">
-      	<span class="hp-stat-n">FREE</span>
-        <span class="hp-stat-l">Delivery</span>
+        <span class="hp-stat-n">RM3</span>
+        <span class="hp-stat-l">Delivery Fee</span>
       </div>
       <div class="hp-stat-divider"></div>
       <div class="hp-stat-box">

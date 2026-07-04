@@ -194,6 +194,23 @@ INSERT INTO addons (food_item_id, name, extra_price) VALUES
 (39,'Less Sugar',0.00),(39,'Extra Milo Powder',1.00),(39,'Extra Ice',0.00);
 
 -- --------------------------------------------------------
+-- Reviews table
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS reviews (
+  id        INT AUTO_INCREMENT PRIMARY KEY,
+  food_id   INT NOT NULL,
+  order_id  INT NOT NULL,
+  user_id   INT NOT NULL,
+  rating    TINYINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+  comment   TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_user_food_order (user_id, food_id, order_id),
+  FOREIGN KEY (food_id)  REFERENCES food_items(id) ON DELETE CASCADE,
+  FOREIGN KEY (order_id) REFERENCES orders(id)     ON DELETE CASCADE,
+  FOREIGN KEY (user_id)  REFERENCES users(id)      ON DELETE CASCADE
+);
+
+-- --------------------------------------------------------
 -- Admin account  (username: admin | password: admin306)
 -- --------------------------------------------------------
 INSERT INTO users (username, email, password_hash, phone, role) VALUES

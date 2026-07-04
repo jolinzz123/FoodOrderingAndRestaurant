@@ -219,10 +219,25 @@
         <% } %>
 
         <hr class="co-sum-divider">
+        <%
+          java.math.BigDecimal FREE_THRESHOLD = new java.math.BigDecimal("30.00");
+          java.math.BigDecimal DELIVERY_FEE   = new java.math.BigDecimal("3.00");
+          java.math.BigDecimal deliveryFee    = cartTotal.compareTo(FREE_THRESHOLD) >= 0 ? java.math.BigDecimal.ZERO : DELIVERY_FEE;
+          java.math.BigDecimal grandTotal     = cartTotal.add(deliveryFee);
+        %>
         <div class="co-sum-row"><span>Subtotal</span><span>RM <%= String.format("%,.2f", cartTotal) %></span></div>
-        <div class="co-sum-row"><span>Delivery Fee</span><span>RM 0.00</span></div>
+        <div class="co-sum-row">
+          <span>Delivery Fee
+            <% if (deliveryFee.compareTo(java.math.BigDecimal.ZERO) == 0) { %>
+              <span style="font-size:.72rem;color:#22C55E;font-weight:700;margin-left:4px;">FREE</span>
+            <% } else { %>
+              <span style="font-size:.72rem;color:var(--color-text-muted);margin-left:4px;">(Free above RM30)</span>
+            <% } %>
+          </span>
+          <span><%= deliveryFee.compareTo(java.math.BigDecimal.ZERO) == 0 ? "FREE" : "RM " + String.format("%,.2f", deliveryFee) %></span>
+        </div>
         <hr class="co-sum-divider">
-        <div class="co-sum-total"><span>Total</span><span>RM <%= String.format("%,.2f", cartTotal) %></span></div>
+        <div class="co-sum-total"><span>Total</span><span>RM <%= String.format("%,.2f", grandTotal) %></span></div>
 
         <!-- Hidden real form -->
         <form action="<%= ctx %>/checkout" method="post" id="checkoutForm">
