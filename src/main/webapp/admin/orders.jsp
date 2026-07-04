@@ -103,16 +103,16 @@
 <% } else { %>
 
 <div class="accordion" id="ordersAccordion">
-  <% int idx = 0; for (Order o : orders) { idx++; %>
+  <% for (Order o : orders) { %>
   <div class="adm-card mb-3 p-0" style="overflow:hidden; border-radius:14px;">
 
     <div class="accordion-item border-0">
       <h2 class="accordion-header">
-        <button class="accordion-button <%= idx > 1 ? "collapsed" : "" %>"
+        <button class="accordion-button collapsed"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#order<%= o.getId() %>"
-                aria-expanded="<%= idx == 1 ? "true" : "false" %>"
+                aria-expanded="false"
                 style="border-radius:14px; background:#fff; box-shadow:none;">
           <div class="d-flex w-100 align-items-center flex-wrap gap-3">
             <strong style="min-width:70px; color:#111827;">#<%= o.getId() %></strong>
@@ -126,7 +126,7 @@
         </button>
       </h2>
 
-      <div id="order<%= o.getId() %>" class="accordion-collapse collapse <%= idx == 1 ? "show" : "" %>">
+      <div id="order<%= o.getId() %>" class="accordion-collapse collapse">
         <div class="accordion-body p-4" style="background:#FAFAFA; border-top:1px solid #F3F4F6;">
 
           <div class="row g-4">
