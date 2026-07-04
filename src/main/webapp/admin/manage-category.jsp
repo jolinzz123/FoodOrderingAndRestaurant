@@ -81,8 +81,8 @@
                     class="btn adm-sort-toggle-btn <%= sort.isEmpty() ? "" : "adm-sort-active" %>" title="<%= nameSortTitle %>">
               <i class="bi <%= nameSortIcon %>"></i>
             </button>
+            <span class="badge bg-secondary text-nowrap"><%= categories != null ? categories.size() : 0 %> total</span>
           </form>
-          <span class="badge bg-secondary text-nowrap"><%= categories != null ? categories.size() : 0 %> total</span>
         </div>
       </div>
 

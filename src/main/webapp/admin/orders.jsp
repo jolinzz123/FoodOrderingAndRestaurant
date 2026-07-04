@@ -137,6 +137,7 @@
                  if (items == null || items.isEmpty()) { %>
                 <p class="text-muted">No items found.</p>
               <% } else { %>
+              <div class="table-responsive">
               <table class="table table-sm table-brand mb-0">
                 <thead>
                   <tr>
@@ -167,6 +168,7 @@
                   </tr>
                 </tfoot>
               </table>
+              </div>
               <% } %>
             </div>
 

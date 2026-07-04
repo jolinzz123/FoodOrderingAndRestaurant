@@ -12,7 +12,7 @@
   </div>
 
   <div class="row g-5">
-    <div class="col-md-5">
+    <div class="col-lg-5">
       <h5 class="mb-3">Reach Us</h5>
       <div class="contact-info-list">
         <a class="contact-info-item contact-info-item--lg contact-info-item--link" href="https://www.google.com/maps/search/?api=1&query=Xiamen+University+Malaysia" target="_blank" rel="noopener">
@@ -22,12 +22,12 @@
         </a>
         <a class="contact-info-item contact-info-item--lg contact-info-item--link" href="https://wa.me/60123456789" target="_blank" rel="noopener">
           <span class="contact-info-icon contact-info-icon--lg contact-info-icon--whatsapp"><i class="bi bi-whatsapp"></i></span>
-          <span>+60 12-345 6789</span>
+          <span>+60 12-306 6789</span>
           <i class="bi bi-box-arrow-up-right contact-info-arrow"></i>
         </a>
         <a class="contact-info-item contact-info-item--lg contact-info-item--link" href="mailto:hello@foodorder.com">
           <span class="contact-info-icon contact-info-icon--lg"><i class="bi bi-envelope-fill"></i></span>
-          <span>hello@foodorder.com</span>
+          <span>contact@hotserve.com</span>
           <i class="bi bi-box-arrow-up-right contact-info-arrow"></i>
         </a>
         <div class="contact-info-item contact-info-item--lg">
@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-7">
+    <div class="col-lg-7">
       <div id="contactSuccess" class="alert alert-success d-none">Thanks for reaching out! We'll reply within 1–2 business days.</div>
       <form id="contactForm" novalidate>
         <div class="row g-3">
