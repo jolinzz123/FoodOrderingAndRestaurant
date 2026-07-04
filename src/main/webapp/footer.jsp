@@ -17,9 +17,9 @@
       </div>
       <div class="col-md-4 mb-3">
         <h6 style="color:#EAE4D8;">Contact</h6>
-        <p class="mb-1">123 Garden Street, Sepang, Selangor</p>
-        <p class="mb-1">hello@foodorder.com</p>
-        <p class="mb-1">+60 12-345 6789</p>
+        <p class="mb-1">Xiamen University Malaysia</p>
+        <p class="mb-1">contact@hotserve.com</p>
+        <p class="mb-1">+60 12-306 6789</p>
       </div>
     </div>
     <hr style="border-color: rgba(255,255,255,0.15);">

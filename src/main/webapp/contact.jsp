@@ -20,12 +20,12 @@
           <span>Xiamen University Malaysia</span>
           <i class="bi bi-box-arrow-up-right contact-info-arrow"></i>
         </a>
-        <a class="contact-info-item contact-info-item--lg contact-info-item--link" href="https://wa.me/60123456789" target="_blank" rel="noopener">
+        <a class="contact-info-item contact-info-item--lg contact-info-item--link" href="https://wa.me/60123066789" target="_blank" rel="noopener">
           <span class="contact-info-icon contact-info-icon--lg contact-info-icon--whatsapp"><i class="bi bi-whatsapp"></i></span>
           <span>+60 12-306 6789</span>
           <i class="bi bi-box-arrow-up-right contact-info-arrow"></i>
         </a>
-        <a class="contact-info-item contact-info-item--lg contact-info-item--link" href="mailto:hello@foodorder.com">
+        <a class="contact-info-item contact-info-item--lg contact-info-item--link" href="mailto:contact@hotserve.com">
           <span class="contact-info-icon contact-info-icon--lg"><i class="bi bi-envelope-fill"></i></span>
           <span>contact@hotserve.com</span>
           <i class="bi bi-box-arrow-up-right contact-info-arrow"></i>
