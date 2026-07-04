@@ -3,6 +3,7 @@ package com.foodorder.servlet;
 import com.foodorder.dao.AddonDAO;
 import com.foodorder.dao.CategoryDAO;
 import com.foodorder.dao.FoodDAO;
+import com.foodorder.model.Addon;
 import com.foodorder.model.Category;
 import com.foodorder.model.FoodItem;
 
@@ -97,8 +98,35 @@ public class AdminFoodServlet extends HttpServlet {
         } else {
             f.setRating(0.0);
             foodDAO.add(f);
+            saveNewAddons(req, f.getId());
         }
 
         resp.sendRedirect(req.getContextPath() + "/admin/food");
+    }
+
+    /** Saves the add-on rows submitted alongside a brand-new product. */
+    private void saveNewAddons(HttpServletRequest req, int foodItemId) {
+        String[] names = req.getParameterValues("addonNames");
+        String[] prices = req.getParameterValues("addonPrices");
+        if (names == null) return;
+
+        for (int i = 0; i < names.length; i++) {
+            String name = names[i] == null ? "" : names[i].trim();
+            if (name.isEmpty()) continue;
+
+            BigDecimal extraPrice;
+            try {
+                String priceStr = (prices != null && i < prices.length) ? prices[i] : null;
+                extraPrice = (priceStr == null || priceStr.trim().isEmpty()) ? BigDecimal.ZERO : new BigDecimal(priceStr.trim());
+            } catch (NumberFormatException e) {
+                extraPrice = BigDecimal.ZERO;
+            }
+
+            Addon addon = new Addon();
+            addon.setFoodItemId(foodItemId);
+            addon.setName(name);
+            addon.setExtraPrice(extraPrice);
+            addonDAO.add(addon);
+        }
     }
 }

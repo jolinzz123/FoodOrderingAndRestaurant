@@ -51,13 +51,11 @@
     });
   });
 
-  // Contact form (no backend — demo client-side only)
+  // Contact form — client-side validation only; a valid submit posts to /contact
   const contactForm = document.getElementById('contactForm');
   if (contactForm) {
     const emailPattern = /^[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}$/;
     contactForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-      document.getElementById('contactSuccess').classList.add('d-none');
       let valid = true;
       ['contactName', 'contactEmail', 'contactSubject', 'contactMessage'].forEach(function (id) {
         const el = document.getElementById(id);
@@ -68,9 +66,8 @@
         markInvalid(emailEl);
         valid = false;
       }
-      if (valid) {
-        document.getElementById('contactSuccess').classList.remove('d-none');
-        contactForm.reset();
+      if (!valid) {
+        e.preventDefault();
       }
     });
   }

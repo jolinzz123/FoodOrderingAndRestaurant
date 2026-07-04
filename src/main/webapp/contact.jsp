@@ -2,6 +2,7 @@
 <%
     request.setAttribute("pageTitle", "Contact Us — HotServe");
     String ctx = request.getContextPath();
+    String error = (String) request.getAttribute("error");
 %>
 <jsp:include page="header.jsp" />
 
@@ -30,31 +31,33 @@
           <span>contact@hotserve.com</span>
           <i class="bi bi-box-arrow-up-right contact-info-arrow"></i>
         </a>
-        <div class="contact-info-item contact-info-item--lg">
+        <div class="contact-info-item contact-info-item--lg contact-info-item--card">
           <span class="contact-info-icon contact-info-icon--lg"><i class="bi bi-clock-fill"></i></span>
           <span>Mon–Sun, 10:00 AM – 10:00 PM</span>
         </div>
       </div>
     </div>
-    <div class="col-lg-7">
-      <div id="contactSuccess" class="alert alert-success d-none">Thanks for reaching out! We'll reply within 1–2 business days.</div>
-      <form id="contactForm" novalidate>
+    <div class="col-lg-7 ps-lg-5">
+      <% if (error != null) { %>
+        <div class="alert alert-danger"><%= error %></div>
+      <% } %>
+      <form id="contactForm" action="<%= ctx %>/contact" method="post" novalidate>
         <div class="row g-3">
           <div class="col-md-6">
             <label class="form-label">Name</label>
-            <input type="text" class="form-control" id="contactName" required>
+            <input type="text" class="form-control" id="contactName" name="name" required>
           </div>
           <div class="col-md-6">
             <label class="form-label">Email</label>
-            <input type="email" class="form-control" id="contactEmail" required>
+            <input type="email" class="form-control" id="contactEmail" name="email" required>
           </div>
           <div class="col-12">
             <label class="form-label">Subject</label>
-            <input type="text" class="form-control" id="contactSubject" required>
+            <input type="text" class="form-control" id="contactSubject" name="subject" required>
           </div>
           <div class="col-12">
             <label class="form-label">Message</label>
-            <textarea class="form-control" id="contactMessage" rows="5" required></textarea>
+            <textarea class="form-control" id="contactMessage" name="message" rows="5" required></textarea>
           </div>
           <div class="col-12">
             <button type="submit" class="btn btn-brand w-100">Send Message</button>

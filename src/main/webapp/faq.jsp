@@ -10,11 +10,11 @@
     <h2>Frequently Asked Questions</h2>
   </div>
 
-  <div style="max-width:760px; margin:0 auto 24px;">
-    <div class="faq-search-wrap">
-      <i class="bi bi-search faq-search-icon"></i>
-      <input type="text" id="faqSearchInput" class="form-control faq-search-input" placeholder="Search questions...">
-    </div>
+  <div class="faq-search-wrap" style="max-width:760px; margin:0 auto 24px;">
+    <input type="text" id="faqSearchInput" class="form-control faq-search-input" placeholder="Search questions...">
+    <button type="button" id="faqSearchBtn" class="faq-search-icon-btn" title="Search">
+      <i class="bi bi-search"></i>
+    </button>
   </div>
 
   <div id="faqNoResults" class="faq-no-results d-none" style="max-width:760px; margin:0 auto 24px;">
@@ -58,11 +58,12 @@
 
 <script>
 (function () {
+  var searchBtn = document.getElementById('faqSearchBtn');
   var input = document.getElementById('faqSearchInput');
   var noResults = document.getElementById('faqNoResults');
   var items = Array.prototype.slice.call(document.querySelectorAll('#faqAccordion .accordion-item'));
 
-  input.addEventListener('input', function () {
+  function runSearch() {
     var query = input.value.trim().toLowerCase();
     var visibleCount = 0;
 
@@ -75,6 +76,14 @@
     });
 
     noResults.classList.toggle('d-none', visibleCount > 0);
+  }
+
+  searchBtn.addEventListener('click', runSearch);
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      runSearch();
+    }
   });
 })();
 </script>

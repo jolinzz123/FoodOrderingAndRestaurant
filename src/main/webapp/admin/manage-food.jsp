@@ -94,6 +94,26 @@
       </div>
     </div>
 
+    <% if (!isEdit) { %>
+    <div class="mt-3">
+      <label class="form-label d-block">Add-ons (optional)</label>
+      <div id="newAddonRows">
+        <div class="row g-2 align-items-end mb-2 new-addon-row">
+          <div class="col-md-6">
+            <input type="text" name="addonNames" class="form-control form-control-sm" placeholder="e.g. Extra Cheese">
+          </div>
+          <div class="col-md-4">
+            <input type="number" name="addonPrices" class="form-control form-control-sm" step="0.01" min="0" placeholder="Extra price (RM)">
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm w-100 remove-addon-row">Remove</button>
+          </div>
+        </div>
+      </div>
+      <button type="button" id="addAddonRowBtn" class="btn btn-outline-brand btn-sm">+ Add another add-on</button>
+    </div>
+    <% } %>
+
     <div class="mt-3 d-flex gap-2 adm-form-actions">
       <button type="submit" class="btn btn-primary flex-grow-1 text-nowrap">
         <%= isEdit ? "Save Changes" : "Add Product" %>
@@ -104,6 +124,42 @@
     </div>
   </form>
 </div>
+
+<% if (!isEdit) { %>
+<script>
+(function () {
+  var container = document.getElementById('newAddonRows');
+  var addBtn = document.getElementById('addAddonRowBtn');
+  if (!container || !addBtn) return;
+
+  function rowTemplate() {
+    var row = document.createElement('div');
+    row.className = 'row g-2 align-items-end mb-2 new-addon-row';
+    row.innerHTML =
+      '<div class="col-md-6">' +
+        '<input type="text" name="addonNames" class="form-control form-control-sm" placeholder="e.g. Extra Cheese">' +
+      '</div>' +
+      '<div class="col-md-4">' +
+        '<input type="number" name="addonPrices" class="form-control form-control-sm" step="0.01" min="0" placeholder="Extra price (RM)">' +
+      '</div>' +
+      '<div class="col-md-2">' +
+        '<button type="button" class="btn btn-outline-secondary btn-sm w-100 remove-addon-row">Remove</button>' +
+      '</div>';
+    return row;
+  }
+
+  addBtn.addEventListener('click', function () {
+    container.appendChild(rowTemplate());
+  });
+
+  container.addEventListener('click', function (e) {
+    var btn = e.target.closest('.remove-addon-row');
+    if (!btn) return;
+    btn.closest('.new-addon-row').remove();
+  });
+})();
+</script>
+<% } %>
 
 <% if (isEdit) { %>
 <!-- Add-ons for this product -->

@@ -92,11 +92,12 @@ public class FoodDAO {
         return null;
     }
 
+    /** Inserts the food item and sets the generated ID back onto {@code f}. */
     public boolean add(FoodItem f) {
         String sql = "INSERT INTO food_items (category_id, name, description, ingredients, nutritional_info, price, image_url, rating, is_available) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, f.getCategoryId());
             ps.setString(2, f.getName());
             ps.setString(3, f.getDescription());
@@ -106,7 +107,11 @@ public class FoodDAO {
             ps.setString(7, f.getImageUrl());
             ps.setDouble(8, f.getRating());
             ps.setBoolean(9, f.isAvailable());
-            return ps.executeUpdate() > 0;
+            if (ps.executeUpdate() == 0) return false;
+            try (ResultSet keys = ps.getGeneratedKeys()) {
+                if (keys.next()) f.setId(keys.getInt(1));
+            }
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

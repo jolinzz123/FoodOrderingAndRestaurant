@@ -211,6 +211,18 @@ CREATE TABLE IF NOT EXISTS reviews (
 );
 
 -- --------------------------------------------------------
+-- Contact messages table
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS contact_messages (
+  id         INT AUTO_INCREMENT PRIMARY KEY,
+  name       VARCHAR(200) NOT NULL,
+  email      VARCHAR(200) NOT NULL,
+  subject    VARCHAR(255) NOT NULL,
+  message    TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- --------------------------------------------------------
 -- Admin account  (username: admin | password: admin306)
 -- --------------------------------------------------------
 INSERT INTO users (username, email, password_hash, phone, role) VALUES

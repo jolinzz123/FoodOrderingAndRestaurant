@@ -15,7 +15,7 @@
   border-color: var(--color-primary);
   box-shadow: 0 0 0 0.2rem rgba(108, 99, 255, 0.15);
 }
-label { font-weight: 500; color: var(--color-text); }
+label { font-weight: 500; color: var(--color-text); padding-left: 8px; }
 
 /* ---------- Footer ---------- */
 footer.site-footer {
@@ -113,7 +113,8 @@ a.contact-info-item:hover { background-color: var(--color-accent); color: var(--
 .contact-info-item--lg { gap: 18px; font-size: 1.1rem; font-weight: 600; }
 .contact-info-icon--lg { width: 52px; height: 52px; font-size: 1.35rem; }
 
-.contact-info-item--link {
+.contact-info-item--link,
+.contact-info-item--card {
   background: var(--color-bg);
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-card);
@@ -135,18 +136,27 @@ a.contact-info-item:hover { background-color: var(--color-accent); color: var(--
 
 /* ---------- FAQ page ---------- */
 .faq-search-wrap { position: relative; }
-.faq-search-icon {
-  position: absolute;
-  left: 16px; top: 50%;
-  transform: translateY(-50%);
-  color: var(--color-text-muted);
-  pointer-events: none;
-}
 .faq-search-input {
-  padding-left: 42px;
+  padding-left: 20px;
+  padding-right: 56px;
   border-radius: var(--radius-pill);
   height: 48px;
 }
+.faq-search-icon-btn {
+  position: absolute;
+  right: 6px; top: 50%;
+  transform: translateY(-50%);
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s;
+}
+.faq-search-icon-btn:hover { background: var(--color-primary-dark); }
 .faq-no-results {
   text-align: center;
   background: var(--color-accent);

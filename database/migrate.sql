@@ -46,6 +46,18 @@ CREATE TABLE IF NOT EXISTS reviews (
 );
 
 -- --------------------------------------------------------
+-- Step 1f: Add contact_messages table
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS contact_messages (
+  id         INT AUTO_INCREMENT PRIMARY KEY,
+  name       VARCHAR(200) NOT NULL,
+  email      VARCHAR(200) NOT NULL,
+  subject    VARCHAR(255) NOT NULL,
+  message    TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- --------------------------------------------------------
 -- Step 2: Clear all data (keeps table structure)
 -- --------------------------------------------------------
 SET FOREIGN_KEY_CHECKS = 0;
