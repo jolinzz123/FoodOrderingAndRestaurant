@@ -54,6 +54,20 @@ public class AddonDAO {
         }
     }
  
+    public boolean update(Addon a) {
+        String sql = "UPDATE addons SET name = ?, extra_price = ? WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, a.getName());
+            ps.setBigDecimal(2, a.getExtraPrice());
+            ps.setInt(3, a.getId());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public boolean delete(int id) {
         String sql = "DELETE FROM addons WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();

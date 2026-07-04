@@ -31,6 +31,7 @@ public class AdminAddonServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
         int foodItemId = Integer.parseInt(req.getParameter("foodItemId"));
         String name = req.getParameter("name");
 
@@ -48,7 +49,13 @@ public class AdminAddonServlet extends HttpServlet {
             a.setFoodItemId(foodItemId);
             a.setName(name.trim());
             a.setExtraPrice(extraPrice);
-            addonDAO.add(a);
+
+            if ("update".equals(action)) {
+                a.setId(Integer.parseInt(req.getParameter("id")));
+                addonDAO.update(a);
+            } else {
+                addonDAO.add(a);
+            }
         }
 
         resp.sendRedirect(req.getContextPath() + "/admin/food?action=edit&id=" + foodItemId);

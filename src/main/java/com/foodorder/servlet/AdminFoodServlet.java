@@ -46,6 +46,11 @@ public class AdminFoodServlet extends HttpServlet {
             int editId = Integer.parseInt(idParam);
             req.setAttribute("editItem", foodDAO.findById(editId));
             req.setAttribute("productAddons", addonDAO.findByFoodItemId(editId));
+
+            String editAddonId = req.getParameter("editAddonId");
+            if (editAddonId != null && !editAddonId.trim().isEmpty()) {
+                req.setAttribute("editAddon", addonDAO.findById(Integer.parseInt(editAddonId.trim())));
+            }
         }
 
         List<Category> categories = categoryDAO.findAll();

@@ -421,9 +421,17 @@ body.admin-body {
   border-radius: 50%;
   font-size: 0.65rem;
 }
-.adm-addon-chip a:hover {
+.adm-addon-edit:hover {
+  background: #7C6FE8;
+  color: #fff;
+}
+.adm-addon-delete:hover {
   background: #E11D48;
   color: #fff;
+}
+.adm-addon-chip-active {
+  background: #EDE9FE;
+  border-color: #7C6FE8;
 }
 .adm-food-card-desc {
   font-size: 0.78rem;

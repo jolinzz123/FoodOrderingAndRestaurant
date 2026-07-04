@@ -12,6 +12,9 @@
     @SuppressWarnings("unchecked")
     List<Addon> productAddons = (List<Addon>) request.getAttribute("productAddons");
 
+    Addon editAddon = (Addon) request.getAttribute("editAddon");
+    boolean isEditAddon = (editAddon != null);
+
     FoodItem editItem = (FoodItem) request.getAttribute("editItem");
     boolean isEdit = (editItem != null);
     String searchQuery = (String) request.getAttribute("searchQuery");
@@ -112,13 +115,17 @@
   <% } else { %>
     <div class="d-flex flex-wrap gap-2 mb-3">
       <% for (Addon a : productAddons) { %>
-        <span class="adm-addon-chip">
+        <span class="adm-addon-chip <%= (isEditAddon && editAddon.getId() == a.getId()) ? "adm-addon-chip-active" : "" %>">
           <%= WebUtil.escapeHtml(a.getName()) %>
           <% if (a.getExtraPrice() != null && a.getExtraPrice().compareTo(BigDecimal.ZERO) > 0) { %>
             <span class="adm-addon-price">+RM <%= String.format("%.2f", a.getExtraPrice()) %></span>
           <% } %>
+          <a href="<%= ctx %>/admin/food?action=edit&id=<%= editItem.getId() %>&editAddonId=<%= a.getId() %>"
+             class="adm-addon-edit" title="Edit add-on">
+            <i class="bi bi-pencil-fill"></i>
+          </a>
           <a href="<%= ctx %>/admin/addon?action=delete&id=<%= a.getId() %>&foodItemId=<%= editItem.getId() %>"
-             title="Remove add-on" onclick="return confirm('Remove add-on \'<%= a.getName() %>\'?')">
+             class="adm-addon-delete" title="Remove add-on" onclick="return confirm('Remove add-on \'<%= a.getName() %>\'?')">
             <i class="bi bi-x-lg"></i>
           </a>
         </span>
@@ -128,16 +135,25 @@
 
   <form method="post" action="<%= ctx %>/admin/addon" class="row g-2 align-items-end">
     <input type="hidden" name="foodItemId" value="<%= editItem.getId() %>">
+    <% if (isEditAddon) { %>
+      <input type="hidden" name="action" value="update">
+      <input type="hidden" name="id" value="<%= editAddon.getId() %>">
+    <% } %>
     <div class="col-md-6">
       <label class="form-label">Add-on Name</label>
-      <input type="text" name="name" class="form-control form-control-sm" placeholder="e.g. Extra Cheese" required>
+      <input type="text" name="name" class="form-control form-control-sm" placeholder="e.g. Extra Cheese" required
+             value="<%= isEditAddon ? WebUtil.escapeHtml(editAddon.getName()) : "" %>">
     </div>
     <div class="col-md-3">
       <label class="form-label">Extra Price (RM)</label>
-      <input type="number" name="extraPrice" class="form-control form-control-sm" step="0.01" min="0" placeholder="0.00">
+      <input type="number" name="extraPrice" class="form-control form-control-sm" step="0.01" min="0" placeholder="0.00"
+             value="<%= isEditAddon && editAddon.getExtraPrice() != null ? editAddon.getExtraPrice() : "" %>">
     </div>
-    <div class="col-md-3">
-      <button type="submit" class="btn btn-outline-brand btn-sm w-100">+ Add Add-on</button>
+    <div class="col-md-3 d-flex gap-2">
+      <button type="submit" class="btn btn-outline-brand btn-sm flex-grow-1"><%= isEditAddon ? "Update" : "+ Add" %></button>
+      <% if (isEditAddon) { %>
+        <a href="<%= ctx %>/admin/food?action=edit&id=<%= editItem.getId() %>" class="btn btn-outline-secondary btn-sm">Cancel</a>
+      <% } %>
     </div>
   </form>
 </div>
