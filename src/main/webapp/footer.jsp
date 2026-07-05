@@ -3,6 +3,7 @@
 <%
     String ctx = request.getContextPath();
 %>
+</div><!-- /page-wrap -->
 <footer class="site-footer">
   <div class="container">
     <div class="row">
