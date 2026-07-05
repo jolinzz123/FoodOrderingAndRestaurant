@@ -253,3 +253,9 @@ ALTER TABLE contact_messages ADD FOREIGN KEY (user_id) REFERENCES customers(id) 
 
 -- Now safe to drop the old combined table
 DROP TABLE users;
+
+-- --------------------------------------------------------
+-- Step 5: Track which admin last updated an order's status
+-- --------------------------------------------------------
+ALTER TABLE orders ADD COLUMN handled_by_admin_id INT NULL;
+ALTER TABLE orders ADD FOREIGN KEY (handled_by_admin_id) REFERENCES admins(id) ON DELETE SET NULL;

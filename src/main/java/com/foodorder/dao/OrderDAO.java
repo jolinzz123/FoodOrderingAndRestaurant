@@ -102,13 +102,17 @@ public class OrderDAO {
 
     public List<Order> findAll() {
         List<Order> orders = new ArrayList<>();
-        String sql = "SELECT o.*, u.username FROM orders o JOIN customers u ON o.user_id = u.id ORDER BY o.created_at DESC";
+        String sql = "SELECT o.*, u.username, a.username AS handled_by_username FROM orders o " +
+                     "JOIN customers u ON o.user_id = u.id " +
+                     "LEFT JOIN admins a ON o.handled_by_admin_id = a.id " +
+                     "ORDER BY o.created_at DESC";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Order o = mapOrderRow(rs);
                 o.setUsername(rs.getString("username"));
+                o.setHandledByAdminUsername(rs.getString("handled_by_username"));
                 orders.add(o);
             }
             for (Order o : orders) o.setItems(findItemsByOrderId(o.getId()));
@@ -120,7 +124,9 @@ public class OrderDAO {
 
     public List<Order> search(String keyword) {
         List<Order> orders = new ArrayList<>();
-        String sql = "SELECT o.*, u.username FROM orders o JOIN customers u ON o.user_id = u.id " +
+        String sql = "SELECT o.*, u.username, a.username AS handled_by_username FROM orders o " +
+                     "JOIN customers u ON o.user_id = u.id " +
+                     "LEFT JOIN admins a ON o.handled_by_admin_id = a.id " +
                      "WHERE u.username LIKE ? OR o.status LIKE ? OR CAST(o.id AS CHAR) LIKE ? " +
                      "ORDER BY o.created_at DESC";
         try (Connection conn = DBConnection.getConnection();
@@ -133,6 +139,7 @@ public class OrderDAO {
                 while (rs.next()) {
                     Order o = mapOrderRow(rs);
                     o.setUsername(rs.getString("username"));
+                    o.setHandledByAdminUsername(rs.getString("handled_by_username"));
                     orders.add(o);
                 }
             }
@@ -159,12 +166,13 @@ public class OrderDAO {
         return counts;
     }
 
-    public boolean updateStatus(int orderId, String status) {
-        String sql = "UPDATE orders SET status = ? WHERE id = ?";
+    public boolean updateStatus(int orderId, String status, int handledByAdminId) {
+        String sql = "UPDATE orders SET status = ?, handled_by_admin_id = ? WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, status);
-            ps.setInt(2, orderId);
+            ps.setInt(2, handledByAdminId);
+            ps.setInt(3, orderId);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -211,6 +219,8 @@ public class OrderDAO {
         o.setStatus(rs.getString("status"));
         o.setDeliveryAddress(rs.getString("delivery_address"));
         o.setPaymentMethod(rs.getString("payment_method"));
+        int handledBy = rs.getInt("handled_by_admin_id");
+        o.setHandledByAdminId(rs.wasNull() ? null : handledBy);
         o.setCreatedAt(rs.getTimestamp("created_at"));
         return o;
     }

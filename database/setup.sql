@@ -57,14 +57,16 @@ CREATE TABLE IF NOT EXISTS admins (
 );
 
 CREATE TABLE IF NOT EXISTS orders (
-    id               INT AUTO_INCREMENT PRIMARY KEY,
-    user_id          INT NOT NULL,
-    total_price      DECIMAL(10,2),
-    status           VARCHAR(50)  DEFAULT 'PENDING',
-    delivery_address VARCHAR(255),
-    payment_method   VARCHAR(50),
-    created_at       TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES customers(id)
+    id                  INT AUTO_INCREMENT PRIMARY KEY,
+    user_id             INT NOT NULL,
+    total_price         DECIMAL(10,2),
+    status              VARCHAR(50)  DEFAULT 'PENDING',
+    delivery_address    VARCHAR(255),
+    payment_method      VARCHAR(50),
+    handled_by_admin_id INT NULL,
+    created_at          TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES customers(id),
+    FOREIGN KEY (handled_by_admin_id) REFERENCES admins(id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS order_items (

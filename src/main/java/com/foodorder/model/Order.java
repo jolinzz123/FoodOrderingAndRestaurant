@@ -13,6 +13,8 @@ public class Order implements Serializable {
     private String status;
     private String deliveryAddress;
     private String paymentMethod;
+    private Integer handledByAdminId;
+    private String handledByAdminUsername;
     private Timestamp createdAt;
     private List<OrderItem> items;
 
@@ -38,6 +40,12 @@ public class Order implements Serializable {
 
     public String getPaymentMethod() { return paymentMethod; }
     public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
+
+    public Integer getHandledByAdminId() { return handledByAdminId; }
+    public void setHandledByAdminId(Integer handledByAdminId) { this.handledByAdminId = handledByAdminId; }
+
+    public String getHandledByAdminUsername() { return handledByAdminUsername; }
+    public void setHandledByAdminUsername(String handledByAdminUsername) { this.handledByAdminUsername = handledByAdminUsername; }
 
     public Timestamp getCreatedAt() { return createdAt; }
     public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }

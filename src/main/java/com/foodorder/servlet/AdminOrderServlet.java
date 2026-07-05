@@ -1,6 +1,7 @@
 package com.foodorder.servlet;
 
 import com.foodorder.dao.OrderDAO;
+import com.foodorder.model.User;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -36,7 +37,8 @@ public class AdminOrderServlet extends HttpServlet {
         int orderId = Integer.parseInt(req.getParameter("orderId"));
         String status = req.getParameter("status");
         String q = req.getParameter("q");
-        orderDAO.updateStatus(orderId, status);
+        User admin = (User) req.getSession().getAttribute("user");
+        orderDAO.updateStatus(orderId, status, admin.getId());
         String redirectUrl = req.getContextPath() + "/admin/orders";
         if (q != null && !q.trim().isEmpty()) redirectUrl += "?q=" + java.net.URLEncoder.encode(q.trim(), "UTF-8");
         resp.sendRedirect(redirectUrl);

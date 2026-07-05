@@ -191,6 +191,12 @@
                 <div class="text-muted">Current Status</div>
                 <div><span class="status-pill status-<%= o.getStatus() %>"><%= o.getStatus() %></span></div>
               </div>
+              <% if (o.getHandledByAdminUsername() != null) { %>
+              <div class="mb-3" style="font-size:0.87rem;">
+                <div class="text-muted">Last Updated By</div>
+                <div><%= WebUtil.escapeHtml(o.getHandledByAdminUsername()) %></div>
+              </div>
+              <% } %>
 
               <hr>
               <h6 class="mb-2" style="font-size:0.87rem; font-weight:700;">Update Status</h6>
