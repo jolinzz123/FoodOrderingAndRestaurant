@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%
     request.setAttribute("pageTitle", "Review Submitted — HotServe");
     String ctx = request.getContextPath();

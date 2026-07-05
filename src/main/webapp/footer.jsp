@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+
 <%
     String ctx = request.getContextPath();
 %>
@@ -6,7 +8,7 @@
     <div class="row">
       <div class="col-md-4 mb-3">
         <h5 style="color:#EAE4D8;">🥗 HotServe</h5>
-        <p>Fresh ingredients, fast delivery, and dishes made with care — straight from our kitchen to your table.</p>
+<p>Fresh ingredients, fast delivery, and dishes made with care — straight from our kitchen to your table.</p>
       </div>
       <div class="col-md-4 mb-3">
         <h6 style="color:#EAE4D8;">Quick Links</h6>

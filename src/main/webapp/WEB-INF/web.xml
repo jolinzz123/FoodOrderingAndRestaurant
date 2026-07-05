@@ -23,6 +23,12 @@
         <error-code>500</error-code>
         <location>/error.jsp</location>
     </error-page>
+    <jsp-config>
+    <jsp-property-group>
+        <url-pattern>*.jsp</url-pattern>
+        <page-encoding>UTF-8</page-encoding>
+    </jsp-property-group>
+</jsp-config>
 
     <!--
         Servlets, filters, and their mappings are declared via @WebServlet / @WebFilter

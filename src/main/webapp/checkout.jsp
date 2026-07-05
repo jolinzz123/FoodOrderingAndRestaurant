@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.foodorder.model.CartItem, java.util.Map, java.util.LinkedHashMap, java.math.BigDecimal" %>
 <%
     request.setAttribute("pageTitle", "Checkout — HotServe");

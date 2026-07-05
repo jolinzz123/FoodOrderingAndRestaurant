@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.List, com.foodorder.model.OrderItem, com.foodorder.model.User, com.foodorder.dao.ReviewDAO, java.math.BigDecimal" %>
 <%
     request.setAttribute("pageTitle", "Order Confirmed — HotServe");

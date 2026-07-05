@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.foodorder.model.FoodItem, com.foodorder.model.User, com.foodorder.model.Addon, com.foodorder.model.CartItem, com.foodorder.model.Review, java.util.List, java.util.Map" %>
 <%
     FoodItem item = (FoodItem) request.getAttribute("item");

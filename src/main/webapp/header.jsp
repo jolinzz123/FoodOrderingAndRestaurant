@@ -44,7 +44,7 @@
             <li class="nav-item"><a class="nav-link" href="<%= ctx %>/logout">Logout</a></li>
         <% } else { %>
             <li class="nav-item"><a class="nav-link" href="<%= ctx %>/login.jsp">Login</a></li>
-            <li class="nav-item"><a class="nav-link btn-cart" href="<%= ctx %>/register.jsp">Sign Up</a></li>
+            <li class="nav-item"><a class="nav-link" href="<%= ctx %>/register.jsp">Sign Up</a></li>
         <% } %>
       </ul>
     </div>
