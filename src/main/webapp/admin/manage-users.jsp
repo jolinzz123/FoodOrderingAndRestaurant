@@ -125,10 +125,10 @@
           </td>
           <td>
             <div class="d-flex gap-1 flex-nowrap">
-              <a href="<%= ctx %>/admin/users?viewOrdersId=<%= u.getId() %>" class="btn btn-sm btn-icon-edit" title="View Orders">
+              <a href="<%= ctx %>/admin/users?viewOrdersId=<%= u.getId() %>&viewOrdersType=<%= u.isAdmin() ? "admin" : "customer" %>" class="btn btn-sm btn-icon-edit" title="View Orders">
                 <i class="bi bi-receipt"></i>
               </a>
-              <% if (currentUser != null && currentUser.getId() == u.getId()) { %>
+              <% if (currentUser != null && currentUser.getId() == u.getId() && currentUser.isAdmin() == u.isAdmin()) { %>
                 <span class="btn btn-sm btn-icon-disabled" title="You can't change your own role">
                   <i class="bi bi-person-fill"></i>
                 </span>

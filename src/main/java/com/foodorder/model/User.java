@@ -9,17 +9,18 @@ public class User implements Serializable {
     private String email;
     private String passwordHash;
     private String phone;
-    private String role; // CUSTOMER or ADMIN
+    // Set explicitly by whichever DAO method loaded this row — true if it came
+    // from the admins table, false if it came from the customers table.
+    private boolean admin;
     private Timestamp createdAt;
 
     public User() {}
 
-    public User(String username, String email, String passwordHash, String phone, String role) {
+    public User(String username, String email, String passwordHash, String phone) {
         this.username = username;
         this.email = email;
         this.passwordHash = passwordHash;
         this.phone = phone;
-        this.role = role;
     }
 
     public int getId() { return id; }
@@ -37,11 +38,9 @@ public class User implements Serializable {
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
 
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
-
     public Timestamp getCreatedAt() { return createdAt; }
     public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
 
-    public boolean isAdmin() { return "ADMIN".equalsIgnoreCase(role); }
+    public boolean isAdmin() { return admin; }
+    public void setAdmin(boolean admin) { this.admin = admin; }
 }

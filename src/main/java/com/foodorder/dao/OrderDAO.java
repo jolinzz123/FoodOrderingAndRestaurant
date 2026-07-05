@@ -102,7 +102,7 @@ public class OrderDAO {
 
     public List<Order> findAll() {
         List<Order> orders = new ArrayList<>();
-        String sql = "SELECT o.*, u.username FROM orders o JOIN users u ON o.user_id = u.id ORDER BY o.created_at DESC";
+        String sql = "SELECT o.*, u.username FROM orders o JOIN customers u ON o.user_id = u.id ORDER BY o.created_at DESC";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -120,7 +120,7 @@ public class OrderDAO {
 
     public List<Order> search(String keyword) {
         List<Order> orders = new ArrayList<>();
-        String sql = "SELECT o.*, u.username FROM orders o JOIN users u ON o.user_id = u.id " +
+        String sql = "SELECT o.*, u.username FROM orders o JOIN customers u ON o.user_id = u.id " +
                      "WHERE u.username LIKE ? OR o.status LIKE ? OR CAST(o.id AS CHAR) LIKE ? " +
                      "ORDER BY o.created_at DESC";
         try (Connection conn = DBConnection.getConnection();

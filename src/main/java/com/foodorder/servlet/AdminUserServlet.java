@@ -23,19 +23,25 @@ public class AdminUserServlet extends HttpServlet {
         String idParam = req.getParameter("id");
         String q = req.getParameter("q");
 
-        if (("promote".equals(action) || "demote".equals(action)) && idParam != null) {
-            User currentUser = (User) req.getSession().getAttribute("user");
+        if ("promote".equals(action) && idParam != null) {
             int targetId = Integer.parseInt(idParam);
-            if (currentUser == null || currentUser.getId() != targetId) {
-                userDAO.updateRole(targetId, "promote".equals(action) ? "ADMIN" : "CUSTOMER");
-            }
+            User currentUser = (User) req.getSession().getAttribute("user");
+            boolean isSelf = currentUser != null && !currentUser.isAdmin() && currentUser.getId() == targetId;
+            if (!isSelf) userDAO.promote(targetId);
+        } else if ("demote".equals(action) && idParam != null) {
+            int targetId = Integer.parseInt(idParam);
+            User currentUser = (User) req.getSession().getAttribute("user");
+            boolean isSelf = currentUser != null && currentUser.isAdmin() && currentUser.getId() == targetId;
+            if (!isSelf) userDAO.demote(targetId);
         }
 
         String viewOrdersId = req.getParameter("viewOrdersId");
+        String viewOrdersType = req.getParameter("viewOrdersType");
         if (viewOrdersId != null && !viewOrdersId.trim().isEmpty()) {
             int uid = Integer.parseInt(viewOrdersId.trim());
-            req.setAttribute("viewOrdersUser", userDAO.findById(uid));
-            req.setAttribute("viewOrdersList", orderDAO.findByUser(uid));
+            User viewOrdersUser = "admin".equals(viewOrdersType) ? userDAO.findAdminById(uid) : userDAO.findCustomerById(uid);
+            req.setAttribute("viewOrdersUser", viewOrdersUser);
+            req.setAttribute("viewOrdersList", viewOrdersUser != null ? orderDAO.findByUser(uid) : new java.util.ArrayList<>());
         }
 
         boolean hasQuery = q != null && !q.trim().isEmpty();

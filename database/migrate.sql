@@ -198,3 +198,58 @@ INSERT IGNORE INTO users (username, email, password_hash, phone, role) VALUES
 ('admin','admin@foodorder.com',
  '1621514f4abb2d0b68bb344ebc60e12233fcf7bff1a99c9b1e4ac257f949f698',
  '0123456789','ADMIN');
+
+-- --------------------------------------------------------
+-- Step 4: Split users into separate customers + admins tables
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS customers (
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    username      VARCHAR(100) NOT NULL UNIQUE,
+    email         VARCHAR(200) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    phone         VARCHAR(20),
+    created_at    TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS admins (
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    username      VARCHAR(100) NOT NULL UNIQUE,
+    email         VARCHAR(200) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    phone         VARCHAR(20),
+    created_at    TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Copy existing accounts across, keeping their original IDs so orders/reviews/
+-- contact_messages (which will reference customers only) still line up.
+INSERT INTO customers (id, username, email, password_hash, phone, created_at)
+SELECT id, username, email, password_hash, phone, created_at FROM users WHERE role = 'CUSTOMER';
+
+INSERT INTO admins (id, username, email, password_hash, phone, created_at)
+SELECT id, username, email, password_hash, phone, created_at FROM users WHERE role = 'ADMIN';
+
+-- Repoint orders/reviews/contact_messages at customers instead of users.
+-- Constraint names are looked up dynamically since they were auto-generated.
+SET @fk := (SELECT CONSTRAINT_NAME FROM information_schema.KEY_COLUMN_USAGE
+            WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'orders'
+              AND COLUMN_NAME = 'user_id' AND REFERENCED_TABLE_NAME = 'users' LIMIT 1);
+SET @sql := CONCAT('ALTER TABLE orders DROP FOREIGN KEY ', @fk);
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+ALTER TABLE orders ADD FOREIGN KEY (user_id) REFERENCES customers(id);
+
+SET @fk := (SELECT CONSTRAINT_NAME FROM information_schema.KEY_COLUMN_USAGE
+            WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'reviews'
+              AND COLUMN_NAME = 'user_id' AND REFERENCED_TABLE_NAME = 'users' LIMIT 1);
+SET @sql := CONCAT('ALTER TABLE reviews DROP FOREIGN KEY ', @fk);
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+ALTER TABLE reviews ADD FOREIGN KEY (user_id) REFERENCES customers(id) ON DELETE CASCADE;
+
+SET @fk := (SELECT CONSTRAINT_NAME FROM information_schema.KEY_COLUMN_USAGE
+            WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'contact_messages'
+              AND COLUMN_NAME = 'user_id' AND REFERENCED_TABLE_NAME = 'users' LIMIT 1);
+SET @sql := CONCAT('ALTER TABLE contact_messages DROP FOREIGN KEY ', @fk);
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+ALTER TABLE contact_messages ADD FOREIGN KEY (user_id) REFERENCES customers(id) ON DELETE CASCADE;
+
+-- Now safe to drop the old combined table
+DROP TABLE users;

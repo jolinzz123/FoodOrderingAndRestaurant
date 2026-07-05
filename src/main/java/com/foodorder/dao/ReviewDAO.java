@@ -12,7 +12,7 @@ public class ReviewDAO {
     /** All reviews for a food item, newest first. */
     public List<Review> findByFoodId(int foodId) {
         List<Review> list = new ArrayList<>();
-        String sql = "SELECT r.*, u.username FROM reviews r JOIN users u ON r.user_id = u.id " +
+        String sql = "SELECT r.*, u.username FROM reviews r JOIN customers u ON r.user_id = u.id " +
                      "WHERE r.food_id = ? ORDER BY r.created_at DESC";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {

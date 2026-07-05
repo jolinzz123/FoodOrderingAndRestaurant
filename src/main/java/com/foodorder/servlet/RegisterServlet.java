@@ -47,7 +47,7 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        User user = new User(username, email, PasswordUtil.hash(password), phone, "CUSTOMER");
+        User user = new User(username, email, PasswordUtil.hash(password), phone);
         boolean success = userDAO.register(user);
 
         if (success) {

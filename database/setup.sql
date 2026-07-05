@@ -38,13 +38,21 @@ CREATE TABLE IF NOT EXISTS addons (
     FOREIGN KEY (food_item_id) REFERENCES food_items(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS customers (
     id            INT AUTO_INCREMENT PRIMARY KEY,
     username      VARCHAR(100) NOT NULL UNIQUE,
     email         VARCHAR(200) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     phone         VARCHAR(20),
-    role          VARCHAR(20)  DEFAULT 'CUSTOMER',
+    created_at    TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS admins (
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    username      VARCHAR(100) NOT NULL UNIQUE,
+    email         VARCHAR(200) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    phone         VARCHAR(20),
     created_at    TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -56,7 +64,7 @@ CREATE TABLE IF NOT EXISTS orders (
     delivery_address VARCHAR(255),
     payment_method   VARCHAR(50),
     created_at       TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES customers(id)
 );
 
 CREATE TABLE IF NOT EXISTS order_items (
@@ -207,7 +215,7 @@ CREATE TABLE IF NOT EXISTS reviews (
   UNIQUE KEY uq_user_food_order (user_id, food_id, order_id),
   FOREIGN KEY (food_id)  REFERENCES food_items(id) ON DELETE CASCADE,
   FOREIGN KEY (order_id) REFERENCES orders(id)     ON DELETE CASCADE,
-  FOREIGN KEY (user_id)  REFERENCES users(id)      ON DELETE CASCADE
+  FOREIGN KEY (user_id)  REFERENCES customers(id)  ON DELETE CASCADE
 );
 
 -- --------------------------------------------------------
@@ -221,14 +229,14 @@ CREATE TABLE IF NOT EXISTS contact_messages (
   subject    VARCHAR(255) NOT NULL,
   message    TEXT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES customers(id) ON DELETE CASCADE
 );
 
 -- --------------------------------------------------------
 -- Admin account  (username: admin | password: admin306)
 -- --------------------------------------------------------
-INSERT INTO users (username, email, password_hash, phone, role) VALUES
+INSERT INTO admins (username, email, password_hash, phone) VALUES
 ('admin','admin@foodorder.com',
  '1621514f4abb2d0b68bb344ebc60e12233fcf7bff1a99c9b1e4ac257f949f698',
- '0123456789','ADMIN');
+ '0123456789');
  
