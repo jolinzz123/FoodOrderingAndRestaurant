@@ -47,10 +47,10 @@
       <!-- Right image -->
       <div class="hp-hero-right">
         <div class="hp-hero-img-ring">
-          <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&q=85"
+          <img src="<%= ctx %>/images/main.png"
                alt="Featured dish"
                class="hp-hero-img"
-               onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=85'">
+               onerror="this.src='https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&q=85'">
         </div>
         <!-- floating ingredient bubbles -->
         <div class="hp-float hp-float-1">🌶️</div>
