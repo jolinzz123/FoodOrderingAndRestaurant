@@ -116,7 +116,7 @@
       <form action="<%= ctx %>/cart" method="post" class="fd-form">
         <input type="hidden" name="action" value="add">
         <input type="hidden" name="foodId" value="<%= item.getId() %>">
-        <input type="hidden" name="returnTo" value="/menu">
+        <input type="hidden" name="returnTo" value="<%= (editKey != null && !editKey.isEmpty()) ? "/cart" : "/menu" %>">
         <% if (editKey != null && !editKey.isEmpty()) { %>
         <input type="hidden" name="editKey" value="<%= editKey %>">
         <% } %>
