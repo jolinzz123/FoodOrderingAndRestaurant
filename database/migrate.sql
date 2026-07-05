@@ -50,12 +50,21 @@ CREATE TABLE IF NOT EXISTS reviews (
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS contact_messages (
   id         INT AUTO_INCREMENT PRIMARY KEY,
+  user_id    INT NOT NULL,
   name       VARCHAR(200) NOT NULL,
   email      VARCHAR(200) NOT NULL,
   subject    VARCHAR(255) NOT NULL,
   message    TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+-- --------------------------------------------------------
+-- Step 1g: Link contact_messages to the submitting user
+-- (only needed if you already ran Step 1f before this column existed)
+-- --------------------------------------------------------
+ALTER TABLE contact_messages ADD COLUMN user_id INT NOT NULL AFTER id;
+ALTER TABLE contact_messages ADD FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
 
 -- --------------------------------------------------------
 -- Step 2: Clear all data (keeps table structure)

@@ -1,8 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="com.foodorder.model.User" %>
 <%
     request.setAttribute("pageTitle", "Contact Us — HotServe");
     String ctx = request.getContextPath();
     String error = (String) request.getAttribute("error");
+    User currentUser = (User) session.getAttribute("user");
 %>
 <jsp:include page="header.jsp" />
 
@@ -41,6 +43,11 @@
       <% if (error != null) { %>
         <div class="alert alert-danger"><%= error %></div>
       <% } %>
+      <% if (currentUser == null) { %>
+        <div class="alert alert-danger">
+          Please <a href="<%= ctx %>/login.jsp">log in</a> to send us a message.
+        </div>
+      <% } else { %>
       <form id="contactForm" action="<%= ctx %>/contact" method="post" novalidate>
         <div class="row g-3">
           <div class="col-md-6">
@@ -64,6 +71,7 @@
           </div>
         </div>
       </form>
+      <% } %>
     </div>
   </div>
 </div>

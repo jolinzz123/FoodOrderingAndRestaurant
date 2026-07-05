@@ -215,11 +215,13 @@ CREATE TABLE IF NOT EXISTS reviews (
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS contact_messages (
   id         INT AUTO_INCREMENT PRIMARY KEY,
+  user_id    INT NOT NULL,
   name       VARCHAR(200) NOT NULL,
   email      VARCHAR(200) NOT NULL,
   subject    VARCHAR(255) NOT NULL,
   message    TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- --------------------------------------------------------

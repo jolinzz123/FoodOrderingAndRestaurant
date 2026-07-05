@@ -2,6 +2,7 @@ package com.foodorder.servlet;
 
 import com.foodorder.dao.ContactMessageDAO;
 import com.foodorder.model.ContactMessage;
+import com.foodorder.model.User;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,6 +21,12 @@ public class ContactServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        User user = (User) req.getSession().getAttribute("user");
+        if (user == null) {
+            resp.sendRedirect(req.getContextPath() + "/login.jsp");
+            return;
+        }
+
         String name = req.getParameter("name");
         String email = req.getParameter("email");
         String subject = req.getParameter("subject");
@@ -33,6 +40,7 @@ public class ContactServlet extends HttpServlet {
         }
 
         ContactMessage msg = new ContactMessage();
+        msg.setUserId(user.getId());
         msg.setName(name.trim());
         msg.setEmail(email.trim());
         msg.setSubject(subject.trim());
