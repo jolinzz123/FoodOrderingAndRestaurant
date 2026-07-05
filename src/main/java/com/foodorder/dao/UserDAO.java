@@ -59,10 +59,32 @@ public class UserDAO {
     /**
      * Promotes a customer to admin by moving their row into the admins table.
      * Fails (returns false) if they have orders/reviews/contact messages, since
-     * those tables reference customers only.
+     * those tables reference customers only. Check hasHistory() first to give
+     * the caller a specific reason instead of a silent failure.
      */
     public boolean promote(int customerId) {
         return moveRow("customers", "admins", customerId);
+    }
+
+    /** True if this customer has any orders, reviews, or contact messages on record. */
+    public boolean hasHistory(int customerId) {
+        return existsWhere("orders", customerId)
+            || existsWhere("reviews", customerId)
+            || existsWhere("contact_messages", customerId);
+    }
+
+    private boolean existsWhere(String table, int userId) {
+        String sql = "SELECT 1 FROM " + table + " WHERE user_id = ? LIMIT 1";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /** Demotes an admin back to a regular customer. */

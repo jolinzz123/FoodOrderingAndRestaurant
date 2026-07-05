@@ -14,8 +14,13 @@
     List<Order> viewOrdersList = (List<Order>) request.getAttribute("viewOrdersList");
 
     User currentUser = (User) session.getAttribute("user");
+    String actionError = (String) request.getAttribute("actionError");
 %>
 <jsp:include page="/admin/admin-header.jsp" />
+
+<% if (actionError != null) { %>
+<div class="alert alert-danger"><%= WebUtil.escapeHtml(actionError) %></div>
+<% } %>
 
 <% if (viewOrdersUser != null) { %>
 <div class="adm-card mb-4">

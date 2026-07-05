@@ -27,7 +27,13 @@ public class AdminUserServlet extends HttpServlet {
             int targetId = Integer.parseInt(idParam);
             User currentUser = (User) req.getSession().getAttribute("user");
             boolean isSelf = currentUser != null && !currentUser.isAdmin() && currentUser.getId() == targetId;
-            if (!isSelf) userDAO.promote(targetId);
+            if (!isSelf) {
+                if (userDAO.hasHistory(targetId)) {
+                    req.setAttribute("actionError", "This account has order, review, or message history and can't be promoted to admin.");
+                } else {
+                    userDAO.promote(targetId);
+                }
+            }
         } else if ("demote".equals(action) && idParam != null) {
             int targetId = Integer.parseInt(idParam);
             User currentUser = (User) req.getSession().getAttribute("user");
