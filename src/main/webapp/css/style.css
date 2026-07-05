@@ -10,3 +10,4 @@
 @import url('menu-food.css');        /* menu page, food detail, cart sidebar, payment, toast */
 @import url('cart-and-responsive.css'); /* cart page + global responsive overrides */
 @import url('about.css');            /* about us page: hero, story, stats, chefs */
+@import url('Auth.css');             /*register page and login page */
