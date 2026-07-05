@@ -14,7 +14,7 @@
 
 <style>
 /* ── Checkout page layout ─────────────────────────── */
-.co-page { max-width: 1080px; margin: 0 auto; padding: 40px 16px 80px; }
+.co-page { max-width: 1080px; margin: 0 auto; padding: 40px 16px 60px; }
 .co-page h2 { font-size: 1.6rem; font-weight: 800; color: var(--color-text); margin-bottom: 32px; }
 
 /* Steps indicator */
