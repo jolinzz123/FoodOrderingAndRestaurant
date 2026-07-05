@@ -1,15 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%
-
-    request.setAttribute("pageTitle", "Sign Up — HotServe");
+    request.setAttribute("pageTitle", "Reset Password — HotServe");
     String ctx = request.getContextPath();
     String error = (String) request.getAttribute("error");
-    String username = (String) request.getAttribute("username");
-    String email = (String) request.getAttribute("email");
-    String phone = (String) request.getAttribute("phone");
-    if (username == null) username = "";
-    if (email == null) email = "";
-    if (phone == null) phone = "";
+    String message = (String) request.getAttribute("message");
 %>
 <jsp:include page="header.jsp" />
 
@@ -17,50 +11,43 @@
 
   <div class="panel-form">
     <div class="form-card">
-      <h1 class="auth-title">Create Your Account</h1>
-      <p class="auth-sub">Join HotServe and start ordering in minutes.</p>
+      <h1 class="auth-title">Reset Password</h1>
+      <p class="auth-sub">Enter your email and new password to recover your account.</p>
 
+      <% if (message != null) { %>
+        <div class="alert alert-success"><%= message %></div>
+      <% } %>
       <% if (error != null) { %>
         <div class="alert alert-danger"><%= error %></div>
       <% } %>
 
-      <form action="<%= ctx %>/register" method="post" id="registerForm" novalidate>
+      <!-- Submit reset password Servlet -->
+      <form action="<%= ctx %>/forgotPassword" method="post" id="forgotPasswordForm" novalidate>
         <div class="mb-3">
-          <label for="username" class="form-label">Username</label>
-          <input type="text" class="form-control" id="username" name="username" minlength="3"
-                 value="<%= username %>" required>
-          <div class="invalid-feedback">Username must be at least 3 characters.</div>
-        </div>
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <input type="email" class="form-control" id="email" name="email" value="<%= email %>" required>
+          <label for="email" class="form-label">Email Address</label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Enter your registered email" required>
           <div class="invalid-feedback">Please enter a valid email address.</div>
         </div>
         <div class="mb-3">
-          <label for="phone" class="form-label">Phone Number</label>
-          <input type="text" class="form-control" id="phone" name="phone" value="<%= phone %>" placeholder="e.g. 012-3456789" required>
-          <div class="invalid-feedback">Please enter a valid phone number.</div>
+          <!-- the name change into password, match with Servlet -->
+          <label for="password" class="form-label">New Password</label>
+          <input type="password" class="form-control" id="password" name="password" minlength="6" placeholder="At least 6 characters" required>
+          <div class="invalid-feedback">Min 6 characters.</div>
         </div>
-
         <div class="mb-3">
-           <label for="password" class="form-label">Password</label>
-           <input type="password" class="form-control" id="password" name="password" minlength="6" required>
-        <div class="invalid-feedback">Min 6 characters.</div>
-       </div>
-
-        <div class="mb-3">
-           <label for="confirmPassword" class="form-label">Confirm Password</label>
-           <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" minlength="6" required>
-        <div class="invalid-feedback">Doesn't match.</div>
-       </div>
-
-        <button type="submit" class="btn btn-brand w-100 mt-2">Sign Up</button>
+          <!-- the name change into confirmPassword, match to Servlet -->
+          <label for="confirmPassword" class="form-label">Confirm New Password</label>
+          <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" minlength="6" placeholder="Repeat new password" required>
+          <div class="invalid-feedback">Doesn't match.</div>
+        </div>
+        <button type="submit" class="btn btn-brand w-100 mt-2">Reset Password</button>
       </form>
-      <p class="text-center mt-3 mb-0">Already have an account? <a href="<%= ctx %>/login.jsp">Log in</a></p>
+      <p class="text-center mt-3 mb-0">Remembered your password? <a href="<%= ctx %>/login.jsp">Log in</a></p>
     </div>
   </div>
 
   <div class="panel-art">
+    <-- The right picture -->
     <div class="deco-icon float-slow" style="top:14%; left:12%; width:34px;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 3v7a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V3M7 3v18M11 3v7M15 3c-1.5 2-1.5 5 0 7v8"/></svg>
     </div>
@@ -92,8 +79,8 @@
     </svg>
 
     <div class="auth-caption">
-      <h2>Join the table</h2>
-      <p>Create an account to save your favorites, track orders, and get member-only deals.</p>
+      <h2>Back on track</h2>
+      <p>Don't worry! Get back to exploring and ordering your favorite dishes in just a moment.</p>
     </div>
   </div>
 

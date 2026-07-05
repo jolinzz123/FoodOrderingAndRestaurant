@@ -74,8 +74,7 @@ a:hover { color: var(--color-primary-dark); }
 }
 .navbar-foodorder .btn-cart:hover { background-color: var(--color-primary-light); color: #fff !important; }
 
-/* 折叠菜单(移动端展开)时，防止 nav-item 撑满导致按钮被拉伸
-   注意：width:auto 无法阻止 flex 的 stretch 效果，必须用 align-self */
+
 @media (max-width: 991.98px) {
   .navbar-foodorder .navbar-nav {
     align-items: flex-start;

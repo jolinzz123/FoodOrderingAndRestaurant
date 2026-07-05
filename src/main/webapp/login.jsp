@@ -31,6 +31,11 @@
           <label for="password" class="form-label">Password</label>
           <input type="password" class="form-control" id="password" name="password" required>
         </div>
+        
+        <div class="text-end mb-3" style="margin-top: -4px;">
+          <a href="<%= ctx %>/forgot-password.jsp" class="text-decoration-none" style="font-size: 0.8rem; color: #726d8c;">Forgot Password?</a>
+       </div> 
+
         <button type="submit" class="btn btn-brand w-100 mt-2">Log In</button>
       </form>
       <p class="text-center mt-3 mb-0">New here? <a href="<%= ctx %>/register.jsp">Create an account</a></p>

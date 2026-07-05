@@ -20,6 +20,7 @@ public class UserDAO {
             e.printStackTrace();
         }
         return list;
+        
     }
 
     public List<User> search(String keyword) {
@@ -121,5 +122,21 @@ public class UserDAO {
         u.setRole(rs.getString("role"));
         u.setCreatedAt(rs.getTimestamp("created_at"));
         return u;
+    }
+
+    public boolean updatePasswordByEmail(String email, String newHashedPassword) {
+        String sql = "UPDATE users SET password_hash = ? WHERE email = ?";
+        try (java.sql.Connection conn = com.foodorder.util.DBConnection.getConnection(); // 这里换成你项目实际的数据库连接获取方式
+             java.sql.PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setString(1, newHashedPassword);
+            ps.setString(2, email);
+            
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0; 
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
