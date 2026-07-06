@@ -62,13 +62,23 @@
 }
 .co-remove-btn:hover { background: #fff0f0; }
 
-/* Address input */
+/* Address grid */
+.co-addr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.co-addr-full { grid-column: 1 / -1; }
+.co-addr-field { display: flex; flex-direction: column; gap: 5px; }
+.co-addr-label { font-size: .78rem; font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: .04em; }
+.co-req { color: #E53E3E; }
 .co-address-input {
   width: 100%; border: 2px solid var(--color-border); border-radius: 12px;
-  padding: 13px 16px; font-size: .9rem; color: var(--color-text);
-  transition: border-color .2s; outline: none; background: var(--color-bg);
+  padding: 11px 14px; font-size: .9rem; color: var(--color-text);
+  transition: border-color .2s, box-shadow .2s; outline: none; background: var(--color-bg);
+  font-family: var(--font-body);
 }
-.co-address-input:focus { border-color: var(--color-accent); }
+.co-address-input:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(124,111,232,0.12); }
+.co-input-err { border-color: #E53E3E !important; }
+.co-input-err:focus { box-shadow: 0 0 0 3px rgba(229,62,62,0.12) !important; }
+.co-addr-select { cursor: pointer; appearance: auto; }
+.co-field-err { display: none; color: #d9534f; font-size: .76rem; margin-top: 2px; }
 
 /* Payment method cards */
 .co-pay-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
@@ -173,10 +183,42 @@
         <div class="co-card-title">
           <span class="co-card-title-icon">📍</span> Delivery Address
         </div>
-        <input type="text" id="coAddress" class="co-address-input"
-               placeholder="Enter your full delivery address…" autocomplete="street-address">
-        <div id="coAddressErr" style="color:#d9534f;font-size:.8rem;margin-top:6px;display:none;">
-          Please enter your delivery address.
+
+        <div class="co-addr-grid">
+          <!-- Street -->
+          <div class="co-addr-field co-addr-full">
+            <label class="co-addr-label">Street Address <span class="co-req">*</span></label>
+            <input type="text" id="addrStreet" class="co-address-input" placeholder="e.g. No. 12, Jalan Dahlia 3" autocomplete="street-address">
+            <div class="co-field-err" id="errStreet">Please enter your street address.</div>
+          </div>
+
+          <!-- City -->
+          <div class="co-addr-field">
+            <label class="co-addr-label">City <span class="co-req">*</span></label>
+            <input type="text" id="addrCity" class="co-address-input" placeholder="e.g. Sepang" autocomplete="address-level2">
+            <div class="co-field-err" id="errCity">Please enter your city.</div>
+          </div>
+
+          <!-- State -->
+          <div class="co-addr-field">
+            <label class="co-addr-label">State <span class="co-req">*</span></label>
+            <select id="addrState" class="co-address-input co-addr-select">
+              <option value="">— Select State —</option>
+              <option>Johor</option><option>Kedah</option><option>Kelantan</option>
+              <option>Melaka</option><option>Negeri Sembilan</option><option>Pahang</option>
+              <option>Perak</option><option>Perlis</option><option>Pulau Pinang</option>
+              <option>Sabah</option><option>Sarawak</option><option>Selangor</option>
+              <option>Terengganu</option><option>Kuala Lumpur</option><option>Labuan</option><option>Putrajaya</option>
+            </select>
+            <div class="co-field-err" id="errState">Please select your state.</div>
+          </div>
+
+          <!-- Postcode -->
+          <div class="co-addr-field">
+            <label class="co-addr-label">Postcode <span class="co-req">*</span></label>
+            <input type="text" id="addrPostcode" class="co-address-input" placeholder="e.g. 43900" maxlength="5" autocomplete="postal-code">
+            <div class="co-field-err" id="errPostcode">Please enter a valid 5-digit postcode.</div>
+          </div>
         </div>
       </div>
 
@@ -277,19 +319,38 @@ function selectPay(el) {
   }
 })();
 
-document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-  var addr = document.getElementById('coAddress').value.trim();
-  var addrErr = document.getElementById('coAddressErr');
-  var payErr = document.getElementById('coPayErr');
-  var valid = true;
+// Clear field error on input
+['addrStreet','addrCity','addrState','addrPostcode'].forEach(function(id) {
+  document.getElementById(id).addEventListener('input', function() {
+    document.getElementById('err' + id.replace('addr','')).style.display = 'none';
+    this.classList.remove('co-input-err');
+  });
+});
 
-  if (!addr) {
-    addrErr.style.display = 'block';
-    document.getElementById('coAddress').focus();
-    valid = false;
-  } else {
-    addrErr.style.display = 'none';
-  }
+function showFieldErr(inputId, errId) {
+  var el = document.getElementById(inputId);
+  el.classList.add('co-input-err');
+  document.getElementById(errId).style.display = 'block';
+  return el;
+}
+
+document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+  var street   = document.getElementById('addrStreet').value.trim();
+  var city     = document.getElementById('addrCity').value.trim();
+  var state    = document.getElementById('addrState').value;
+  var postcode = document.getElementById('addrPostcode').value.trim();
+  var payErr   = document.getElementById('coPayErr');
+  var valid    = true;
+  var firstErr = null;
+
+  if (!street)                           { firstErr = firstErr || showFieldErr('addrStreet',   'errStreet');   valid = false; }
+  if (!city)                             { firstErr = firstErr || showFieldErr('addrCity',     'errCity');     valid = false; }
+  if (!state)                            { firstErr = firstErr || showFieldErr('addrState',    'errState');    valid = false; }
+  if (!/^\d{5}$/.test(postcode))        { firstErr = firstErr || showFieldErr('addrPostcode', 'errPostcode'); valid = false; }
+
+  var addr = [street, city, state, postcode].join(', ');
+
+  if (!valid) { e.preventDefault(); if (firstErr) firstErr.focus(); return; }
 
   if (!selectedPay) {
     payErr.style.display = 'block';
@@ -304,8 +365,9 @@ document.getElementById('checkoutForm').addEventListener('submit', function(e) {
   document.getElementById('hiddenPayment').value = selectedPay;
 });
 
-document.getElementById('coAddress').addEventListener('input', function() {
-  if (this.value.trim()) document.getElementById('coAddressErr').style.display = 'none';
+// postcode: digits only
+document.getElementById('addrPostcode').addEventListener('keypress', function(e) {
+  if (!/[0-9]/.test(e.key)) e.preventDefault();
 });
 </script>
 
