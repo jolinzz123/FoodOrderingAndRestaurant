@@ -43,12 +43,10 @@
       <% if (error != null) { %>
         <div class="alert alert-danger"><%= error %></div>
       <% } %>
-      <% if (currentUser == null) { %>
-        <div class="alert alert-danger">
-          Please <a href="<%= ctx %>/login.jsp">log in</a> to send us a message.
-        </div>
-      <% } else { %>
-      <form id="contactForm" action="<%= ctx %>/contact" method="post" novalidate>
+      <div id="contactLoginAlert" class="alert alert-danger d-none">
+        Please <a href="<%= ctx %>/login.jsp">log in</a> to send us a message.
+      </div>
+      <form id="contactForm" action="<%= ctx %>/contact" method="post" data-logged-in="<%= currentUser != null %>" novalidate>
         <div class="row g-3">
           <div class="col-md-6">
             <label class="form-label">Name</label>
@@ -71,7 +69,6 @@
           </div>
         </div>
       </form>
-      <% } %>
     </div>
   </div>
 </div>

@@ -55,7 +55,16 @@
   const contactForm = document.getElementById('contactForm');
   if (contactForm) {
     const emailPattern = /^[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}$/;
+    const loginAlert = document.getElementById('contactLoginAlert');
     contactForm.addEventListener('submit', function (e) {
+      if (contactForm.dataset.loggedIn !== 'true') {
+        e.preventDefault();
+        if (loginAlert) {
+          loginAlert.classList.remove('d-none');
+          loginAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
       let valid = true;
       ['contactName', 'contactEmail', 'contactSubject', 'contactMessage'].forEach(function (id) {
         const el = document.getElementById(id);
