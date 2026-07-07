@@ -9,10 +9,30 @@
    > height) and swap the number in the two calc() lines.
    ========================================================= */
 
+/* OUTER: full-height stage that centers the card and shows
+   the background color around it */
+.auth-page{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:calc(100vh - 70px);   /* <-- match your navbar height */
+  min-height:calc(100dvh - 70px);
+  padding:40px 24px;
+  background:#f3f2fa;   /* soft lavender backdrop behind the card */
+  box-sizing:border-box;
+}
+
+/* CARD: the rounded box that holds both panels */
 .auth-wrap{
   display:flex;
-  height:calc(100vh - 70px);   /* <-- match your navbar height */
-  height:calc(100dvh - 70px);  /* dvh = better on mobile browsers with address bar */
+  width:100%;
+  max-width:960px;
+  height:600px;
+  max-height:calc(100vh - 70px - 80px);  /* keeps card from overflowing page padding */
+  max-height:calc(100dvh - 70px - 80px);
+  border-radius:24px;
+  overflow:hidden;              /* clips both panels to the rounded corners */
+  box-shadow:0 25px 60px -15px rgba(45,42,94,.28);
 }
 
 /* LEFT: form panel -------------------------------------- */
@@ -20,6 +40,9 @@
   flex:1 1 46%;
   display:flex;
   align-items:center;
+  align-items:safe center;   /* fallback-safe: if content is taller than the
+                                 panel, don't clip the top — start from the
+                                 top instead of centering-and-hiding it */
   justify-content:center;
   padding:24px;
   background:#fff;
@@ -111,11 +134,16 @@
    whole form (incl. submit button) still fits before you'd
    need to scroll — scrolling past this section reveals footer */
 @media (max-width: 900px){
+  .auth-page{
+    padding:20px 14px;      /* thinner margin around the card on small screens */
+    min-height:calc(100vh - 60px);
+    min-height:calc(100dvh - 60px);
+  }
   .auth-wrap{
     flex-direction:column;
     height:auto;
-    min-height:calc(100vh - 60px);
-    min-height:calc(100dvh - 60px);
+    max-height:none;        /* let content decide height, page will scroll if needed */
+    border-radius:18px;     /* slightly smaller radius reads better on small cards */
   }
   .panel-art{
     order:-1;

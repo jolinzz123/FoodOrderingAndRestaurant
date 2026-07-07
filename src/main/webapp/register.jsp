@@ -13,6 +13,7 @@
 %>
 <jsp:include page="header.jsp" />
 
+<div class="auth-page">
 <div class="auth-wrap">
 
   <div class="panel-form">
@@ -44,13 +45,13 @@
 
         <div class="mb-3">
            <label for="password" class="form-label">Password</label>
-           <input type="password" class="form-control" id="password" name="password" minlength="6" required>
-        <div class="invalid-feedback">Min 6 characters.</div>
+           <input type="password" class="form-control" id="password" name="password" minlength="8" required>
+        <div class="invalid-feedback">At least 8 characters, with letters and numbers.</div>
        </div>
 
         <div class="mb-3">
            <label for="confirmPassword" class="form-label">Confirm Password</label>
-           <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" minlength="6" required>
+           <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" minlength="8" required>
         <div class="invalid-feedback">Doesn't match.</div>
        </div>
 
@@ -97,6 +98,7 @@
     </div>
   </div>
 
+</div>
 </div>
 
 <jsp:include page="footer.jsp" />

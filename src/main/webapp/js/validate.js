@@ -41,6 +41,17 @@
         valid = false;
       }
 
+      // Password strength (registration form only — identified by the
+      // presence of #confirmPassword, so the login form's password field
+      // is never subjected to this rule)
+      if (password && confirmPassword) {
+        const strongPasswordPattern = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+        if (password.value && !strongPasswordPattern.test(password.value)) {
+          markInvalid(password);
+          valid = false;
+        }
+      }
+
       if (!valid) {
         e.preventDefault();
       }

@@ -8,6 +8,7 @@
 %>
 <jsp:include page="header.jsp" />
 
+<div class="auth-page">
 <div class="auth-wrap">
 
   <div class="panel-form">
@@ -79,6 +80,7 @@
     </div>
   </div>
 
+</div>
 </div>
 
 <jsp:include page="footer.jsp" />

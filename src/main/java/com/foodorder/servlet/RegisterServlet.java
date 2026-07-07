@@ -19,6 +19,8 @@ public class RegisterServlet extends HttpServlet {
     private static final Pattern EMAIL_PATTERN =
         Pattern.compile("^[\\w.+-]+@[\\w-]+\\.[a-zA-Z]{2,}$");
     private static final Pattern PHONE_PATTERN = Pattern.compile("^[0-9+\\-\\s]{7,20}$");
+    private static final Pattern PASSWORD_PATTERN =
+        Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d).{8,}$");
 
     private final UserDAO userDAO = new UserDAO();
 
@@ -62,7 +64,8 @@ public class RegisterServlet extends HttpServlet {
     private String validate(String username, String email, String password, String confirmPassword, String phone) {
         if (username == null || username.length() < 3) return "Username must be at least 3 characters.";
         if (email == null || !EMAIL_PATTERN.matcher(email).matches()) return "Please enter a valid email address.";
-        if (password == null || password.length() < 6) return "Password must be at least 6 characters.";
+        if (password == null || !PASSWORD_PATTERN.matcher(password).matches())
+            return "Password must be at least 8 characters and include both letters and numbers.";
         if (!password.equals(confirmPassword)) return "Passwords do not match.";
         if (phone == null || !PHONE_PATTERN.matcher(phone).matches()) return "Please enter a valid phone number.";
         if (userDAO.usernameOrEmailExists(username, email)) return "Username or email already in use.";
