@@ -116,10 +116,23 @@
     <% if (popularItems.isEmpty()) { %>
       <p class="text-muted">No items found. <a href="<%= ctx %>/menu">Browse menu</a></p>
     <% } else {
-        for (FoodItem item : popularItems) { %>
+        // Fixed images for the Popular Dishes showcase, cycled in order.
+        String[] popularImages = {
+            "images/chickenrice.png",
+            "images/friedrice.png",
+            "images/nasilemak.png",
+            "images/nasidagang.png",
+            "images/asamlaksa.png",
+            "images/laksalemak.png"
+        };
+        int imgIndex = 0;
+        for (FoodItem item : popularItems) {
+          String popImg = popularImages[imgIndex % popularImages.length];
+          imgIndex++;
+    %>
     <a href="<%= ctx %>/food?id=<%= item.getId() %>" class="hp-dish-card">
       <div class="hp-dish-img-wrap">
-        <img src="<%= ctx %>/<%= item.getImageUrl() %>"
+        <img src="<%= ctx %>/<%= popImg %>"
              alt="<%= item.getName() %>"
              onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300&q=70'">
       </div>
@@ -146,13 +159,23 @@
   </div>
   <div class="hp-dishes-grid">
     <%
-      List<FoodItem> newItems = all.size() > 3 ? all.subList(all.size() - 3, all.size()) : all;
-      for (FoodItem item : newItems) {
+      String[] newArrivalNames = { "Ayam Percik", "Roti Canai", "Egg Roti" };
+      String[] newArrivalImages = {
+          "images/ayampercik.png", "images/roticanai.png", "images/eggroti.png"
+      };
+      List<FoodItem> newItems = new java.util.ArrayList<>();
+      for (String naname : newArrivalNames) {
+        for (FoodItem it : all) {
+          if (it.getName().equalsIgnoreCase(naname)) { newItems.add(it); break; }
+        }
+      }
+      for (int i = 0; i < newItems.size(); i++) {
+        FoodItem item = newItems.get(i);
     %>
     <a href="<%= ctx %>/food?id=<%= item.getId() %>" class="hp-dish-card">
       <div class="hp-dish-img-wrap">
         <span class="hp-dish-new-badge">NEW</span>
-        <img src="<%= ctx %>/<%= item.getImageUrl() %>"
+        <img src="<%= ctx %>/<%= newArrivalImages[i] %>"
              alt="<%= item.getName() %>"
              onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300&q=70'">
       </div>
@@ -317,3 +340,4 @@
 </div>
 
 <jsp:include page="footer.jsp" />
+
