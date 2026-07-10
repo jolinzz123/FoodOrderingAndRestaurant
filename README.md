@@ -35,7 +35,8 @@ food items, categories, and view/update all customer orders.
 ```
 FoodOrderingAndRestaurant/
 ├── database/
-│   └── setup.sql                ← Database schema + seed data. Import this first.
+│   ├── setup.sql                ← Database schema + seed data. Import this first.
+│   └── seed_reviews.sql         ← Optional: extra realistic sample reviews/ratings.
 ├── src/main/java/com/foodorder/
 │   ├── model/                   ← JavaBeans (User, FoodItem, Category, Addon, CartItem, Order, OrderItem)
 │   ├── dao/                     ← Data access layer (UserDAO, FoodDAO, CategoryDAO, AddonDAO, OrderDAO)
@@ -74,6 +75,7 @@ The MySQL driver jar is already checked into `WEB-INF/lib/`, so no manual downlo
 ### 3. Import the Database
 1. Open MySQL Workbench or the MySQL command line
 2. Run `database/setup.sql` — it creates the database, tables, and seed data automatically
+3. (Optional) Run `database/seed_reviews.sql` afterward if you want more realistic sample reviews/ratings on the menu items
 
 ### 4. Configure the Database Connection
 `db.properties` is gitignored (each teammate uses their own local MySQL password), so it won't be in your clone yet:
