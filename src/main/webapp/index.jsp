@@ -4,7 +4,6 @@
     request.setAttribute("pageTitle", "FoodOrder — Home");
     List<FoodItem> all = new FoodDAO().findAll();
     all.sort(Comparator.comparingDouble(FoodItem::getRating).reversed());
-    List<FoodItem> popularItems = all.size() > 6 ? all.subList(0, 6) : all;
     String ctx = request.getContextPath();
     FoodItem heroFood = all.isEmpty() ? null : all.get(0);
 %>
@@ -113,26 +112,32 @@
   </div>
 
   <div class="hp-dishes-grid">
-    <% if (popularItems.isEmpty()) { %>
+    <%
+      
+      String[] featuredNames = {
+          "Chicken Rice", "Fried Rice", "Nasi Lemak Special",
+          "Nasi Dagang", "Asam Laksa", "Laksa Lemak"
+      };
+      String[] featuredImages = {
+          "images/chickenrice.png", "images/friedrice.png", "images/nasilemak.png",
+          "images/nasidagang.png", "images/asamlaksa.png", "images/laksalemak.png"
+      };
+      List<FoodItem> featured = new java.util.ArrayList<>();
+      for (String fname : featuredNames) {
+        for (FoodItem it : all) {
+          if (it.getName().equalsIgnoreCase(fname)) { featured.add(it); break; }
+        }
+      }
+    %>
+    <% if (featured.isEmpty()) { %>
       <p class="text-muted">No items found. <a href="<%= ctx %>/menu">Browse menu</a></p>
     <% } else {
-        // Fixed images for the Popular Dishes showcase, cycled in order.
-        String[] popularImages = {
-            "images/chickenrice.png",
-            "images/friedrice.png",
-            "images/nasilemak.png",
-            "images/nasidagang.png",
-            "images/asamlaksa.png",
-            "images/laksalemak.png"
-        };
-        int imgIndex = 0;
-        for (FoodItem item : popularItems) {
-          String popImg = popularImages[imgIndex % popularImages.length];
-          imgIndex++;
+        for (int i = 0; i < featured.size(); i++) {
+          FoodItem item = featured.get(i);
     %>
     <a href="<%= ctx %>/food?id=<%= item.getId() %>" class="hp-dish-card">
       <div class="hp-dish-img-wrap">
-        <img src="<%= ctx %>/<%= popImg %>"
+        <img src="<%= ctx %>/<%= featuredImages[i] %>"
              alt="<%= item.getName() %>"
              onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300&q=70'">
       </div>
@@ -159,6 +164,7 @@
   </div>
   <div class="hp-dishes-grid">
     <%
+      
       String[] newArrivalNames = { "Ayam Percik", "Roti Canai", "Egg Roti" };
       String[] newArrivalImages = {
           "images/ayampercik.png", "images/roticanai.png", "images/eggroti.png"
@@ -192,56 +198,6 @@
   </div>
 </div>
 
-<!-- Today's Combo -->
-<div class="container py-4">
-  <div class="d-flex align-items-end justify-content-between mb-4">
-    <div>
-      <p class="hp-section-pre">Limited Time</p>
-      <h2 class="hp-section-title">Today's Combo</h2>
-    </div>
-  </div>
-  <div class="hp-dishes-grid">
-    <a href="#" class="hp-dish-card">
-      <div class="hp-dish-img-wrap">
-        <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80" alt="Set A">
-      </div>
-      <div class="hp-dish-body">
-        <span class="hp-dish-cat">COMBO</span>
-        <h6 class="hp-dish-name">Set A — Rice + Drink</h6>
-        <div class="hp-dish-footer">
-          <span class="hp-dish-price">RM 12.90</span>
-          <span class="hp-dish-cart">🛒</span>
-        </div>
-      </div>
-    </a>
-    <a href="#" class="hp-dish-card">
-      <div class="hp-dish-img-wrap">
-        <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400&q=80" alt="Set B">
-      </div>
-      <div class="hp-dish-body">
-        <span class="hp-dish-cat">COMBO</span>
-        <h6 class="hp-dish-name">Set B — Noodle + Side</h6>
-        <div class="hp-dish-footer">
-          <span class="hp-dish-price">RM 14.90</span>
-          <span class="hp-dish-cart">🛒</span>
-        </div>
-      </div>
-    </a>
-    <a href="#" class="hp-dish-card">
-      <div class="hp-dish-img-wrap">
-        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80" alt="Family Set">
-      </div>
-      <div class="hp-dish-body">
-        <span class="hp-dish-cat">COMBO</span>
-        <h6 class="hp-dish-name">Family Set — 2 Mains + 2 Drinks</h6>
-        <div class="hp-dish-footer">
-          <span class="hp-dish-price">RM 28.90</span>
-          <span class="hp-dish-cart">🛒</span>
-        </div>
-      </div>
-    </a>
-  </div>
-</div>
 
 <!-- Testimonials -->
 <div class="hp-testimonials-section">
@@ -340,4 +296,3 @@
 </div>
 
 <jsp:include page="footer.jsp" />
-
